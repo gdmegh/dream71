@@ -177,7 +177,7 @@ export default function Services() {
                 <ServiceFeature 
                     key={index}
                     {...service}
-                    reverse={index === 0 ? true : index === 1 ? true : index % 2 !== 0}
+                    reverse={index % 2 !== 0}
                 />
             ))}
         </div>
