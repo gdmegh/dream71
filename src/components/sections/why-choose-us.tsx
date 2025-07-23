@@ -31,10 +31,10 @@ export default function WhyChooseUs() {
           </div>
           <div>
             <Image
-              src="https://placehold.co/600x450.png"
+              src="/images/whyus.jpg"
               alt="Team collaborating"
-              width={600}
-              height={450}
+              width={800}
+              height={600}
               className="rounded-lg shadow-xl mx-auto"
               data-ai-hint="team collaboration"
             />
