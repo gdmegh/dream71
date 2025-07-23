@@ -1,10 +1,10 @@
 
 'use client';
-import { CheckCircle, CircleCheckBig } from 'lucide-react';
+import { CircleCheckBig } from 'lucide-react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ComposedChart, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, ComposedChart, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 
@@ -176,8 +176,8 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
         'grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12'
       )}>
         <div className={cn(
-            "md:w-full order-last md:order-none",
-            reverse && "md:order-first"
+            "md:w-full",
+            reverse ? "md:order-first" : "md:order-last"
         )}>
             <div className='md:hidden'>
                  <h3 className="text-3xl font-bold">{title}</h3>
@@ -196,7 +196,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full mt-8 md:mt-0">
                 {renderChart()}
             </ChartContainer>
-             <Button asChild className="mt-4 w-full md:w-auto">
+             <Button asChild className="mt-4 w-full md:hidden">
                 <Link href={link}>
                     Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -215,6 +215,11 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                     ))}
                 </div>
             )}
+            <Button asChild className="mt-4">
+                <Link href={link}>
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+            </Button>
         </div>
       </div>
     );
