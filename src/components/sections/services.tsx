@@ -5,7 +5,7 @@ import { CheckCircle, CircleCheckBig } from 'lucide-react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ComposedChart } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ComposedChart, PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 
@@ -84,6 +84,13 @@ const chartData = [
   { year: '2025', desktop: 440, mobile: 310 },
 ];
 
+const pieChartData = [
+    { name: 'Action', value: 400, fill: 'hsl(var(--chart-1))' },
+    { name: 'Strategy', value: 300, fill: 'hsl(var(--chart-2))' },
+    { name: 'RPG', value: 300, fill: 'hsl(var(--chart-3))' },
+    { name: 'Puzzle', value: 200, fill: 'hsl(var(--chart-4))' },
+];
+
 const chartConfig = {
   desktop: {
     label: 'Desktop',
@@ -93,9 +100,13 @@ const chartConfig = {
     label: 'Mobile',
     color: 'hsl(var(--chart-2))',
   },
+  Action: { label: 'Action', color: 'hsl(var(--chart-1))' },
+  Strategy: { label: 'Strategy', color: 'hsl(var(--chart-2))' },
+  RPG: { label: 'RPG', color: 'hsl(var(--chart-3))' },
+  Puzzle: { label: 'Puzzle', color: 'hsl(var(--chart-4))' },
 };
 
-const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'composed', index: number }) => {
+const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'composed' | 'pie', index: number }) => {
     
     const renderChart = () => {
         switch (chartType) {
@@ -147,6 +158,22 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
                     </ComposedChart>
                 );
+            case 'pie':
+                return (
+                    <PieChart>
+                        <Tooltip content={<ChartTooltipContent nameKey="name" />} />
+                        <Pie
+                            data={pieChartData}
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={80}
+                            label
+                        />
+                         <Legend />
+                    </PieChart>
+                );
             default:
                 return null;
         }
@@ -185,7 +212,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
 };
 
 export default function Services() {
-  const chartTypes: ('area' | 'bar' | 'line' | 'composed')[] = ['area', 'bar', 'line', 'composed'];
+  const chartTypes: ('area' | 'bar' | 'line' | 'pie')[] = ['area', 'bar', 'line', 'pie'];
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
