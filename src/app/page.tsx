@@ -5,12 +5,14 @@ import Testimonials from '@/components/sections/testimonials';
 import WhyChooseUs from '@/components/sections/why-choose-us';
 import FeaturedClients from '@/components/sections/featured-clients';
 import CtaSection from '@/components/sections/cta-section';
+import AboutSection from '@/components/sections/about-section';
 
 export default function Home() {
   return (
     <>
       <Hero />
       <FeaturedClients />
+      <AboutSection />
       <Services />
       <WhyChooseUs />
       <Portfolio />
