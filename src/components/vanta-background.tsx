@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -56,7 +57,7 @@ const VantaBackground = () => {
     return () => {
       if (vantaEffect) vantaEffect.destroy();
     };
-  }, []);
+  }, [vantaEffect]);
 
   return <div ref={vantaRef} className="absolute inset-0 z-0" />;
 };
