@@ -28,8 +28,8 @@ export default function AboutSection() {
                 <Image
                     src="/images/Office.png"
                     alt="About Us Image"
-                    width={600}
-                    height={450}
+                    width={800}
+                    height={600}
                     className="rounded-lg shadow-xl mx-auto"
                     data-ai-hint="team brainstorming"
                 />
