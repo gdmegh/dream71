@@ -1,4 +1,5 @@
 
+
 'use client';
 import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -171,14 +172,14 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             <h3 className="text-3xl font-bold">{title}</h3>
             <p className="text-muted-foreground">{description}</p>
             {points && (
-                <ul className="space-y-2 text-left">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
                     {points.map((point, i) => (
-                        <li key={i} className="flex items-center text-muted-foreground">
-                            <CheckCircle className="h-5 w-5 mr-3 text-primary flex-shrink-0" />
-                            {point}
-                        </li>
+                        <div key={i} className="flex items-start text-muted-foreground">
+                            <CheckCircle className="h-5 w-5 mr-3 text-primary flex-shrink-0 mt-1" />
+                            <span>{point}</span>
+                        </div>
                     ))}
-                </ul>
+                </div>
             )}
             <Button asChild className="mt-4">
                 <Link href={link}>
@@ -206,19 +207,21 @@ export default function Services() {
             </p>
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl items-start gap-12 sm:grid-cols-1 md:gap-16 lg:max-w-none">
+        <div className="mx-auto grid max-w-5xl items-start gap-12 divide-y divide-border sm:grid-cols-1 md:gap-16 lg:max-w-none">
           {services.map((service, index) => (
-            <ServiceFeature
-              key={index}
-              title={service.title}
-              description={service.description}
-              points={service.points}
-              link={service.link}
-              reverse={index % 2 !== 0}
-              isChart={service.isChart}
-              chartType={chartTypes[index % chartTypes.length]}
-              index={index}
-            />
+            <div key={index} className="pt-12 first:pt-0">
+                <ServiceFeature
+                key={index}
+                title={service.title}
+                description={service.description}
+                points={service.points}
+                link={service.link}
+                reverse={index % 2 !== 0}
+                isChart={service.isChart}
+                chartType={chartTypes[index % chartTypes.length]}
+                index={index}
+                />
+            </div>
           ))}
         </div>
       </div>
