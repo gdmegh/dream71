@@ -1,7 +1,28 @@
+"use client";
+
 import { Braces } from 'lucide-react';
 import Image from 'next/image';
+import React from 'react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+
+const heroImages = [
+    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 1", dataAiHint: "software development" },
+    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 2", dataAiHint: "team meeting" },
+    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 3", dataAiHint: "digital solution" },
+];
 
 export default function Hero() {
+    const plugin = React.useRef(
+      Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+    );
+
     return (
         <section
             id="home"
@@ -15,14 +36,29 @@ export default function Hero() {
                     </h1>
                 </div>
                 <div className="w-full max-w-6xl mt-16 group">
-                   <Image
-                        src="/images/heroimage.png"
-                        alt="Hero Image"
-                        width={1200}
-                        height={600}
-                        className="rounded-[50px] shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 w-full"
-                        data-ai-hint="software development"
-                    />
+                   <Carousel
+                        plugins={[plugin.current]}
+                        className="w-full"
+                        opts={{ loop: true }}
+                    >
+                        <CarouselContent>
+                            {heroImages.map((image, index) => (
+                                <CarouselItem key={index}>
+                                    <Image
+                                        src={image.src}
+                                        alt={image.alt}
+                                        width={1200}
+                                        height={600}
+                                        className="rounded-[50px] shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 w-full object-cover"
+                                        data-ai-hint={image.dataAiHint}
+                                        priority={index === 0}
+                                    />
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-4" />
+                        <CarouselNext className="right-4" />
+                    </Carousel>
                 </div>
             </div>
         </section>
