@@ -30,8 +30,17 @@ const services = [
 
 const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean }) => {
     return (
-        <div className={cn("grid md:grid-cols-2 gap-8 md:gap-16 items-center", reverse && "md:grid-flow-row-dense")}>
-            <div className={cn("md:col-start-2", reverse && "md:col-start-1")}>
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+            <div className={cn("flex flex-col items-start text-left", reverse && "md:order-last")}>
+                <h3 className="font-headline text-3xl font-bold text-foreground mb-4">{title}</h3>
+                <p className="text-muted-foreground mb-6 font-body">{description}</p>
+                <Button asChild variant="outline">
+                    <Link href={link}>
+                        Explore More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
+            </div>
+            <div>
                 <Image
                     src={image}
                     alt={title}
@@ -40,15 +49,6 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
                     className="rounded-lg shadow-xl"
                     data-ai-hint={imageHint}
                 />
-            </div>
-            <div className={cn("flex flex-col items-start text-left", reverse && "md:items-start")}>
-                <h3 className="font-headline text-3xl font-bold text-foreground mb-4">{title}</h3>
-                <p className="text-muted-foreground mb-6 font-body">{description}</p>
-                <Button asChild variant="outline">
-                    <Link href={link}>
-                        Explore More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
             </div>
         </div>
     );
@@ -70,7 +70,7 @@ export default function Services() {
                 <ServiceFeature 
                     key={index}
                     {...service}
-                    reverse={index % 2 === 1}
+                    reverse={index % 2 === 0}
                 />
             ))}
         </div>
