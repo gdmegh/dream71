@@ -1,34 +1,87 @@
+
+'use client';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+
+const chartData = [
+  { year: '2020', efficiency: 65, transparency: 40 },
+  { year: '2021', efficiency: 70, transparency: 50 },
+  { year: '2022', efficiency: 85, transparency: 65 },
+  { year: '2023', efficiency: 90, transparency: 80 },
+];
+
+const chartConfig = {
+    efficiency: {
+        label: "Efficiency (%)",
+        color: "hsl(var(--chart-1))",
+    },
+    transparency: {
+        label: "Transparency (%)",
+        color: "hsl(var(--chart-2))",
+    },
+};
+
+const GovernanceChart = () => (
+    <Card className='bg-card'>
+        <CardHeader>
+            <CardTitle>Citizen Service Improvement</CardTitle>
+            <CardDescription>Efficiency and Transparency Gains (2020-2023)</CardDescription>
+        </CardHeader>
+        <CardContent>
+             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="year" tickLine={false} axisLine={false} />
+                        <YAxis tickLine={false} axisLine={false} />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent indicator="dot" />}
+                        />
+                        <Legend />
+                        <Bar dataKey="efficiency" fill="var(--color-efficiency)" radius={4} />
+                        <Bar dataKey="transparency" fill="var(--color-transparency)" radius={4} />
+                    </BarChart>
+                </ResponsiveContainer>
+             </ChartContainer>
+        </CardContent>
+    </Card>
+);
 
 const services = [
   {
     title: "e-Governance Solutions",
     description: "e-Governance solutions use digital platforms to streamline government operations, enhance public services, and increase transparency and citizen engagement.",
-    image: "https://placehold.co/800x600.png",
+    image: "", // Image is replaced by chart
     imageHint: "government building",
-    link: "/services"
+    link: "/services",
+    isChart: true,
   },
   {
     title: "Business Automation Based on Artificial Intelligence",
     description: "Leverage AI to automate complex business processes, improve efficiency, and drive innovation across your organization.",
     image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
-    link: "/services"
+    link: "/services",
+    isChart: false,
   },
   {
     title: "Web Development",
     description: "Robust, scalable, and high-performance web applications tailored to your specific business needs.",
     image: "https://placehold.co/800x600.png",
     imageHint: "web development",
-    link: "/services"
+    link: "/services",
+    isChart: false,
   }
 ];
 
-const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean }) => {
+const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false, isChart = false }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean, isChart?: boolean }) => {
     return (
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div className={cn("flex flex-col items-center text-center md:items-start md:text-left", reverse && "md:order-last")}>
@@ -40,15 +93,19 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
                     </Link>
                 </Button>
             </div>
-            <div>
-                <Image
-                    src={image}
-                    alt={title}
-                    width={800}
-                    height={600}
-                    className="rounded-lg shadow-xl mx-auto"
-                    data-ai-hint={imageHint}
-                />
+            <div className='flex items-center justify-center'>
+                {isChart ? (
+                    <GovernanceChart />
+                ) : (
+                    <Image
+                        src={image}
+                        alt={title}
+                        width={800}
+                        height={600}
+                        className="rounded-lg shadow-xl mx-auto"
+                        data-ai-hint={imageHint}
+                    />
+                )}
             </div>
         </div>
     );
