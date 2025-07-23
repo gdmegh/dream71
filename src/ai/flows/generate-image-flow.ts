@@ -21,29 +21,29 @@ const GenerateImageOutputSchema = z.object({
 export type GenerateImageOutput = z.infer<typeof GenerateImageOutputSchema>;
 
 export async function generateImage(input: GenerateImageInput): Promise<GenerateImageOutput> {
-  return await generateImageFlow(input);
-}
-
-const generateImageFlow = ai.defineFlow(
-  {
-    name: 'generateImageFlow',
-    inputSchema: GenerateImageInputSchema,
-    outputSchema: GenerateImageOutputSchema,
-  },
-  async (input) => {
-    const { media } = await ai.generate({
-      model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: input.prompt,
-      config: {
-        responseModalities: ['TEXT', 'IMAGE'],
+    const generateImageFlow = ai.defineFlow(
+      {
+        name: 'generateImageFlow',
+        inputSchema: GenerateImageInputSchema,
+        outputSchema: GenerateImageOutputSchema,
       },
-    });
-    
-    const imageUrl = media.url;
-    if (!imageUrl) {
-        throw new Error('Image generation failed');
-    }
+      async (input) => {
+        const { media } = await ai.generate({
+          model: 'googleai/gemini-2.0-flash-preview-image-generation',
+          prompt: input.prompt,
+          config: {
+            responseModalities: ['TEXT', 'IMAGE'],
+          },
+        });
+        
+        const imageUrl = media.url;
+        if (!imageUrl) {
+            throw new Error('Image generation failed');
+        }
 
-    return { dataUri: imageUrl };
-  }
-);
+        return { dataUri: imageUrl };
+      }
+    );
+    
+    return await generateImageFlow(input);
+}
