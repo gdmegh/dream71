@@ -1,6 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const testimonials = [
   {
@@ -33,39 +32,25 @@ export default function Testimonials() {
             We are proud to have earned the trust of our clients.
           </p>
         </div>
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full max-w-4xl mx-auto"
-        >
-          <CarouselContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((item, index) => (
-              <CarouselItem key={index} className="md:basis-1/2">
-                <div className="p-1">
-                    <Card className="h-full">
-                        <CardContent className="flex flex-col items-center text-center p-6 h-full">
-                            <p className="text-muted-foreground font-body mb-6 flex-grow">"{item.testimonial}"</p>
-                            <div className="flex items-center">
-                                <Avatar className="h-12 w-12 mr-4">
-                                    <AvatarImage src={item.avatar} alt={item.name} data-ai-hint="person face" />
-                                    <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <p className="font-headline font-semibold">{item.name}</p>
-                                    <p className="text-sm text-muted-foreground">{item.title}</p>
-                                </div>
+                <Card key={index} className="h-full">
+                    <CardContent className="flex flex-col items-center text-center p-6 h-full">
+                        <p className="text-muted-foreground font-body mb-6 flex-grow">"{item.testimonial}"</p>
+                        <div className="flex items-center">
+                            <Avatar className="h-12 w-12 mr-4">
+                                <AvatarImage src={item.avatar} alt={item.name} data-ai-hint="person face" />
+                                <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <p className="font-headline font-semibold">{item.name}</p>
+                                <p className="text-sm text-muted-foreground">{item.title}</p>
                             </div>
-                        </CardContent>
-                    </Card>
-                </div>
-              </CarouselItem>
+                        </div>
+                    </CardContent>
+                </Card>
             ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        </div>
       </div>
     </section>
   );
