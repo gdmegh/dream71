@@ -6,180 +6,38 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Line, LineChart } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-
-const governanceChartData = [
-  { year: '2020', efficiency: 65, transparency: 40 },
-  { year: '2021', efficiency: 70, transparency: 50 },
-  { year: '2022', efficiency: 85, transparency: 65 },
-  { year: '2023', efficiency: 90, transparency: 80 },
-];
-
-const governanceChartConfig = {
-    efficiency: {
-        label: "Efficiency (%)",
-        color: "hsl(var(--chart-1))",
-    },
-    transparency: {
-        label: "Transparency (%)",
-        color: "hsl(var(--chart-2))",
-    },
-};
-
-const automationChartData = [
-  { month: "January", costs: 5000, revenue: 8000 },
-  { month: "February", costs: 4800, revenue: 8500 },
-  { month: "March", costs: 4500, revenue: 9000 },
-  { month: "April", costs: 4200, revenue: 9500 },
-  { month: "May", costs: 3800, revenue: 10000 },
-  { month: "June", costs: 3500, revenue: 11000 },
-];
-
-const automationChartConfig = {
-  costs: {
-    label: "Operational Costs",
-    color: "hsl(var(--chart-4))",
-  },
-  revenue: {
-    label: "Revenue",
-    color: "hsl(var(--chart-1))",
-  },
-};
-
-const webDevChartData = [
-    { quarter: "Q1", loadTime: 2.5, conversion: 2.0 },
-    { quarter: "Q2", loadTime: 2.1, conversion: 2.8 },
-    { quarter: "Q3", loadTime: 1.8, conversion: 3.5 },
-    { quarter: "Q4", loadTime: 1.5, conversion: 4.2 },
-];
-
-const webDevChartConfig = {
-    loadTime: {
-        label: "Page Load (s)",
-        color: "hsl(var(--chart-3))",
-    },
-    conversion: {
-        label: "Conversion (%)",
-        color: "hsl(var(--chart-5))",
-    },
-};
-
-const GovernanceChart = () => (
-    <Card className='w-full bg-white text-gray-800'>
-        <CardHeader>
-            <CardTitle className="text-gray-900">Citizen Service Improvement</CardTitle>
-            <CardDescription className="text-gray-600">Efficiency and Transparency Gains (2020-2023)</CardDescription>
-        </CardHeader>
-        <CardContent>
-             <ChartContainer config={governanceChartConfig} className="min-h-[200px] w-full">
-                <ResponsiveContainer width="100%" height={500}>
-                    <BarChart data={governanceChartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="year" tickLine={false} axisLine={false} stroke="#374151" />
-                        <YAxis tickLine={false} axisLine={false} stroke="#374151" />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="dot" />}
-                        />
-                        <Legend />
-                        <Bar dataKey="efficiency" fill="var(--color-efficiency)" radius={4} />
-                        <Bar dataKey="transparency" fill="var(--color-transparency)" radius={4} />
-                    </BarChart>
-                </ResponsiveContainer>
-             </ChartContainer>
-        </CardContent>
-    </Card>
-);
-
-const AutomationChart = () => (
-    <Card className='w-full bg-white text-gray-800'>
-        <CardHeader>
-            <CardTitle className="text-gray-900">Business Process Optimization</CardTitle>
-            <CardDescription className="text-gray-600">Costs vs. Revenue After AI Automation</CardDescription>
-        </CardHeader>
-        <CardContent>
-             <ChartContainer config={automationChartConfig} className="min-h-[200px] w-full">
-                <ResponsiveContainer width="100%" height={500}>
-                    <LineChart data={automationChartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="#374151" />
-                        <YAxis tickLine={false} axisLine={false} unit="$" stroke="#374151" />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="dot" />}
-                        />
-                        <Legend />
-                        <Line type="monotone" dataKey="costs" stroke="var(--color-costs)" strokeWidth={3} />
-                        <Line type="monotone" dataKey="revenue" stroke="var(--color-revenue)" strokeWidth={3} />
-                    </LineChart>
-                </ResponsiveContainer>
-             </ChartContainer>
-        </CardContent>
-    </Card>
-);
-
-const WebDevChart = () => (
-    <Card className='w-full bg-white text-gray-800'>
-        <CardHeader>
-            <CardTitle className="text-gray-900">Website Performance Growth</CardTitle>
-            <CardDescription className="text-gray-600">Post-Launch Performance Metrics</CardDescription>
-        </CardHeader>
-        <CardContent>
-             <ChartContainer config={webDevChartConfig} className="min-h-[200px] w-full">
-                <ResponsiveContainer width="100%" height={500}>
-                    <LineChart data={webDevChartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="quarter" tickLine={false} axisLine={false} stroke="#374151" />
-                        <YAxis yAxisId="left" orientation="left" tickLine={false} axisLine={false} stroke="#374151" unit="s" />
-                        <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} stroke="#374151" unit="%" />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="dot" />}
-                        />
-                        <Legend />
-                        <Line yAxisId="left" type="monotone" dataKey="loadTime" stroke="var(--color-loadTime)" strokeWidth={3} />
-                        <Line yAxisId="right" type="monotone" dataKey="conversion" stroke="var(--color-conversion)" strokeWidth={3} />
-                    </LineChart>
-                </ResponsiveContainer>
-             </ChartContainer>
-        </CardContent>
-    </Card>
-);
+import { ChartContainer } from '@/components/ui/chart';
 
 
 const services = [
   {
     title: "e-Governance Solutions",
     description: "e-Governance solutions use digital platforms to streamline government operations, enhance public services, and increase transparency and citizen engagement.",
-    image: "", // Image is replaced by chart
+    image: "https://placehold.co/800x600.png",
     imageHint: "government building",
     link: "/services",
-    isChart: true,
-    chartType: 'governance',
+    isChart: false,
   },
   {
     title: "Business Automation Based on Artificial Intelligence",
     description: "Leverage AI to automate complex business processes, improve efficiency, and drive innovation across your organization.",
-    image: "",
+    image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
     link: "/services",
-    isChart: true,
-    chartType: 'automation',
+    isChart: false,
   },
   {
     title: "Web Development",
     description: "Robust, scalable, and high-performance web applications tailored to your specific business needs.",
-    image: "",
+    image: "https://placehold.co/800x600.png",
     imageHint: "web development",
     link: "/services",
-    isChart: true,
-    chartType: 'webDev'
+    isChart: false
   }
 ];
 
-const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false, isChart = false, chartType }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean, isChart?: boolean, chartType?: string }) => {
+const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false, isChart = false }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean, isChart?: boolean }) => {
     return (
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div className={cn("flex flex-col items-center text-center md:items-start md:text-left", reverse && "md:order-last")}>
@@ -192,18 +50,14 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
                 </Button>
             </div>
             <div className={cn('flex items-center justify-center w-full', reverse && "md:order-first")}>
-                {isChart ? (
-                    chartType === 'governance' ? <GovernanceChart /> : chartType === 'automation' ? <AutomationChart /> : <WebDevChart />
-                ) : (
-                    <Image
-                        src={image}
-                        alt={title}
-                        width={800}
-                        height={600}
-                        className="rounded-lg shadow-xl mx-auto"
-                        data-ai-hint={imageHint}
-                    />
-                )}
+                <Image
+                    src={image}
+                    alt={title}
+                    width={800}
+                    height={600}
+                    className="rounded-lg shadow-xl mx-auto"
+                    data-ai-hint={imageHint}
+                />
             </div>
         </div>
     );
