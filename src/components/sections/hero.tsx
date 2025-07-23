@@ -43,7 +43,7 @@ export default function Hero() {
         </div>
         <div className="w-full max-w-6xl mt-16 group">
             <video 
-                src="/images/herovideo.mov" 
+                src="/videos/herovideo.mov" 
                 autoPlay
                 loop
                 muted
