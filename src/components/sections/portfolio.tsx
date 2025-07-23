@@ -78,7 +78,7 @@ const projects = {
 
 
 const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
-    <Card className="overflow-hidden group w-full">
+    <Card className="overflow-hidden group w-full bg-white text-gray-800">
       <CardContent className="p-0">
         <div className="relative h-56">
           <Image
@@ -93,7 +93,7 @@ const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
         </div>
         <div className="p-6">
           <h3 className="font-headline text-xl font-bold mb-2">{project.title}</h3>
-          <p className="text-muted-foreground mb-4 font-body text-sm h-10">{project.description}</p>
+          <p className="text-gray-600 mb-4 font-body text-sm h-10">{project.description}</p>
           <div className="flex flex-wrap gap-2 mb-4">
             {project.tags.map((tag) => (
               <Badge key={tag} variant="secondary">{tag}</Badge>
