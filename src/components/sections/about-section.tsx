@@ -26,7 +26,7 @@ export default function AboutSection() {
           </div>
            <div>
                 <Image
-                    src="https://placehold.co/600x400.png"
+                    src="/images/heroimage.png"
                     alt="About Us Image"
                     width={600}
                     height={400}
