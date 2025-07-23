@@ -47,6 +47,45 @@ const services = [
     imageHint: "web development",
     link: "/services",
     isChart: true,
+  },
+  {
+    title: "iOS App Development",
+    description: "Creating seamless and engaging native iOS applications for Apple's ecosystem.",
+    points: [
+        "Optimized for performance on all iPhone and iPad models.",
+        "Adherence to Apple's Human Interface Guidelines for a true native feel.",
+        "Integration with Apple services like Apple Pay and HealthKit."
+    ],
+    image: "https://placehold.co/800x600.png",
+    imageHint: "ios app",
+    link: "/services",
+    isChart: true,
+  },
+  {
+    title: "Android App Development",
+    description: "Building versatile and powerful native Android applications for a wide range of devices.",
+    points: [
+        "Broad device compatibility, from smartphones to tablets and wearables.",
+        "Leveraging Material Design for an intuitive user experience.",
+        "Integration with Google services like Google Maps and Firebase."
+    ],
+    image: "https://placehold.co/800x600.png",
+    imageHint: "android app",
+    link: "/services",
+    isChart: true,
+  },
+  {
+    title: "Game Development",
+    description: "Developing immersive and interactive games for mobile and web platforms.",
+    points: [
+        "Cross-platform development using engines like Unity or Unreal.",
+        "Engaging gameplay mechanics and stunning 2D/3D graphics.",
+        "Monetization strategies including in-app purchases and ads."
+    ],
+    image: "https://placehold.co/800x600.png",
+    imageHint: "video game",
+    link: "/services",
+    isChart: true,
   }
 ];
 
@@ -151,7 +190,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
 };
 
 export default function Services() {
-  const chartTypes: ('area' | 'bar' | 'line')[] = ['area', 'bar', 'line'];
+  const chartTypes: ('area' | 'bar' | 'line')[] = ['area', 'bar', 'line', 'area', 'bar', 'line'];
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-primary/5">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
