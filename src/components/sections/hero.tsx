@@ -1,7 +1,6 @@
 'use client';
 
 import { Braces } from 'lucide-react';
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 // Make sure to declare VANTA globally, or import it if you have types
@@ -43,12 +42,13 @@ export default function Hero() {
           </h1>
         </div>
         <div className="w-full max-w-6xl mt-16 group">
-             <Image 
-                src="/images/hero2.png" 
-                alt="Code editor screenshot"
-                width={1200}
-                height={600}
-                className="rounded-t-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105"
+            <video 
+                src="/images/herovideo.mov" 
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="rounded-t-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 w-full"
                 data-ai-hint="code editor"
             />
         </div>
