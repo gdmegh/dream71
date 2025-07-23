@@ -69,93 +69,99 @@ const services = [
 ];
 
 const eGovernanceChartData = [
-  { year: '2020', digitalServices: 150, citizenSatisfaction: 65 },
-  { year: '2021', digitalServices: 220, citizenSatisfaction: 72 },
-  { year: '2022', digitalServices: 300, citizenSatisfaction: 78 },
-  { year: '2023', digitalServices: 380, citizenSatisfaction: 85 },
-  { year: '2024', digitalServices: 450, citizenSatisfaction: 92 },
+  { year: '2020', projectsCompleted: 15, satisfactionRate: 88 },
+  { year: '2021', projectsCompleted: 22, satisfactionRate: 91 },
+  { year: '2022', projectsCompleted: 30, satisfactionRate: 94 },
+  { year: '2023', projectsCompleted: 38, satisfactionRate: 96 },
+  { year: '2024', projectsCompleted: 45, satisfactionRate: 97 },
 ];
 
 const aiAutomationChartData = [
-  { department: 'HR', before: 80, after: 20 },
-  { department: 'Finance', before: 120, after: 30 },
-  { department: 'Operations', before: 200, after: 50 },
-  { department: 'Support', before: 150, after: 40 },
+    { name: 'Projects Delivered', value: 120, fill: 'hsl(var(--chart-1))' },
+    { name: 'Success Rate', value: 98, fill: 'hsl(var(--chart-2))' },
+    { name: 'Client Satisfaction', value: 96, fill: 'hsl(var(--chart-3))' },
 ];
 
+
 const customSoftwareChartData = [
-  { month: 'Jan', web: 30, mobile: 20 },
-  { month: 'Feb', web: 45, mobile: 35 },
-  { month: 'Mar', web: 60, mobile: 50 },
-  { month: 'Apr', web: 75, mobile: 65 },
-  { month: 'May', web: 90, mobile: 80 },
+  { platform: 'Web', projects: 85, successRate: 95 },
+  { platform: 'iOS', projects: 60, successRate: 98 },
+  { platform: 'Android', projects: 70, successRate: 96 },
 ];
 
 const gameDevPieChartData = [
-    { name: 'Action', value: 400, fill: 'hsl(var(--chart-1))' },
-    { name: 'Strategy', value: 300, fill: 'hsl(var(--chart-2))' },
-    { name: 'RPG', value: 250, fill: 'hsl(var(--chart-3))' },
-    { name: 'Puzzle', value: 200, fill: 'hsl(var(--chart-4))' },
-    { name: 'Sports', value: 150, fill: 'hsl(var(--chart-5))' },
+    { name: 'Projects Completed', value: 50, fill: 'hsl(var(--chart-1))' },
+    { name: 'Success Rate', value: 92, fill: 'hsl(var(--chart-2))' },
+    { name: 'Player Satisfaction', value: 94, fill: 'hsl(var(--chart-4))' },
 ];
 
 const chartConfig = {
-  digitalServices: { label: 'Digital Services', color: 'hsl(var(--chart-1))' },
-  citizenSatisfaction: { label: 'Citizen Satisfaction (%)', color: 'hsl(var(--chart-2))' },
-  before: { label: 'Hours (Before)', color: 'hsl(var(--chart-4))' },
-  after: { label: 'Hours (After)', color: 'hsl(var(--chart-1))' },
-  web: { label: 'Web Apps', color: 'hsl(var(--chart-1))' },
-  mobile: { label: 'Mobile Apps', color: 'hsl(var(--chart-2))' },
-  Action: { label: 'Action', color: 'hsl(var(--chart-1))' },
-  Strategy: { label: 'Strategy', color: 'hsl(var(--chart-2))' },
-  RPG: { label: 'RPG', color: 'hsl(var(--chart-3))' },
-  Puzzle: { label: 'Puzzle', color: 'hsl(var(--chart-4))' },
-  Sports: { label: 'Sports', color: 'hsl(var(--chart-5))' },
+  projectsCompleted: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
+  satisfactionRate: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-2))' },
+  projects: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
+  successRate: { label: 'Success Rate (%)', color: 'hsl(var(--chart-2))' },
+  value: { label: 'Value', color: 'hsl(var(--chart-1))' },
+  _projectsDelivered: { label: 'Projects Delivered', color: 'hsl(var(--chart-1))' },
+  _successRate: { label: 'Success Rate', color: 'hsl(var(--chart-2))' },
+  _clientSatisfaction: { label: 'Client Satisfaction', color: 'hsl(var(--chart-3))' },
+  _projectsCompleted: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
+  _playerSatisfaction: { label: 'Player Satisfaction', color: 'hsl(var(--chart-4))' },
 };
 
 const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'pie', index: number }) => {
     
     const renderChart = () => {
         switch (index) {
-            case 0: // e-Governance Solutions
+            case 0: // e-Governance Solutions - Composed Chart
                 return (
-                    <AreaChart data={eGovernanceChartData} margin={{ left: 12, right: 12 }}>
+                    <ComposedChart data={eGovernanceChartData} margin={{ left: 0, right: 0 }}>
                         <CartesianGrid vertical={false} />
                         <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
-                        <YAxis />
+                        <YAxis yAxisId="left" orientation="left" stroke="hsl(var(--chart-1))" />
+                        <YAxis yAxisId="right" orientation="right" stroke="hsl(var(--chart-2))" />
                         <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                         <Legend />
-                        <Area type="monotone" dataKey="digitalServices" stackId="1" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" />
-                        <Area type="monotone" dataKey="citizenSatisfaction" stackId="2" stroke="hsl(var(--chart-2))" fill="hsl(var(--chart-2))" />
-                    </AreaChart>
+                        <Bar dataKey="projectsCompleted" yAxisId="left" fill="hsl(var(--chart-1))" radius={4} />
+                        <Line type="monotone" dataKey="satisfactionRate" yAxisId="right" stroke="hsl(var(--chart-2))" strokeWidth={2} dot={false} />
+                    </ComposedChart>
                 );
-            case 1: // Business Automation Based on AI
-                return (
-                    <BarChart data={aiAutomationChartData} margin={{ left: 12, right: 12 }}>
+            case 1: // Business Automation Based on AI - Pie Chart
+                 return (
+                    <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                            <Tooltip content={<ChartTooltipContent nameKey="name" />} />
+                            <Pie
+                                data={aiAutomationChartData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={80}
+                                label
+                            >
+                                {aiAutomationChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                                ))}
+                            </Pie>
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                );
+            case 2: // Custom Software Development - Bar Chart
+                 return (
+                    <BarChart data={customSoftwareChartData} margin={{ left: 0, right: 0 }}>
                         <CartesianGrid vertical={false} />
-                        <XAxis dataKey="department" tickLine={false} axisLine={false} tickMargin={8} />
+                        <XAxis dataKey="platform" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
                         <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                         <Legend />
-                        <Bar dataKey="before" fill="hsl(var(--chart-4))" radius={4} />
-                        <Bar dataKey="after" fill="hsl(var(--chart-1))" radius={4} />
+                        <Bar dataKey="projects" fill="hsl(var(--chart-1))" radius={4} />
+                        <Bar dataKey="successRate" fill="hsl(var(--chart-2))" radius={4} />
                     </BarChart>
                 );
-            case 2: // Custom Software Development
-                 return (
-                    <LineChart data={customSoftwareChartData} margin={{ left: 12, right: 12 }}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
-                        <YAxis />
-                        <Tooltip content={<ChartTooltipContent indicator="dot" />} />
-                        <Legend />
-                        <Line type="monotone" dataKey="web" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
-                        <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" strokeWidth={2} dot={false} />
-                    </LineChart>
-                );
-            case 3: // Game Development
+            case 3: // Game Development - Area Chart
                 return (
-                    <ResponsiveContainer width="100%" height={250}>
+                     <ResponsiveContainer width="100%" height={250}>
                         <PieChart>
                             <Tooltip content={<ChartTooltipContent nameKey="name" />} />
                             <Pie
@@ -164,7 +170,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                                 nameKey="name"
                                 cx="50%"
                                 cy="50%"
-                                outerRadius={80}
+                                innerRadius={60}
                                 label
                             >
                                 {gameDevPieChartData.map((entry, index) => (
