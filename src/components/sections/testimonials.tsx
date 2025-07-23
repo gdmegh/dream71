@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -34,11 +35,17 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-20 bg-primary/5">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section 
+      id="testimonials" 
+      className="relative py-20 md:py-32 bg-cover bg-fixed bg-center bg-no-repeat"
+      style={{ backgroundImage: `url('https://placehold.co/1920x1080.png')` }}
+      data-ai-hint="happy clients"
+    >
+      <div className="absolute inset-0 bg-primary/80"></div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">What Our Clients Say</h2>
-          <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary-foreground">What Our Clients Say</h2>
+          <p className="font-body text-lg text-primary-foreground/80 mt-4 max-w-2xl mx-auto">
             We are proud to have earned the trust of our clients.
           </p>
         </div>
@@ -53,7 +60,7 @@ export default function Testimonials() {
             {testimonials.map((item, index) => (
               <CarouselItem key={index}>
                 <div className="p-1">
-                  <Card className="h-full">
+                  <Card className="h-full bg-background/90 backdrop-blur-sm">
                       <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
                           <p className="text-muted-foreground font-body text-lg mb-8 flex-grow">"{item.testimonial}"</p>
                           <div className="flex items-center">
@@ -72,8 +79,8 @@ export default function Testimonials() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="text-foreground bg-background/50 hover:bg-background/80 border-none"/>
+          <CarouselNext className="text-foreground bg-background/50 hover:bg-background/80 border-none"/>
         </Carousel>
       </div>
     </section>
