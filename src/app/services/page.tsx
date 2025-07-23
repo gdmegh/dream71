@@ -5,9 +5,9 @@ const services = [
   {
     icon: Code,
     title: "Web Development",
-    description: "Cutting-edge web solutions, from corporate websites to complex enterprise applications.",
+    description: "We specialize in creating robust, scalable, and high-performance web applications tailored to your specific business needs. From custom e-commerce platforms and content management systems to complex enterprise-level web portals, our team leverages the latest technologies to build solutions that are both powerful and easy to use. We focus on clean code, responsive design, and a seamless user experience to ensure your web presence stands out.",
     imageUrl: "https://placehold.co/1920x1080.png",
-    imageHint: "web development code"
+    imageHint: "web application dashboard"
   },
   {
     icon: Smartphone,
