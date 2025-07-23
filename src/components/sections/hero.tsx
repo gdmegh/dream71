@@ -2,7 +2,7 @@
 
 import { Braces } from 'lucide-react';
 import Image from 'next/image';
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -18,48 +18,14 @@ const heroImages = [
     { src: "/images/Slider/3.jpg", alt: "Hero Image 3", dataAiHint: "digital solution", caption: "Delivering Excellence" },
 ];
 
-declare global {
-  interface Window {
-    THREE: any;
-    VANTA: {
-      TOPOLOGY: (options: any) => any;
-    };
-  }
-}
-
 export default function Hero() {
     const plugin = React.useRef(
       Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: false })
     );
 
-    const vantaRef = useRef(null);
-    const [vantaEffect, setVantaEffect] = useState<any>(null);
-
-    useEffect(() => {
-        if (!vantaEffect && vantaRef.current && window.VANTA) {
-            setVantaEffect(window.VANTA.TOPOLOGY({
-                el: vantaRef.current,
-                THREE: window.THREE,
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0x3b82f6,
-                backgroundColor: 0x0a0a0a,
-            }));
-        }
-        return () => {
-            if (vantaEffect) vantaEffect.destroy();
-        }
-    }, [vantaEffect]);
-
     return (
         <section
             id="home"
-            ref={vantaRef}
             className="relative flex flex-col items-center justify-center text-center overflow-hidden bg-background min-h-screen py-20"
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center flex-grow">
