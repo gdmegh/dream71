@@ -1,11 +1,10 @@
 
-
 'use client';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 
 
@@ -26,6 +25,11 @@ const services = [
   {
     title: "Business Automation Based on Artificial Intelligence",
     description: "Leverage AI to automate complex business processes, improve efficiency, and drive innovation across your organization.",
+    points: [
+        "30% increase in workflow efficiency with AI-driven automation.",
+        "50% reduction in manual data entry errors.",
+        "20% cost savings through automated resource allocation."
+    ],
     image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
     link: "/services",
