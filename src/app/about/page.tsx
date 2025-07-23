@@ -50,10 +50,10 @@ export default function AboutPage() {
                         </div>
                         <div>
                             <Image
-                                src="https://placehold.co/600x450.png"
+                                src="https://placehold.co/700x550.png"
                                 alt="Dream71 team in a meeting"
-                                width={600}
-                                height={450}
+                                width={700}
+                                height={550}
                                 className="rounded-lg shadow-xl"
                                 data-ai-hint="team meeting"
                             />
