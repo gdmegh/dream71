@@ -68,122 +68,78 @@ const services = [
   }
 ];
 
-const eGovernanceChartData = [
-  { year: '2020', projectsCompleted: 15, satisfactionRate: 88 },
-  { year: '2021', projectsCompleted: 22, satisfactionRate: 91 },
-  { year: '2022', projectsCompleted: 30, satisfactionRate: 94 },
-  { year: '2023', projectsCompleted: 38, satisfactionRate: 96 },
-  { year: '2024', projectsCompleted: 45, satisfactionRate: 97 },
-];
-
-const aiAutomationChartData = [
-    { name: 'Projects Delivered', value: 120, fill: 'hsl(var(--chart-1))' },
-    { name: 'Success Rate', value: 98, fill: 'hsl(var(--chart-2))' },
-    { name: 'Client Satisfaction', value: 96, fill: 'hsl(var(--chart-3))' },
-];
-
-
-const customSoftwareChartData = [
-  { platform: 'Web', projects: 85, successRate: 95 },
-  { platform: 'iOS', projects: 60, successRate: 98 },
-  { platform: 'Android', projects: 70, successRate: 96 },
-];
-
-const gameDevPieChartData = [
-    { name: 'Projects Completed', value: 50, fill: 'hsl(var(--chart-1))' },
-    { name: 'Success Rate', value: 92, fill: 'hsl(var(--chart-2))' },
-    { name: 'Player Satisfaction', value: 94, fill: 'hsl(var(--chart-4))' },
-];
-
-const chartConfig = {
-  projectsCompleted: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
-  satisfactionRate: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-2))' },
-  projects: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
-  successRate: { label: 'Success Rate (%)', color: 'hsl(var(--chart-2))' },
-  value: { label: 'Value', color: 'hsl(var(--chart-1))' },
-  _projectsDelivered: { label: 'Projects Delivered', color: 'hsl(var(--chart-1))' },
-  _successRate: { label: 'Success Rate', color: 'hsl(var(--chart-2))' },
-  _clientSatisfaction: { label: 'Client Satisfaction', color: 'hsl(var(--chart-3))' },
-  _projectsCompleted: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
-  _playerSatisfaction: { label: 'Player Satisfaction', color: 'hsl(var(--chart-4))' },
+const chartData = {
+    eGovernance: [
+        { name: 'Projects', value: 75, fill: 'hsl(var(--chart-1))' },
+        { name: 'Success Rate', value: 95, fill: 'hsl(var(--chart-2))' },
+        { name: 'Satisfaction', value: 98, fill: 'hsl(var(--chart-3))' }
+    ],
+    aiAutomation: [
+        { name: 'Projects', value: 50, fill: 'hsl(var(--chart-1))' },
+        { name: 'Success Rate', value: 97, fill: 'hsl(var(--chart-2))' },
+        { name: 'Satisfaction', value: 99, fill: 'hsl(var(--chart-3))' }
+    ],
+    customSoftware: [
+        { name: 'Projects', value: 150, fill: 'hsl(var(--chart-1))' },
+        { name: 'Success Rate', value: 96, fill: 'hsl(var(--chart-2))' },
+        { name: 'Satisfaction', value: 97, fill: 'hsl(var(--chart-3))' }
+    ],
+    gameDev: [
+        { name: 'Projects', value: 40, fill: 'hsl(var(--chart-1))' },
+        { name: 'Success Rate', value: 92, fill: 'hsl(var(--chart-2))' },
+        { name: 'Satisfaction', value: 94, fill: 'hsl(var(--chart-3))' }
+    ]
 };
 
-const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'pie', index: number }) => {
+const chartConfig = {
+  value: { label: 'Value' },
+  projects: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
+  successRate: { label: 'Success Rate (%)', color: 'hsl(var(--chart-2))' },
+  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-3))' },
+};
+
+const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, index: number }) => {
     
     const renderChart = () => {
+        let data;
         switch (index) {
-            case 0: // e-Governance Solutions - Composed Chart
-                return (
-                    <ComposedChart data={eGovernanceChartData} margin={{ left: 0, right: 0 }}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
-                        <YAxis yAxisId="left" orientation="left" stroke="hsl(var(--chart-1))" />
-                        <YAxis yAxisId="right" orientation="right" stroke="hsl(var(--chart-2))" />
-                        <Tooltip content={<ChartTooltipContent indicator="dot" />} />
-                        <Legend />
-                        <Bar dataKey="projectsCompleted" yAxisId="left" fill="hsl(var(--chart-1))" radius={4} />
-                        <Line type="monotone" dataKey="satisfactionRate" yAxisId="right" stroke="hsl(var(--chart-2))" strokeWidth={2} dot={false} />
-                    </ComposedChart>
-                );
-            case 1: // Business Automation Based on AI - Pie Chart
-                 return (
-                    <ResponsiveContainer width="100%" height={250}>
-                        <PieChart>
-                            <Tooltip content={<ChartTooltipContent nameKey="name" />} />
-                            <Pie
-                                data={aiAutomationChartData}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={80}
-                                label
-                            >
-                                {aiAutomationChartData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                                ))}
-                            </Pie>
-                            <Legend />
-                        </PieChart>
-                    </ResponsiveContainer>
-                );
-            case 2: // Custom Software Development - Bar Chart
-                 return (
-                    <BarChart data={customSoftwareChartData} margin={{ left: 0, right: 0 }}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis dataKey="platform" tickLine={false} axisLine={false} tickMargin={8} />
-                        <YAxis />
-                        <Tooltip content={<ChartTooltipContent indicator="dot" />} />
-                        <Legend />
-                        <Bar dataKey="projects" fill="hsl(var(--chart-1))" radius={4} />
-                        <Bar dataKey="successRate" fill="hsl(var(--chart-2))" radius={4} />
-                    </BarChart>
-                );
-            case 3: // Game Development - Area Chart
-                return (
-                     <ResponsiveContainer width="100%" height={250}>
-                        <PieChart>
-                            <Tooltip content={<ChartTooltipContent nameKey="name" />} />
-                            <Pie
-                                data={gameDevPieChartData}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={60}
-                                label
-                            >
-                                {gameDevPieChartData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                                ))}
-                            </Pie>
-                            <Legend />
-                        </PieChart>
-                    </ResponsiveContainer>
-                );
+            case 0:
+                data = chartData.eGovernance;
+                break;
+            case 1:
+                data = chartData.aiAutomation;
+                break;
+            case 2:
+                data = chartData.customSoftware;
+                break;
+            case 3:
+                data = chartData.gameDev;
+                break;
             default:
-                return null;
+                data = [];
         }
+
+        return (
+            <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                    <Tooltip content={<ChartTooltipContent nameKey="name" />} />
+                    <Pie
+                        data={data}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                    >
+                        {data.map((entry, idx) => (
+                            <Cell key={`cell-${idx}`} fill={entry.fill} />
+                        ))}
+                    </Pie>
+                    <Legend />
+                </PieChart>
+            </ResponsiveContainer>
+        );
     }
     
     return (
@@ -193,9 +149,9 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
         <div className={cn(
             "md:w-full",
             reverse ? "md:order-first" : "md:order-last",
-            "md:hidden"
+            "md:hidden flex flex-col items-center" 
         )}>
-            <div className='md:hidden'>
+            <div className='md:hidden text-center'>
                  <h3 className="text-3xl font-bold">{title}</h3>
                 <p className="text-muted-foreground mt-4">{description}</p>
                 {points && (
@@ -212,7 +168,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full mt-8 md:mt-0">
                 {renderChart()}
             </ChartContainer>
-             <Button asChild className="mt-4 w-full md:hidden">
+             <Button asChild className="mt-4 md:hidden">
                 <Link href={link}>
                     Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -250,7 +206,6 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
 };
 
 export default function Services() {
-  const chartTypes: ('area' | 'bar' | 'line' | 'pie')[] = ['area', 'bar', 'line', 'pie'];
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
@@ -276,7 +231,6 @@ export default function Services() {
                 link={service.link}
                 reverse={index % 2 !== 0}
                 isChart={service.isChart}
-                chartType={chartTypes[index % chartTypes.length]}
                 index={index}
                 />
             </div>
