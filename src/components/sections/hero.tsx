@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRef } from 'react';
@@ -12,7 +13,8 @@ export default function Hero() {
 
     useEffect(() => {
         if (!vantaEffect && vantaRef.current) {
-            setVantaEffect(Vanta({
+            // @ts-ignore
+            setVantaEffect(Vanta.HALO({
                 el: vantaRef.current,
                 THREE: THREE,
                 mouseControls: true,
@@ -20,13 +22,8 @@ export default function Hero() {
                 gyroControls: false,
                 minHeight: 200.00,
                 minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0x399958,
-                color2: 0x81D451,
                 backgroundColor: 0x0,
                 size: 1.5,
-                speed: 1.2
             }));
         }
         return () => {
