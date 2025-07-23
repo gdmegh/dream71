@@ -1,5 +1,4 @@
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+
 import { Braces } from 'lucide-react';
 import Image from 'next/image';
 
@@ -21,22 +20,14 @@ export default function Hero() {
           <h1 className="font-headline text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
             The full <span className="inline-flex items-center gap-2">Stack <Braces className="h-12 w-12 text-primary" /></span> Software Development Solutions
           </h1>
-          <p className="font-body text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
-            Dream71 accelerates your entire development lifecycle with AI agents. Build backends, front ends, and mobile apps, all in one place.
-          </p>
-          <Button asChild size="lg">
-            <Link href="/contact">
-              Try Dream71
-            </Link>
-          </Button>
         </div>
-        <div className="w-full max-w-6xl mt-16">
+        <div className="w-full max-w-6xl mt-16 group">
             <Image 
                 src="/images/hero2.png" 
                 alt="Code editor screenshot"
                 width={1200}
                 height={600}
-                className="rounded-t-lg shadow-2xl"
+                className="rounded-t-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105"
                 data-ai-hint="code editor"
             />
         </div>
