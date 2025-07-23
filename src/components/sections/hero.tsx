@@ -1,9 +1,8 @@
-
 "use client";
 
 import { useRef } from 'react';
 import { Braces } from 'lucide-react';
-import Vanta from 'vanta';
+import HALO from 'vanta/dist/vanta.halo.min';
 import * as THREE from 'three';
 import { useEffect, useState } from 'react';
 
@@ -13,8 +12,7 @@ export default function Hero() {
 
     useEffect(() => {
         if (!vantaEffect && vantaRef.current) {
-            // @ts-ignore
-            setVantaEffect(Vanta.HALO({
+            setVantaEffect(HALO({
                 el: vantaRef.current,
                 THREE: THREE,
                 mouseControls: true,
@@ -22,7 +20,7 @@ export default function Hero() {
                 gyroControls: false,
                 minHeight: 200.00,
                 minWidth: 200.00,
-                backgroundColor: 0x0,
+                backgroundColor: 0x011304,
                 size: 1.5,
             }));
         }
