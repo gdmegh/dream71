@@ -11,16 +11,16 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const clientLogos = [
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+A", alt: "Client A", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+B", alt: "Client B", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+C", alt: "Client C", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+D", alt: "Client D", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+E", alt: "Client E", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+F", alt: "Client F", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+G", alt: "Client G", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+H", alt: "Client H", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+I", alt: "Client I", dataAiHint: "logo" },
-    { src: "https://placehold.co/150x60/FFFFFF/000000?text=Client+J", alt: "Client J", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+A", alt: "Client A", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+B", alt: "Client B", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+C", alt: "Client C", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+D", alt: "Client D", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+E", alt: "Client E", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+F", alt: "Client F", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+G", alt: "Client G", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+H", alt: "Client H", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+I", alt: "Client I", dataAiHint: "logo" },
+    { src: "https://placehold.co/150x60/000000/FFFFFF?text=Client+J", alt: "Client J", dataAiHint: "logo" },
 ];
 
 export default function FeaturedClients() {
@@ -29,7 +29,7 @@ export default function FeaturedClients() {
     );
 
     return (
-        <section className="py-12 bg-primary/5 w-full overflow-hidden">
+        <section className="py-12 bg-white w-full overflow-hidden">
              <Carousel
                 plugins={[plugin.current]}
                 opts={{
@@ -47,7 +47,7 @@ export default function FeaturedClients() {
                               width={150}
                               height={60}
                               data-ai-hint={logo.dataAiHint}
-                              className="w-auto h-10 object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                              className="w-auto h-10 object-contain"
                           />
                       </CarouselItem>
                     ))}
