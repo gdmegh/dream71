@@ -42,12 +42,18 @@ const services = [
 ];
 
 const chartData = [
-  { month: 'January', desktop: 186, mobile: 80 },
-  { month: 'February', desktop: 305, mobile: 200 },
-  { month: 'March', desktop: 237, mobile: 120 },
-  { month: 'April', desktop: 73, mobile: 190 },
-  { month: 'May', desktop: 209, mobile: 130 },
-  { month: 'June', desktop: 214, mobile: 140 },
+  { year: '2014', desktop: 100, mobile: 60 },
+  { year: '2015', desktop: 125, mobile: 75 },
+  { year: '2016', desktop: 150, mobile: 90 },
+  { year: '2017', desktop: 180, mobile: 110 },
+  { year: '2018', desktop: 215, mobile: 135 },
+  { year: '2019', desktop: 250, mobile: 160 },
+  { year: '2020', desktop: 280, mobile: 185 },
+  { year: '2021', desktop: 310, mobile: 210 },
+  { year: '2022', desktop: 345, mobile: 235 },
+  { year: '2023', desktop: 380, mobile: 260 },
+  { year: '2024', desktop: 410, mobile: 285 },
+  { year: '2025', desktop: 440, mobile: 310 },
 ];
 
 const chartConfig = {
@@ -68,7 +74,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 'area':
                 return (
                     <AreaChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <XAxis dataKey="month" />
+                        <XAxis dataKey="year" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
@@ -79,7 +85,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 'bar':
                 return (
                     <BarChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <XAxis dataKey="month" />
+                        <XAxis dataKey="year" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
@@ -90,7 +96,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 'line':
                  return (
                     <LineChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <XAxis dataKey="month" />
+                        <XAxis dataKey="year" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
