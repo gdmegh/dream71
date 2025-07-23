@@ -48,7 +48,7 @@ const automationChartConfig = {
 };
 
 const GovernanceChart = () => (
-    <Card className='bg-card w-full'>
+    <Card className='w-full'>
         <CardHeader>
             <CardTitle>Citizen Service Improvement</CardTitle>
             <CardDescription>Efficiency and Transparency Gains (2020-2023)</CardDescription>
@@ -75,7 +75,7 @@ const GovernanceChart = () => (
 );
 
 const AutomationChart = () => (
-    <Card className='bg-card w-full'>
+    <Card className='w-full'>
         <CardHeader>
             <CardTitle>Business Process Optimization</CardTitle>
             <CardDescription>Costs vs. Revenue After AI Automation</CardDescription>
