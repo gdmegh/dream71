@@ -2,16 +2,20 @@ import Hero from '@/components/sections/hero';
 import Services from '@/components/sections/services';
 import Portfolio from '@/components/sections/portfolio';
 import Testimonials from '@/components/sections/testimonials';
-import Contact from '@/components/sections/contact';
+import WhyChooseUs from '@/components/sections/why-choose-us';
+import FeaturedClients from '@/components/sections/featured-clients';
+import CtaSection from '@/components/sections/cta-section';
 
 export default function Home() {
   return (
     <>
       <Hero />
+      <FeaturedClients />
       <Services />
+      <WhyChooseUs />
       <Portfolio />
       <Testimonials />
-      <Contact />
+      <CtaSection />
     </>
   );
 }

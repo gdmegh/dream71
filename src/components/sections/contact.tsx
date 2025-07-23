@@ -54,14 +54,14 @@ export default function Contact() {
   return (
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Get In Touch</h2>
-          <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Have a project in mind? We'd love to hear from you.
-          </p>
-        </div>
         <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div className="space-y-8">
+                <div className="text-left mb-12">
+                    <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Get In Touch</h2>
+                    <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
+                        Have a project in mind? We'd love to hear from you.
+                    </p>
+                </div>
                 <div className="flex items-start gap-4">
                     <div className="bg-primary/10 text-primary p-3 rounded-full">
                         <MapPin className="h-6 w-6"/>
