@@ -5,6 +5,7 @@ import { Braces } from 'lucide-react';
 import HALO from 'vanta/dist/vanta.halo.min';
 import * as THREE from 'three';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function Hero() {
     const vantaRef = useRef(null);
@@ -42,15 +43,14 @@ export default function Hero() {
                     </h1>
                 </div>
                 <div className="w-full max-w-6xl mt-16 group">
-                   <video 
+                   <Image
+                        src="/images/heroimage.png"
+                        alt="Hero Image"
+                        width={1200}
+                        height={600}
                         className="rounded-t-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 w-full"
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline
-                    >
-                        <source src="/videos/herovideo.mov" type="video/mp4" />
-                    </video>
+                        data-ai-hint="software development"
+                    />
                 </div>
             </div>
         </section>
