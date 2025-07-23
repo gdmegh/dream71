@@ -38,6 +38,11 @@ const services = [
   {
     title: "Web Development",
     description: "Robust, scalable, and high-performance web applications tailored to your specific business needs.",
+    points: [
+      "Improve user engagement with responsive and intuitive design.",
+      "Ensure security and reliability with industry best practices.",
+      "Achieve faster load times and better performance."
+    ],
     image: "https://placehold.co/800x600.png",
     imageHint: "web development",
     link: "/services",
