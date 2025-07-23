@@ -10,11 +10,11 @@ export default function AboutSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
-            <p className="font-headline text-primary font-semibold mb-2">About</p>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <p className="font-headline text-primary font-semibold mb-2 text-center md:text-left">About</p>
+            <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4 text-center md:text-left">
                 Welcome to Dream71 Bangladesh Limited.
             </h2>
-            <p className="font-body text-lg text-muted-foreground mb-8 max-w-xl mx-auto md:mx-0">
+            <p className="font-body text-lg text-muted-foreground mb-8 max-w-xl mx-auto md:mx-0 text-center md:text-left">
               A leading Software Company from Bangladesh Focusing on E-Governance System, Web Applications, Mobile Applications, Game Development, Artificial intelligence , IOT and Blockchain Technologies.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
