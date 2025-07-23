@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Braces } from 'lucide-react';
@@ -43,17 +44,15 @@ export default function Hero() {
                     >
                         <CarouselContent>
                             {heroImages.map((image, index) => (
-                                <CarouselItem key={index} className="relative">
+                                <CarouselItem key={index} className="relative h-[300px] sm:h-[400px] md:h-[600px]">
                                     <Image
                                         src={image.src}
                                         alt={image.alt}
-                                        width={1200}
-                                        height={600}
-                                        className="rounded-[50px] shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 w-full object-cover"
+                                        fill
+                                        className="rounded-[50px] shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover"
                                         data-ai-hint={image.dataAiHint}
                                         priority={index === 0}
                                     />
-                                    <div className="absolute inset-0 bg-black/30 rounded-[50px]"></div>
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
