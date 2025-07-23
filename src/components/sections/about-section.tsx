@@ -8,13 +8,14 @@ export default function AboutSection() {
     <section id="about" className="relative bg-background overflow-hidden py-20 md:py-32">
        <div className="absolute inset-0 bg-primary/5"></div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
+            <p className="font-headline text-primary font-semibold mb-2">About</p>
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
-                About Dream71
+                Welcome to Dream71 Bangladesh Limited.
             </h2>
             <p className="font-body text-lg text-muted-foreground mb-8 max-w-xl mx-auto md:mx-0">
-              We are a passionate team of developers, designers, and strategists dedicated to building exceptional digital products that drive growth and success for our clients.
+              A leading Software Company from Bangladesh Focusing on E-Governance System, Web Applications, Mobile Applications, Game Development, Artificial intelligence , IOT and Blockchain Technologies.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <Button asChild size="lg" variant="outline">
@@ -24,7 +25,7 @@ export default function AboutSection() {
               </Button>
             </div>
           </div>
-           <div>
+           <div className='lg:order-last'>
                 <Image
                     src="/images/Office.png"
                     alt="About Us Image"
