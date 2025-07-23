@@ -1,55 +1,46 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ThumbsUp, Award, Users, Shield } from "lucide-react";
+import Image from 'next/image';
+import { CheckCircle } from 'lucide-react';
 
 const features = [
-    {
-        icon: Award,
-        title: "Proven Excellence",
-        description: "We have a track record of delivering high-quality, award-winning software solutions that drive business growth.",
-    },
-    {
-        icon: Users,
-        title: "Expert Team",
-        description: "Our team consists of experienced professionals who are passionate about technology and dedicated to your success.",
-    },
-    {
-        icon: ThumbsUp,
-        title: "Client-Centric Approach",
-        description: "We work closely with you to understand your needs and deliver tailored solutions that exceed your expectations.",
-    },
-    {
-        icon: Shield,
-        title: "Reliability & Trust",
-        description: "We build long-term partnerships with our clients based on transparency, integrity, and mutual trust.",
-    },
+  "Proven track record of delivering high-quality software solutions.",
+  "Dedicated team of experienced professionals passionate about technology.",
+  "Client-centric approach, tailoring solutions to exceed expectations.",
+  "Building long-term partnerships based on transparency and trust.",
 ];
 
 export default function WhyChooseUs() {
-    return (
-        <section id="why-us" className="py-20 bg-background">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Why Choose Dream71?</h2>
-                    <p className="font-body text-lg text-muted-foreground mt-4 max-w-3xl mx-auto">
-                        We are more than just a software company. We are your partner in innovation and growth.
-                    </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {features.map((feature, index) => (
-                        <Card key={index} className="text-center border-0 shadow-none bg-transparent">
-                             <CardHeader className="items-center">
-                                <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit mb-4">
-                                    <feature.icon className="h-8 w-8" />
-                                </div>
-                                <CardTitle className="font-headline">{feature.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground font-body">{feature.description}</p>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
+  return (
+    <section id="why-us" className="py-20 bg-primary/5">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="text-center md:text-left">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Why Choose Dream71?
+            </h2>
+            <p className="font-body text-lg text-muted-foreground mb-8 max-w-xl mx-auto md:mx-0">
+              We are more than just a software company. We are your partner in innovation and growth, committed to turning your vision into reality.
+            </p>
+            <ul className="space-y-4">
+              {features.map((feature, index) => (
+                <li key={index} className="flex items-start md:items-center text-left">
+                  <CheckCircle className="h-6 w-6 text-primary mr-3 flex-shrink-0 mt-1 md:mt-0" />
+                  <span className="text-muted-foreground font-body">{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <Image
+              src="https://placehold.co/600x450.png"
+              alt="Team collaborating"
+              width={600}
+              height={450}
+              className="rounded-lg shadow-xl mx-auto"
+              data-ai-hint="team collaboration"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
