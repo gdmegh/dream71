@@ -106,7 +106,7 @@ const chartConfig = {
   Puzzle: { label: 'Puzzle', color: 'hsl(var(--chart-4))' },
 };
 
-const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'composed' | 'pie', index: number }) => {
+const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'pie', index: number }) => {
     
     const renderChart = () => {
         switch (chartType) {
@@ -116,7 +116,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         <CartesianGrid vertical={false} />
                         <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
-                        <Tooltip content={<ChartTooltipContent />} />
+                        <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                         <Area type="monotone" dataKey="desktop" stackId="1" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" />
                         <Area type="monotone" dataKey="mobile" stackId="1" stroke="hsl(var(--chart-2))" fill="hsl(var(--chart-2))" />
                     </AreaChart>
@@ -127,7 +127,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                          <CartesianGrid vertical={false} />
                         <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
-                        <Tooltip content={<ChartTooltipContent />} />
+                        <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                         <Legend />
                         <Bar dataKey="desktop" fill="hsl(var(--chart-1))" radius={4} />
                         <Bar dataKey="mobile" fill="hsl(var(--chart-2))" radius={4} />
@@ -139,24 +139,11 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         <CartesianGrid vertical={false} />
                         <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
-                        <Tooltip content={<ChartTooltipContent />} />
+                        <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                         <Legend />
                         <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
                         <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" strokeWidth={2} dot={false} />
                     </LineChart>
-                );
-            case 'composed':
-                return (
-                    <ComposedChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
-                        <YAxis />
-                        <Tooltip content={<ChartTooltipContent />} />
-                        <Legend />
-                        <Area type="monotone" dataKey="mobile" fill="hsl(var(--chart-2))" stroke="hsl(var(--chart-2))" />
-                        <Bar dataKey="desktop" fill="hsl(var(--chart-1))" />
-                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
-                    </ComposedChart>
                 );
             case 'pie':
                 return (
@@ -170,7 +157,11 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                             cy="50%"
                             outerRadius={80}
                             label
-                        />
+                        >
+                             {pieChartData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))}
+                        </Pie>
                          <Legend />
                     </PieChart>
                 );
@@ -183,7 +174,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
       <div className={cn(
         'grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12'
       )}>
-        <div className={cn("md:w-full", reverse && "md:order-last")}>
+        <div className={cn("md:w-full", reverse ? "md:order-first" : "md:order-last", "order-last md:order-none")}>
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
                 {renderChart()}
             </ChartContainer>
