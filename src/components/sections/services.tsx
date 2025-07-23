@@ -1,4 +1,5 @@
 
+
 'use client';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -48,18 +49,18 @@ const automationChartConfig = {
 };
 
 const GovernanceChart = () => (
-    <Card className='w-full'>
+    <Card className='w-full bg-white text-gray-800'>
         <CardHeader>
-            <CardTitle>Citizen Service Improvement</CardTitle>
-            <CardDescription>Efficiency and Transparency Gains (2020-2023)</CardDescription>
+            <CardTitle className="text-gray-900">Citizen Service Improvement</CardTitle>
+            <CardDescription className="text-gray-600">Efficiency and Transparency Gains (2020-2023)</CardDescription>
         </CardHeader>
         <CardContent>
              <ChartContainer config={governanceChartConfig} className="min-h-[200px] w-full">
                 <ResponsiveContainer width="100%" height={500}>
                     <BarChart data={governanceChartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="year" tickLine={false} axisLine={false} />
-                        <YAxis tickLine={false} axisLine={false} />
+                        <XAxis dataKey="year" tickLine={false} axisLine={false} stroke="#374151" />
+                        <YAxis tickLine={false} axisLine={false} stroke="#374151" />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dot" />}
@@ -75,18 +76,18 @@ const GovernanceChart = () => (
 );
 
 const AutomationChart = () => (
-    <Card className='w-full'>
+    <Card className='w-full bg-white text-gray-800'>
         <CardHeader>
-            <CardTitle>Business Process Optimization</CardTitle>
-            <CardDescription>Costs vs. Revenue After AI Automation</CardDescription>
+            <CardTitle className="text-gray-900">Business Process Optimization</CardTitle>
+            <CardDescription className="text-gray-600">Costs vs. Revenue After AI Automation</CardDescription>
         </CardHeader>
         <CardContent>
              <ChartContainer config={automationChartConfig} className="min-h-[200px] w-full">
                 <ResponsiveContainer width="100%" height={500}>
                     <LineChart data={automationChartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="month" tickLine={false} axisLine={false} />
-                        <YAxis tickLine={false} axisLine={false} unit="$" />
+                        <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="#374151" />
+                        <YAxis tickLine={false} axisLine={false} unit="$" stroke="#374151" />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dot" />}
