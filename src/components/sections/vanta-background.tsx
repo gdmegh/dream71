@@ -33,7 +33,7 @@ const VantaBackground = () => {
           scale: 1.00,
           scaleMobile: 1.00,
           color: 'hsl(var(--primary))',
-          backgroundColor: 'hsl(140 70% 8%)'
+          backgroundColor: 'hsl(var(--background))'
         }))
       }
     }
