@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import { AreaChart, BarChart, LineChart } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 
@@ -57,7 +57,46 @@ const chartConfig = {
 };
 
 const ServiceFeature = ({ title, description, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line', index: number }) => {
-    const ChartComponent = chartType === 'area' ? AreaChart : chartType === 'bar' ? BarChart : LineChart;
+    
+    const renderChart = () => {
+        switch (chartType) {
+            case 'area':
+                return (
+                    <AreaChart data={chartData}>
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Area type="monotone" dataKey="desktop" stackId="1" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" />
+                        <Area type="monotone" dataKey="mobile" stackId="1" stroke="hsl(var(--chart-2))" fill="hsl(var(--chart-2))" />
+                    </AreaChart>
+                );
+            case 'bar':
+                return (
+                    <BarChart data={chartData}>
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="desktop" fill="hsl(var(--chart-1))" />
+                        <Bar dataKey="mobile" fill="hsl(var(--chart-2))" />
+                    </BarChart>
+                );
+            case 'line':
+                 return (
+                    <LineChart data={chartData}>
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" />
+                        <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" />
+                    </LineChart>
+                );
+            default:
+                return null;
+        }
+    }
     
     return (
       <div className={cn(
@@ -65,26 +104,9 @@ const ServiceFeature = ({ title, description, link, reverse = false, isChart = f
         reverse && 'md:flex-row-reverse'
       )}>
         <div className="md:w-1/2">
-          {isChart ? (
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-              <ChartComponent
-                accessibilityLayer
-                data={chartData}
-                margin={{
-                  left: 12,
-                  right: 12,
-                }}
-              >
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent indicator="dot" />}
-                />
-              </ChartComponent>
+                {renderChart()}
             </ChartContainer>
-          ) : (
-             <div className="overflow-hidden rounded-md">
-            </div>
-          )}
         </div>
         <div className="md:w-1/2 flex flex-col items-center text-center gap-4">
             <h3 className="text-2xl font-bold">{title}</h3>
@@ -103,14 +125,14 @@ export default function Services() {
   const chartTypes: ('area' | 'bar' | 'line')[] = ['area', 'bar', 'line'];
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container space-y-12 px-4 md:px-6">
+      <div className="container mx-auto space-y-12 px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">
               Our Services
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/loose">Solutions for a Modern World</h2>
-            <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Solutions for a Modern World</h2>
+            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               We offer a wide range of services to help you achieve your goals. From e-governance to AI-powered automation and web development, we have you covered.
             </p>
           </div>
