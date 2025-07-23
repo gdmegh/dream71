@@ -16,35 +16,35 @@ const services = [
     icon: Smartphone,
     title: "Mobile App Development",
     description: "Native and cross-platform mobile apps that deliver seamless user experiences on iOS and Android.",
-    imageUrl: "https://placehold.co/1920x1080.png",
+    imageUrl: "https://placehold.co/1920x1081.png",
     imageHint: "mobile app interface"
   },
   {
     icon: Palette,
     title: "UI/UX Design",
     description: "Intuitive and beautiful user interfaces that are a joy to use, enhancing user engagement and satisfaction.",
-    imageUrl: "https://placehold.co/1920x1080.png",
+    imageUrl: "https://placehold.co/1920x1082.png",
     imageHint: "design wireframe"
   },
   {
     icon: ShieldCheck,
     title: "QA & Testing",
     description: "Rigorous quality assurance processes to ensure your software is reliable, secure, and bug-free.",
-    imageUrl: "https://placehold.co/1920x1080.png",
+    imageUrl: "https://placehold.co/1920x1083.png",
     imageHint: "quality assurance check"
   },
   {
     icon: Rocket,
     title: "DevOps",
     description: "Streamlining development and operations to deliver high-quality software faster and more reliably.",
-    imageUrl: "https://placehold.co/1920x1080.png",
+    imageUrl: "https://placehold.co/1920x1084.png",
     imageHint: "server deployment"
   },
   {
     icon: BrainCircuit,
     title: "AI & ML Solutions",
     description: "Integrating artificial intelligence and machine learning to build intelligent, data-driven applications.",
-    imageUrl: "https://placehold.co/1920x1080.png",
+    imageUrl: "https://placehold.co/1920x1085.png",
     imageHint: "artificial intelligence brain"
   },
 ];
@@ -67,6 +67,7 @@ export default function Services() {
                 description={service.description}
                 imageUrl={service.imageUrl}
                 imageHint={service.imageHint}
+                isHomePage={true}
             />
         ))}
       </div>

@@ -65,6 +65,7 @@ export default function ServicesPage() {
           description={service.description}
           imageUrl={service.imageUrl}
           imageHint={service.imageHint}
+          isHomePage={false}
         />
       ))}
     </>
