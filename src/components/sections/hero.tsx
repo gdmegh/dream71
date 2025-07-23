@@ -19,7 +19,7 @@ export default function Hero() {
                         alt="Hero Image"
                         width={1200}
                         height={600}
-                        className="rounded-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 w-full"
+                        className="rounded-[50px] shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 w-full"
                         data-ai-hint="software development"
                     />
                 </div>
