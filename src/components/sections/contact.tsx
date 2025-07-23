@@ -59,7 +59,7 @@ export default function Contact() {
                 <div className="text-left mb-12">
                     <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Get In Touch</h2>
                     <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-                        Have a project in mind? We'd love to hear from you.
+                        Do you have a project in mind or a question for our team? We are eager to listen and explore how we can collaborate to bring your vision to life.
                     </p>
                 </div>
                 <div className="flex items-start gap-4">

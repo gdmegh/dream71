@@ -53,7 +53,7 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">Our Expertise</h1>
             <p className="font-body mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                We provide a wide range of services to turn your ideas into powerful digital solutions, with each service backed by a dedicated team of experts.
+                Explore our comprehensive suite of services designed to transform your visionary ideas into robust digital realities. Each service is powered by a dedicated team of seasoned experts committed to excellence.
             </p>
         </div>
       </section>

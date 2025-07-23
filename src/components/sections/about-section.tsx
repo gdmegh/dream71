@@ -26,7 +26,7 @@ export default function AboutSection() {
           </div>
            <div>
                 <Image
-                    src="/images/heroimage.png"
+                    src="/images/Office.png"
                     alt="About Us Image"
                     width={600}
                     height={450}

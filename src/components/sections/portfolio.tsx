@@ -121,7 +121,7 @@ export default function Portfolio() {
         <div className="text-center mb-12">
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Our Portfolio</h2>
           <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-            A glimpse into some of our successful projects and partnerships.
+            Take a closer look at the innovative solutions and successful partnerships that define our legacy. Here’s a brief insight into some of our most impactful projects.
           </p>
         </div>
 

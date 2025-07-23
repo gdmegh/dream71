@@ -17,7 +17,7 @@ const testimonials = [
   {
     name: "John Doe",
     title: "CEO, Tech Innovators",
-    avatar: "https://placehold.co/100x100.png",
+    avatar: "/images/bdlogo.png",
     testimonial: "Dream71's team is incredibly talented. They delivered our project on time and exceeded our expectations with their quality and professionalism.",
     dataAiHint: "man face"
   },
@@ -46,15 +46,15 @@ export default function Testimonials() {
     <section 
       id="testimonials" 
       className="relative py-20 md:py-32 bg-cover bg-fixed bg-center bg-no-repeat"
-      style={{ backgroundImage: `url('https://placehold.co/1920x1080.png')` }}
+      style={{ backgroundImage: `url('/images/Office.png')` }}
       data-ai-hint="happy clients"
     >
       <div className="absolute inset-0 bg-primary/80"></div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary-foreground">What Our Clients Say</h2>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-white">What Our Clients Say</h2>
           <p className="font-body text-lg text-primary-foreground/80 mt-4 max-w-2xl mx-auto">
-            We are proud to have earned the trust of our clients.
+            We are proud to have earned the trust of our clients, and we are excited to share their experiences with you. Their feedback is a testament to our commitment to excellence and our passion for delivering outstanding results.
           </p>
         </div>
         <Carousel
@@ -71,7 +71,7 @@ export default function Testimonials() {
             {testimonials.map((item, index) => (
               <CarouselItem key={index}>
                 <div className="p-1">
-                  <Card className="h-full bg-background/90 backdrop-blur-sm">
+                  <Card className="h-full bg-white backdrop-blur-sm">
                       <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
                           <Avatar className="h-20 w-20 mb-6 border-4 border-primary/20">
                               <AvatarImage src={item.avatar} alt={item.name} data-ai-hint={item.dataAiHint} />

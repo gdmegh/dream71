@@ -10,7 +10,7 @@ export default function CtaSection() {
           Have a Project in Mind?
         </h2>
         <p className="font-body text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Let's build something amazing together. Contact us today to discuss your ideas and see how we can help you achieve your goals.
+          Let's collaborate to create something truly remarkable. Reach out to us today to discuss your ideas, and let's explore how we can help you achieve your business goals and bring your vision to life.
         </p>
         <Button asChild size="lg">
           <Link href="/contact">

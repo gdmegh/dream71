@@ -62,7 +62,7 @@ export default function Services() {
         <div className="text-center mb-16">
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Our Core Services</h2>
             <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-                We provide a wide range of services to turn your ideas into powerful digital solutions.
+                We offer a diverse array of specialized services designed to convert your ambitious ideas into powerful, market-ready digital solutions.
             </p>
         </div>
         <div className="space-y-16 md:space-y-24">

@@ -13,9 +13,9 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const heroImages = [
-    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 1", dataAiHint: "software development", caption: "Innovative Software Solutions" },
-    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 2", dataAiHint: "team meeting", caption: "Your Vision, Our Mission" },
-    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 3", dataAiHint: "digital solution", caption: "Delivering Excellence" },
+    { src: "/images/Slider/1.jpeg", alt: "Hero Image 1", dataAiHint: "software development", caption: "Innovative Software Solutions" },
+    { src: "/images/Slider/2.jpg", alt: "Hero Image 2", dataAiHint: "team meeting", caption: "Your Vision, Our Mission" },
+    { src: "/images/Slider/3.jpg", alt: "Hero Image 3", dataAiHint: "digital solution", caption: "Delivering Excellence" },
 ];
 
 export default function Hero() {

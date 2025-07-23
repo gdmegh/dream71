@@ -8,7 +8,7 @@ export default function ContactPage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">Contact Us</h1>
               <p className="font-body mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                  We're here to help and answer any question you might have. We look forward to hearing from you.
+                  We are here to assist with any questions you may have and are eager to hear from you. Whether it's a new project idea or a simple inquiry, our team is ready to provide you with the support you need.
               </p>
           </div>
       </section>

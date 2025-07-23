@@ -25,7 +25,7 @@ export default function AboutPage() {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">About Dream71</h1>
                     <p className="font-body mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                        We are a passionate team of developers, designers, and strategists dedicated to building exceptional digital products that drive growth and success for our clients.
+                        We are a collective of dreamers and doers—a passionate team of software engineers, creative designers, and sharp strategists committed to crafting outstanding digital products that fuel growth and ensure success for our diverse clientele.
                     </p>
                 </div>
             </section>
@@ -67,7 +67,7 @@ export default function AboutPage() {
                     <div className="text-center mb-12">
                         <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Meet Our Leadership</h2>
                         <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-                            The driving force behind our innovation and success.
+                            Meet the visionaries and strategists who steer our ship, inspiring our teams to push the boundaries of technology and deliver exceptional results.
                         </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
