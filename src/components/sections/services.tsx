@@ -38,41 +38,18 @@ const services = [
     isChart: true,
   },
   {
-    title: "Web Development",
-    description: "Robust, scalable, and high-performance web applications tailored to your specific business needs.",
+    title: "Custom Software Development",
+    description: "We build tailored software solutions, including web, iOS, and Android applications, designed to meet your unique business requirements and deliver a seamless user experience across all platforms.",
     points: [
-      "Improve user engagement with responsive and intuitive design.",
-      "Ensure security and reliability with industry best practices.",
-      "Achieve faster load times and better performance."
+        "Responsive web design for optimal user engagement.",
+        "Native iOS & Android apps with top performance.",
+        "Secure, reliable, and scalable applications.",
+        "Faster load times and better performance.",
+        "Integration with services like Apple Pay and Firebase.",
+        "Adherence to platform-specific design guidelines."
     ],
     image: "https://placehold.co/800x600.png",
-    imageHint: "web development",
-    link: "/services",
-    isChart: true,
-  },
-  {
-    title: "iOS App Development",
-    description: "Creating seamless and engaging native iOS applications for Apple's ecosystem.",
-    points: [
-        "Optimized for performance on all iPhone and iPad models.",
-        "Adherence to Apple's Human Interface Guidelines for a true native feel.",
-        "Integration with Apple services like Apple Pay and HealthKit."
-    ],
-    image: "https://placehold.co/800x600.png",
-    imageHint: "ios app",
-    link: "/services",
-    isChart: true,
-  },
-  {
-    title: "Android App Development",
-    description: "Building versatile and powerful native Android applications for a wide range of devices.",
-    points: [
-        "Broad device compatibility, from smartphones to tablets and wearables.",
-        "Leveraging Material Design for an intuitive user experience.",
-        "Integration with Google services like Google Maps and Firebase."
-    ],
-    image: "https://placehold.co/800x600.png",
-    imageHint: "android app",
+    imageHint: "custom software",
     link: "/services",
     isChart: true,
   },
