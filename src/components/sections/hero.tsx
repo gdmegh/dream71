@@ -13,9 +13,9 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const heroImages = [
-    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 1", dataAiHint: "software development" },
-    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 2", dataAiHint: "team meeting" },
-    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 3", dataAiHint: "digital solution" },
+    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 1", dataAiHint: "software development", caption: "Innovative Software Solutions" },
+    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 2", dataAiHint: "team meeting", caption: "Your Vision, Our Mission" },
+    { src: "https://placehold.co/1200x600.png", alt: "Hero Image 3", dataAiHint: "digital solution", caption: "Delivering Excellence" },
 ];
 
 export default function Hero() {
@@ -43,7 +43,7 @@ export default function Hero() {
                     >
                         <CarouselContent>
                             {heroImages.map((image, index) => (
-                                <CarouselItem key={index}>
+                                <CarouselItem key={index} className="relative">
                                     <Image
                                         src={image.src}
                                         alt={image.alt}
@@ -53,6 +53,10 @@ export default function Hero() {
                                         data-ai-hint={image.dataAiHint}
                                         priority={index === 0}
                                     />
+                                    <div className="absolute inset-0 bg-black/30 rounded-[50px]"></div>
+                                    <div className="absolute bottom-10 left-10 text-left">
+                                        <p className="font-headline text-3xl font-bold text-white shadow-lg">{image.caption}</p>
+                                    </div>
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
