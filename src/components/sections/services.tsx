@@ -21,7 +21,7 @@ const services = [
     ],
     image: "/images/e_gov.jpeg",
     imageHint: "government building",
-    link: "/services",
+    link: "/services/e-governance",
     isChart: true,
   },
   {
@@ -35,7 +35,7 @@ const services = [
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
-    link: "/services",
+    link: "/services/business-automation",
     isChart: true,
   },
     {
@@ -49,7 +49,7 @@ const services = [
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "custom software",
-    link: "/services",
+    link: "/services/custom-software",
     isChart: true,
   },
   {
@@ -63,42 +63,46 @@ const services = [
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "video game",
-    link: "/services",
+    link: "/services/game-development",
     isChart: true,
   }
 ];
 
 const chartData = {
     eGovernance: [
-      { year: '2020', projects: 5, efficiencyGain: 10 },
-      { year: '2021', projects: 8, efficiencyGain: 15 },
-      { year: '2022', projects: 12, efficiencyGain: 25 },
-      { year: '2023', projects: 20, efficiencyGain: 35 },
-      { year: '2024', projects: 25, efficiencyGain: 45 },
+      { year: '2020', projects: 5, satisfaction: 85 },
+      { year: '2021', projects: 8, satisfaction: 88 },
+      { year: '2022', projects: 12, satisfaction: 92 },
+      { year: '2023', projects: 20, satisfaction: 95 },
+      { year: '2024', projects: 25, satisfaction: 97 },
     ],
     aiAutomation: [
-      { name: 'Manual', hours: 40, fill: 'hsl(var(--chart-2))' },
-      { name: 'AI Automated', hours: 8, fill: 'hsl(var(--chart-1))' },
+      { year: '2021', costSavings: 50, efficiencyGain: 20 },
+      { year: '2022', costSavings: 75, efficiencyGain: 35 },
+      { year: '2023', costSavings: 120, efficiencyGain: 50 },
+      { year: '2024', costSavings: 200, efficiencyGain: 65 },
     ],
     customSoftware: [
-      { name: 'Web Apps', value: 85, fill: 'hsl(var(--chart-1))' },
-      { name: 'Mobile Apps', value: 60, fill: 'hsl(var(--chart-2))' },
-      { name: 'Desktop Apps', value: 25, fill: 'hsl(var(--chart-3))' }
+      { name: 'Web Apps', completed: 85, successRate: 95 },
+      { name: 'Mobile Apps', completed: 60, successRate: 98 },
+      { name: 'Desktop Apps', completed: 25, successRate: 92 }
     ],
     gameDev: [
-      { name: 'Mobile', downloads: 5000000, fill: 'hsl(var(--chart-1))' },
-      { name: 'Web', downloads: 1200000, fill: 'hsl(var(--chart-2))' },
-      { name: 'PC', downloads: 800000, fill: 'hsl(var(--chart-3))' }
+      { name: 'Mobile', downloads: 5000000, rating: 4.8 },
+      { name: 'Web', downloads: 1200000, rating: 4.5 },
+      { name: 'PC', downloads: 800000, rating: 4.2 }
     ]
 };
 
 const chartConfig = {
-  projects: { label: 'Projects', color: 'hsl(var(--chart-1))' },
+  projects: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
+  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-2))' },
+  costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))' },
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))' },
-  hours: { label: 'Weekly Hours' },
-  value: { label: 'Projects' },
-  downloads: { label: 'Total Downloads' },
-  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-3))' },
+  completed: { label: 'Projects Completed' },
+  successRate: { label: 'Success Rate (%)', color: 'hsl(var(--chart-3))' },
+  downloads: { label: 'Total Downloads', color: 'hsl(var(--chart-1))' },
+  rating: { label: 'Average Rating', color: 'hsl(var(--chart-2))' }
 };
 
 const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, index: number }) => {
@@ -108,40 +112,48 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 0:
                 return (
                     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                        <AreaChart data={chartData.eGovernance} margin={{ left: 12, right: 12 }}>
+                        <AreaChart accessibilityLayer data={chartData.eGovernance} margin={{ left: 12, right: 12 }}>
                             <CartesianGrid vertical={false} />
-                            <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
+                            <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 4)} />
                             <YAxis />
                             <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
                             <Area dataKey="projects" type="monotone" fill="var(--color-projects)" fillOpacity={0.4} stroke="var(--color-projects)" />
-                            <Area dataKey="efficiencyGain" type="monotone" fill="var(--color-efficiencyGain)" fillOpacity={0.4} stroke="var(--color-efficiencyGain)" />
+                            <Area dataKey="satisfaction" type="monotone" fill="var(--color-satisfaction)" fillOpacity={0.4} stroke="var(--color-satisfaction)" />
                         </AreaChart>
                     </ChartContainer>
                 );
             case 1:
                 return (
                     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                         <BarChart data={chartData.aiAutomation} layout="vertical" margin={{ left: 12, right: 12 }}>
-                            <XAxis type="number" dataKey="hours" />
-                            <YAxis type="category" dataKey="name" />
+                        <ComposedChart data={chartData.aiAutomation}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis dataKey="year" />
+                            <YAxis yAxisId="left" orientation="left" label={{ value: 'Cost Savings ($k)', angle: -90, position: 'insideLeft' }} />
+                            <YAxis yAxisId="right" orientation="right" label={{ value: 'Efficiency Gain (%)', angle: -90, position: 'insideRight' }} />
                             <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
-                            <Bar dataKey="hours" radius={5} />
-                        </BarChart>
+                            <Bar yAxisId="left" dataKey="costSavings" fill="var(--color-costSavings)" />
+                            <Line yAxisId="right" dataKey="efficiencyGain" stroke="var(--color-efficiencyGain)" type="monotone" />
+                        </ComposedChart>
                     </ChartContainer>
                 );
             case 2:
                 return (
                      <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                        <ComposedChart data={chartData.customSoftware}>
+                        <BarChart accessibilityLayer data={chartData.customSoftware}>
                             <CartesianGrid vertical={false} />
                             <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
-                            <Bar dataKey="value" fill="var(--color-value)" />
-                        </ComposedChart>
+                            <Bar dataKey="completed" fill="var(--color-completed)" radius={5}>
+                               {chartData.customSoftware.map((entry, idx) => (
+                                    <Cell key={`cell-${idx}`} fill={entry.fill} />
+                                ))}
+                            </Bar>
+                             <Bar dataKey="successRate" fill="var(--color-successRate)" radius={5} />
+                        </BarChart>
                     </ChartContainer>
                 );
             case 3:
@@ -172,45 +184,40 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
     }
     
     return (
-      <div className={cn(
-        'grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12'
-      )}>
-        <div className={cn(
-            "md:w-full flex flex-col items-center",
-            reverse ? "md:order-last" : "md:order-first"
-        )}>
-            <div className='text-center md:text-left'>
-                 <h3 className="text-3xl font-bold">{title}</h3>
-                <p className="text-muted-foreground mt-4">{description}</p>
-                {points && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-4">
-                        {points.map((point, i) => (
-                            <div key={i} className="flex items-start text-muted-foreground">
-                                <CircleCheckBig className="h-6 w-6 text-primary mr-3 flex-shrink-0 mt-1 md:mt-0" />
-                                <span>{point}</span>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                 <Button asChild className="mt-6 hidden md:inline-flex">
+        <div className={cn('grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12')}>
+            <div className={cn("md:w-full flex flex-col items-center", reverse ? "md:order-last" : "md:order-first")}>
+                <div className='text-center md:text-left'>
+                    <h3 className="text-3xl font-bold">{title}</h3>
+                    <p className="text-muted-foreground mt-4">{description}</p>
+                    {points && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-4">
+                            {points.map((point, i) => (
+                                <div key={i} className="flex items-center text-muted-foreground">
+                                    <CircleCheckBig className="h-6 w-6 text-primary mr-3 flex-shrink-0" />
+                                    <span>{point}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <Button asChild className="mt-6 hidden md:inline-flex">
+                        <Link href={link}>
+                            Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </div>
+            </div>
+            
+            <div className={cn("flex flex-col items-center w-full", reverse ? 'md:order-first' : 'md:order-last')}>
+                <div className="w-full">
+                    {renderChart()}
+                </div>
+                <Button asChild className="mt-4 md:hidden w-full max-w-xs">
                     <Link href={link}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </div>
         </div>
-        
-        <div className={cn("flex flex-col items-center w-full", reverse ? 'md:order-first' : 'md:order-last')}>
-            <div className="w-full">
-              {renderChart()}
-            </div>
-            <Button asChild className="mt-4 md:hidden w-auto px-8">
-                <Link href={link}>
-                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-            </Button>
-        </div>
-      </div>
     );
 };
 
@@ -249,5 +256,3 @@ export default function Services() {
     </section>
   );
 }
-
-    
