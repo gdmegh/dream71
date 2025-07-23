@@ -10,7 +10,7 @@ export default function Hero() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center flex-grow">
                 <div className="max-w-4xl mx-auto flex-grow flex flex-col justify-center items-center">
                     <h1 className="font-headline text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
-                        The full <span className="inline-flex items-center gap-2">Stack <Braces className="h-12 w-12 text-primary" /></span> Software Development Solutions
+                        The full <span className="inline-flex items-center gap-2">Stack <Braces className="h-12 w-12 text-primary" /></span> Software <span className="text-primary">Solutions</span>
                     </h1>
                 </div>
                 <div className="w-full max-w-6xl mt-16 group">
