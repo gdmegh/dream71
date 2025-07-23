@@ -1,4 +1,5 @@
 
+
 'use client';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -6,7 +7,8 @@ import { Button } from '../ui/button';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { generateImage, type GenerateImageInput } from '@/ai/flows/generate-image-flow';
+import { generateImage } from '@/ai/flows/generate-image-flow';
+import type { GenerateImageInput } from '@/ai/flows/generate-image-flow';
 import { useState, useEffect } from 'react';
 
 
@@ -52,20 +54,14 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
               />
             </div>
         </div>
-        <div className="md:w-1/2 flex flex-col gap-4">
-          <Card className="flex flex-col h-full">
-            <CardHeader>
-              <CardTitle>{title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col flex-grow">
-              <CardDescription className="flex-grow">{description}</CardDescription>
-              <Button asChild className="self-end mt-4">
+        <div className="md:w-1/2 flex flex-col items-center text-center gap-4">
+            <h3 className="text-2xl font-bold">{title}</h3>
+            <p className="text-muted-foreground">{description}</p>
+            <Button asChild>
                 <Link href={link}>
-                  Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
-              </Button>
-            </CardContent>
-          </Card>
+            </Button>
         </div>
       </div>
     );
