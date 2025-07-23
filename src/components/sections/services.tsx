@@ -1,11 +1,10 @@
 
-
 'use client';
 import { CheckCircle, CircleCheckBig } from 'lucide-react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ComposedChart, PieChart, Pie, Cell } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ComposedChart, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 
@@ -147,23 +146,25 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 );
             case 'pie':
                 return (
-                    <PieChart>
-                        <Tooltip content={<ChartTooltipContent nameKey="name" />} />
-                        <Pie
-                            data={pieChartData}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={80}
-                            label
-                        >
-                             {pieChartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.fill} />
-                            ))}
-                        </Pie>
-                         <Legend />
-                    </PieChart>
+                    <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                            <Tooltip content={<ChartTooltipContent nameKey="name" />} />
+                            <Pie
+                                data={pieChartData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={80}
+                                label
+                            >
+                                {pieChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                                ))}
+                            </Pie>
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
                 );
             default:
                 return null;
@@ -174,12 +175,34 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
       <div className={cn(
         'grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12'
       )}>
-        <div className={cn("md:w-full", reverse ? "md:order-first" : "md:order-last", "order-last md:order-none")}>
-            <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+        <div className={cn(
+            "md:w-full order-last md:order-none",
+            reverse && "md:order-first"
+        )}>
+            <div className='md:hidden'>
+                 <h3 className="text-3xl font-bold">{title}</h3>
+                <p className="text-muted-foreground mt-4">{description}</p>
+                {points && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-4">
+                        {points.map((point, i) => (
+                            <div key={i} className="flex items-start text-muted-foreground">
+                                <CircleCheckBig className="h-6 w-6 text-primary mr-3 flex-shrink-0 mt-1 md:mt-0" />
+                                <span>{point}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+            <ChartContainer config={chartConfig} className="min-h-[200px] w-full mt-8 md:mt-0">
                 {renderChart()}
             </ChartContainer>
+             <Button asChild className="mt-4 w-full md:w-auto">
+                <Link href={link}>
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+            </Button>
         </div>
-        <div className="md:w-full flex flex-col gap-4 items-start text-left">
+        <div className="hidden md:flex md:w-full flex-col gap-4 items-start text-left">
             <h3 className="text-3xl font-bold">{title}</h3>
             <p className="text-muted-foreground">{description}</p>
             {points && (
@@ -192,11 +215,6 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                     ))}
                 </div>
             )}
-            <Button asChild className="mt-4">
-                <Link href={link}>
-                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-            </Button>
         </div>
       </div>
     );
@@ -239,3 +257,5 @@ export default function Services() {
     </section>
   );
 }
+
+    
