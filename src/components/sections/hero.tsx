@@ -12,7 +12,7 @@ export default function Hero() {
       <div 
         className="absolute inset-0 z-0"
         style={{
-            backgroundColor: '#002d00',
+            backgroundColor: '#011304',
             backgroundImage: 'radial-gradient(circle at bottom right, hsl(var(--primary)/0.3), transparent 40%), radial-gradient(circle at bottom left, hsl(var(--accent)/0.2), transparent 50%)',
         }}
       ></div>
