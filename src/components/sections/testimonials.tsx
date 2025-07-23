@@ -71,7 +71,7 @@ export default function Testimonials() {
             {testimonials.map((item, index) => (
               <CarouselItem key={index}>
                 <div className="p-1">
-                  <Card className="h-full bg-card/80 backdrop-blur-sm text-card-foreground">
+                  <Card className="h-full bg-white text-gray-800">
                       <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
                           <Avatar className="h-20 w-20 mb-6 border-4 border-primary/20">
                               <AvatarImage src={item.avatar} alt={item.name} data-ai-hint={item.dataAiHint} />
@@ -80,7 +80,7 @@ export default function Testimonials() {
                           <p className="text-lg mb-6 flex-grow">"{item.testimonial}"</p>
                           <div className="flex flex-col items-center">
                               <p className="font-headline text-xl font-semibold">{item.name}</p>
-                              <p className="text-md text-muted-foreground">{item.title}</p>
+                              <p className="text-md text-gray-600">{item.title}</p>
                           </div>
                       </CardContent>
                   </Card>
