@@ -31,7 +31,7 @@ const services = [
 const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean }) => {
     return (
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-            <div className={cn("flex flex-col items-start text-left", reverse && "md:order-last")}>
+            <div className={cn("flex flex-col items-center text-center md:items-start md:text-left", reverse && "md:order-last")}>
                 <h3 className="font-headline text-3xl font-bold text-foreground mb-4">{title}</h3>
                 <p className="text-muted-foreground mb-6 font-body">{description}</p>
                 <Button asChild variant="outline">
@@ -46,7 +46,7 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
                     alt={title}
                     width={800}
                     height={600}
-                    className="rounded-lg shadow-xl"
+                    className="rounded-lg shadow-xl mx-auto"
                     data-ai-hint={imageHint}
                 />
             </div>
