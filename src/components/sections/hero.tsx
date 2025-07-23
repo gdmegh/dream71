@@ -13,9 +13,9 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const heroImages = [
-    { src: "/images/Slider/1.jpeg", alt: "Hero Image 1", dataAiHint: "software development", caption: "Innovative Software Solutions" },
-    { src: "/images/Slider/2.jpg", alt: "Hero Image 2", dataAiHint: "team meeting", caption: "Your Vision, Our Mission" },
-    { src: "/images/Slider/3.jpg", alt: "Hero Image 3", dataAiHint: "digital solution", caption: "Delivering Excellence" },
+    { src: "/images/Slider/1.jpeg", alt: "Hero Image 1", dataAiHint: "software development" },
+    { src: "/images/Slider/2.jpg", alt: "Hero Image 2", dataAiHint: "team meeting" },
+    { src: "/images/Slider/3.jpg", alt: "Hero Image 3", dataAiHint: "digital solution" },
 ];
 
 export default function Hero() {
@@ -54,9 +54,6 @@ export default function Hero() {
                                         priority={index === 0}
                                     />
                                     <div className="absolute inset-0 bg-black/30 rounded-[50px]"></div>
-                                    <div className="absolute bottom-10 left-10 text-left">
-                                        <p className="font-headline text-3xl font-bold text-white">{image.caption}</p>
-                                    </div>
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
