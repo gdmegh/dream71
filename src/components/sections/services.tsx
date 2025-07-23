@@ -68,89 +68,98 @@ const services = [
   }
 ];
 
-const chartData = [
-  { year: '2014', desktop: 100, mobile: 60 },
-  { year: '2015', desktop: 125, mobile: 75 },
-  { year: '2016', desktop: 150, mobile: 90 },
-  { year: '2017', desktop: 180, mobile: 110 },
-  { year: '2018', desktop: 215, mobile: 135 },
-  { year: '2019', desktop: 250, mobile: 160 },
-  { year: '2020', desktop: 280, mobile: 185 },
-  { year: '2021', desktop: 310, mobile: 210 },
-  { year: '2022', desktop: 345, mobile: 235 },
-  { year: '2023', desktop: 380, mobile: 260 },
-  { year: '2024', desktop: 410, mobile: 285 },
-  { year: '2025', desktop: 440, mobile: 310 },
+const eGovernanceChartData = [
+  { year: '2020', digitalServices: 150, citizenSatisfaction: 65 },
+  { year: '2021', digitalServices: 220, citizenSatisfaction: 72 },
+  { year: '2022', digitalServices: 300, citizenSatisfaction: 78 },
+  { year: '2023', digitalServices: 380, citizenSatisfaction: 85 },
+  { year: '2024', digitalServices: 450, citizenSatisfaction: 92 },
 ];
 
-const pieChartData = [
+const aiAutomationChartData = [
+  { department: 'HR', before: 80, after: 20 },
+  { department: 'Finance', before: 120, after: 30 },
+  { department: 'Operations', before: 200, after: 50 },
+  { department: 'Support', before: 150, after: 40 },
+];
+
+const customSoftwareChartData = [
+  { month: 'Jan', web: 30, mobile: 20 },
+  { month: 'Feb', web: 45, mobile: 35 },
+  { month: 'Mar', web: 60, mobile: 50 },
+  { month: 'Apr', web: 75, mobile: 65 },
+  { month: 'May', web: 90, mobile: 80 },
+];
+
+const gameDevPieChartData = [
     { name: 'Action', value: 400, fill: 'hsl(var(--chart-1))' },
     { name: 'Strategy', value: 300, fill: 'hsl(var(--chart-2))' },
-    { name: 'RPG', value: 300, fill: 'hsl(var(--chart-3))' },
+    { name: 'RPG', value: 250, fill: 'hsl(var(--chart-3))' },
     { name: 'Puzzle', value: 200, fill: 'hsl(var(--chart-4))' },
+    { name: 'Sports', value: 150, fill: 'hsl(var(--chart-5))' },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: 'hsl(var(--chart-1))',
-  },
-  mobile: {
-    label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
-  },
+  digitalServices: { label: 'Digital Services', color: 'hsl(var(--chart-1))' },
+  citizenSatisfaction: { label: 'Citizen Satisfaction (%)', color: 'hsl(var(--chart-2))' },
+  before: { label: 'Hours (Before)', color: 'hsl(var(--chart-4))' },
+  after: { label: 'Hours (After)', color: 'hsl(var(--chart-1))' },
+  web: { label: 'Web Apps', color: 'hsl(var(--chart-1))' },
+  mobile: { label: 'Mobile Apps', color: 'hsl(var(--chart-2))' },
   Action: { label: 'Action', color: 'hsl(var(--chart-1))' },
   Strategy: { label: 'Strategy', color: 'hsl(var(--chart-2))' },
   RPG: { label: 'RPG', color: 'hsl(var(--chart-3))' },
   Puzzle: { label: 'Puzzle', color: 'hsl(var(--chart-4))' },
+  Sports: { label: 'Sports', color: 'hsl(var(--chart-5))' },
 };
 
 const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'pie', index: number }) => {
     
     const renderChart = () => {
-        switch (chartType) {
-            case 'area':
+        switch (index) {
+            case 0: // e-Governance Solutions
                 return (
-                    <AreaChart data={chartData} margin={{ left: 12, right: 12 }}>
+                    <AreaChart data={eGovernanceChartData} margin={{ left: 12, right: 12 }}>
                         <CartesianGrid vertical={false} />
                         <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
                         <Tooltip content={<ChartTooltipContent indicator="dot" />} />
-                        <Area type="monotone" dataKey="desktop" stackId="1" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" />
-                        <Area type="monotone" dataKey="mobile" stackId="1" stroke="hsl(var(--chart-2))" fill="hsl(var(--chart-2))" />
+                        <Legend />
+                        <Area type="monotone" dataKey="digitalServices" stackId="1" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" />
+                        <Area type="monotone" dataKey="citizenSatisfaction" stackId="2" stroke="hsl(var(--chart-2))" fill="hsl(var(--chart-2))" />
                     </AreaChart>
                 );
-            case 'bar':
+            case 1: // Business Automation Based on AI
                 return (
-                    <BarChart data={chartData} margin={{ left: 12, right: 12 }}>
-                         <CartesianGrid vertical={false} />
-                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
+                    <BarChart data={aiAutomationChartData} margin={{ left: 12, right: 12 }}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis dataKey="department" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
                         <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                         <Legend />
-                        <Bar dataKey="desktop" fill="hsl(var(--chart-1))" radius={4} />
-                        <Bar dataKey="mobile" fill="hsl(var(--chart-2))" radius={4} />
+                        <Bar dataKey="before" fill="hsl(var(--chart-4))" radius={4} />
+                        <Bar dataKey="after" fill="hsl(var(--chart-1))" radius={4} />
                     </BarChart>
                 );
-            case 'line':
+            case 2: // Custom Software Development
                  return (
-                    <LineChart data={chartData} margin={{ left: 12, right: 12 }}>
+                    <LineChart data={customSoftwareChartData} margin={{ left: 12, right: 12 }}>
                         <CartesianGrid vertical={false} />
-                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
+                        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
                         <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                         <Legend />
-                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
+                        <Line type="monotone" dataKey="web" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
                         <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" strokeWidth={2} dot={false} />
                     </LineChart>
                 );
-            case 'pie':
+            case 3: // Game Development
                 return (
                     <ResponsiveContainer width="100%" height={250}>
                         <PieChart>
                             <Tooltip content={<ChartTooltipContent nameKey="name" />} />
                             <Pie
-                                data={pieChartData}
+                                data={gameDevPieChartData}
                                 dataKey="value"
                                 nameKey="name"
                                 cx="50%"
@@ -158,7 +167,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                                 outerRadius={80}
                                 label
                             >
-                                {pieChartData.map((entry, index) => (
+                                {gameDevPieChartData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.fill} />
                                 ))}
                             </Pie>
@@ -177,7 +186,8 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
       )}>
         <div className={cn(
             "md:w-full",
-            reverse ? "md:order-first" : "md:order-last"
+            reverse ? "md:order-first" : "md:order-last",
+            "md:hidden"
         )}>
             <div className='md:hidden'>
                  <h3 className="text-3xl font-bold">{title}</h3>
@@ -202,7 +212,10 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 </Link>
             </Button>
         </div>
-        <div className="hidden md:flex md:w-full flex-col gap-4 items-start text-left">
+        <div className={cn(
+            "hidden md:flex md:w-full flex-col gap-4 items-start text-left",
+            reverse && "md:order-last"
+        )}>
             <h3 className="text-3xl font-bold">{title}</h3>
             <p className="text-muted-foreground">{description}</p>
             {points && (
@@ -220,6 +233,11 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                     Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
             </Button>
+        </div>
+        <div className={cn("hidden md:flex", reverse ? 'md:order-first' : 'md:order-last')}>
+             <ChartContainer config={chartConfig} className="min-h-[200px] w-full mt-8 md:mt-0">
+                {renderChart()}
+            </ChartContainer>
         </div>
       </div>
     );
@@ -262,5 +280,3 @@ export default function Services() {
     </section>
   );
 }
-
-    
