@@ -18,6 +18,23 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+   webpack: (config, { isServer }) => {
+    // Add a rule to handle the .node files
+    config.module.rules.push({
+      test: /\.node$/,
+      use: 'raw-loader',
+    });
+
+    // Exclude 'canvas' from being processed by Next.js on the server
+    if (isServer) {
+      config.externals.push('canvas');
+    }
+    
+    config.externals.push('p5');
+
+
+    return config;
+  },
 };
 
 export default nextConfig;
