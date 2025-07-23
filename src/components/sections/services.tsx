@@ -28,7 +28,7 @@ const chartConfig = {
 };
 
 const GovernanceChart = () => (
-    <Card className='bg-card'>
+    <Card className='bg-card w-full'>
         <CardHeader>
             <CardTitle>Citizen Service Improvement</CardTitle>
             <CardDescription>Efficiency and Transparency Gains (2020-2023)</CardDescription>
@@ -82,6 +82,25 @@ const services = [
 ];
 
 const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false, isChart = false }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean, isChart?: boolean }) => {
+    if (isChart) {
+        return (
+            <div className="flex flex-col gap-8 md:gap-12 items-center">
+                <div className="flex flex-col items-center text-center">
+                    <h3 className="font-headline text-3xl font-bold text-foreground mb-4">{title}</h3>
+                    <p className="text-muted-foreground mb-6 font-body max-w-3xl">{description}</p>
+                    <Button asChild variant="outline">
+                        <Link href={link}>
+                            Explore More <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </div>
+                <div className='w-full'>
+                    <GovernanceChart />
+                </div>
+            </div>
+        );
+    }
+    
     return (
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div className={cn("flex flex-col items-center text-center md:items-start md:text-left", reverse && "md:order-last")}>
@@ -94,18 +113,14 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
                 </Button>
             </div>
             <div className='flex items-center justify-center'>
-                {isChart ? (
-                    <GovernanceChart />
-                ) : (
-                    <Image
-                        src={image}
-                        alt={title}
-                        width={800}
-                        height={600}
-                        className="rounded-lg shadow-xl mx-auto"
-                        data-ai-hint={imageHint}
-                    />
-                )}
+                <Image
+                    src={image}
+                    alt={title}
+                    width={800}
+                    height={600}
+                    className="rounded-lg shadow-xl mx-auto"
+                    data-ai-hint={imageHint}
+                />
             </div>
         </div>
     );
@@ -127,7 +142,7 @@ export default function Services() {
                 <ServiceFeature 
                     key={index}
                     {...service}
-                    reverse={index % 2 === 0}
+                    reverse={index % 2 !== 0}
                 />
             ))}
         </div>
