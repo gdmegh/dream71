@@ -9,10 +9,10 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { href: '#services', label: 'Services' },
-  { href: '#portfolio', label: 'Portfolio' },
+  { href: '/services', label: 'Services' },
+  { href: '/portfolio', label: 'Portfolio' },
   { href: '/about', label: 'About Us' },
-  { href: '#testimonials', label: 'Testimonials' },
+  { href: '/testimonials', label: 'Testimonials' },
 ];
 
 export default function Header() {
@@ -29,14 +29,12 @@ export default function Header() {
   }, []);
 
   const NavLink = ({ href, label }: { href: string; label: string }) => {
-    const isAnchor = href.startsWith('#');
-    const isAboutPage = pathname === '/about';
-    
-    const finalHref = isAboutPage && isAnchor ? `/${href}` : href;
-
     return (
-      <Link href={finalHref} onClick={() => setIsOpen(false)}>
-        <span className="relative py-1 transition-colors duration-300 hover:text-primary after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full font-headline">
+      <Link href={href} onClick={() => setIsOpen(false)}>
+        <span className={cn(
+          "relative py-1 transition-colors duration-300 hover:text-primary after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full font-headline",
+          pathname === href ? "text-primary after:w-full" : ""
+        )}>
           {label}
         </span>
       </Link>
@@ -65,7 +63,7 @@ export default function Header() {
               <NavLink key={link.href} {...link} />
             ))}
             <Button asChild>
-              <Link href="#contact">Contact Us</Link>
+              <Link href="/contact">Contact Us</Link>
             </Button>
           </nav>
           <div className="md:hidden">
@@ -82,7 +80,7 @@ export default function Header() {
               <NavLink key={link.href} {...link} />
             ))}
             <Button asChild>
-              <Link href="#contact" onClick={() => setIsOpen(false)}>Contact Us</Link>
+              <Link href="/contact" onClick={() => setIsOpen(false)}>Contact Us</Link>
             </Button>
           </nav>
         </div>

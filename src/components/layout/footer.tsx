@@ -14,7 +14,7 @@ const footerLinks = [
     title: 'Company',
     links: [
       { label: 'About Us', href: '/about' },
-      { label: 'Portfolio', href: '/#portfolio' },
+      { label: 'Portfolio', href: '/portfolio' },
       { label: 'Careers', href: '#' },
       { label: 'Blog', href: '#' },
     ],
@@ -22,10 +22,10 @@ const footerLinks = [
   {
     title: 'Services',
     links: [
-      { label: 'Web Development', href: '/#services' },
-      { label: 'Mobile Apps', href: '/#services' },
-      { label: 'UI/UX Design', href: '/#services' },
-      { label: 'QA & Testing', href: '/#services' },
+      { label: 'Web Development', href: '/services' },
+      { label: 'Mobile Apps', href: '/services' },
+      { label: 'UI/UX Design', href: '/services' },
+      { label: 'QA & Testing', href: '/services' },
     ],
   },
 ];
