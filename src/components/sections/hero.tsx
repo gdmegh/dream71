@@ -22,12 +22,12 @@ export default function Hero() {
           </h1>
         </div>
         <div className="w-full max-w-6xl mt-16 group">
-            <Image 
+             <Image 
                 src="/images/hero2.png" 
                 alt="Code editor screenshot"
                 width={1200}
                 height={600}
-                className="rounded-t-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105"
+                className="rounded-t-lg shadow-2xl transition-all duration-500 ease-in-out group-hover:fixed group-hover:inset-0 group-hover:w-screen group-hover:h-screen group-hover:object-cover group-hover:z-50"
                 data-ai-hint="code editor"
             />
         </div>
