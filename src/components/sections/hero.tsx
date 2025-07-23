@@ -29,7 +29,7 @@ export default function Hero() {
     const [vantaEffect, setVantaEffect] = useState<any>(null);
 
     useEffect(() => {
-        if (!vantaEffect) {
+        if (!vantaEffect && vantaRef.current) {
             setVantaEffect(TOPOLOGY({
                 el: vantaRef.current,
                 THREE: THREE,
