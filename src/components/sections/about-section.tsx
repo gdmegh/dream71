@@ -29,7 +29,7 @@ export default function AboutSection() {
                     src="/images/heroimage.png"
                     alt="About Us Image"
                     width={600}
-                    height={400}
+                    height={450}
                     className="rounded-lg shadow-xl mx-auto"
                     data-ai-hint="team brainstorming"
                 />
