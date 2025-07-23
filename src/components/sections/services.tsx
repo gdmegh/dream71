@@ -5,7 +5,7 @@ import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ComposedChart } from 'recharts';
 import { ChartContainer } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 
@@ -15,10 +15,10 @@ const services = [
     title: "e-Governance Solutions",
     description: "e-Governance solutions use digital platforms to streamline government operations, enhance public services, and increase transparency and citizen engagement.",
     points: [
-        "25% reduction in administrative processing times.",
-        "40% increase in citizen engagement through digital portals.",
-        "15% decrease in operational costs for public services.",
-        "Enhanced data security and compliance."
+        "Digital Transformation",
+        "Citizen Engagement",
+        "Operational Efficiency",
+        "Data Security"
     ],
     image: "/images/e_gov.jpeg",
     imageHint: "government building",
@@ -29,24 +29,24 @@ const services = [
     title: "Business Automation Based on Artificial Intelligence",
     description: "Leverage AI to automate complex business processes, improve efficiency, and drive innovation across your organization.",
     points: [
-        "30% increase in workflow efficiency with AI-driven automation.",
-        "50% reduction in manual data entry errors.",
-        "20% cost savings through automated resource allocation.",
-        "Actionable insights from data analysis."
+        "Workflow Automation",
+        "Reduced Errors",
+        "Cost Savings",
+        "Actionable Insights"
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
     link: "/services",
     isChart: true,
   },
-  {
+    {
     title: "Custom Software Development",
     description: "We build tailored software solutions, including web, iOS, and Android applications, designed to meet your unique business requirements and deliver a seamless user experience across all platforms.",
     points: [
-        "Responsive web design for optimal user engagement.",
-        "Native iOS & Android apps with top performance.",
-        "Secure, reliable, and scalable applications.",
-        "Faster load times and better performance."
+        "Responsive Web Design",
+        "Native Mobile Apps",
+        "Scalable Architecture",
+        "High Performance"
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "custom software",
@@ -57,10 +57,10 @@ const services = [
     title: "Game Development",
     description: "Developing immersive and interactive games for mobile and web platforms.",
     points: [
-        "Cross-platform development using Unity or Unreal.",
-        "Engaging gameplay mechanics and stunning graphics.",
-        "Monetization through in-app purchases and ads.",
-        "Multiplayer functionality and social integration."
+        "Cross-Platform Support",
+        "Engaging Gameplay",
+        "Monetization Strategy",
+        "Multiplayer Functionality"
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "video game",
@@ -95,7 +95,7 @@ const chartConfig = {
   },
 };
 
-const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line', index: number }) => {
+const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, points?: string[], link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line' | 'composed', index: number }) => {
     
     const renderChart = () => {
         switch (chartType) {
@@ -128,9 +128,20 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" />
-                        <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" />
+                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} />
+                        <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" strokeWidth={2} />
                     </LineChart>
+                );
+            case 'composed':
+                return (
+                    <ComposedChart data={chartData} margin={{ left: 12, right: 12 }}>
+                        <XAxis dataKey="year" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Area type="monotone" dataKey="mobile" fill="hsl(var(--chart-2))" stroke="hsl(var(--chart-2))" />
+                        <Bar dataKey="desktop" fill="hsl(var(--chart-1))" />
+                    </ComposedChart>
                 );
             default:
                 return null;
@@ -150,7 +161,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             <h3 className="text-3xl font-bold">{title}</h3>
             <p className="text-muted-foreground">{description}</p>
             {points && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-4">
                     {points.map((point, i) => (
                         <div key={i} className="flex items-start text-muted-foreground">
                             <CheckCircle className="h-5 w-5 mr-3 text-primary flex-shrink-0 mt-1" />
@@ -170,7 +181,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
 };
 
 export default function Services() {
-  const chartTypes: ('area' | 'bar' | 'line')[] = ['area', 'bar', 'line', 'area', 'bar', 'line'];
+  const chartTypes: ('area' | 'bar' | 'line' | 'composed')[] = ['area', 'bar', 'line', 'composed'];
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
@@ -187,7 +198,7 @@ export default function Services() {
         </div>
         <div className="mx-auto grid max-w-5xl items-start gap-12 divide-y divide-border sm:grid-cols-1 md:gap-16 lg:max-w-none">
           {services.map((service, index) => (
-            <div key={index} className="pt-12 first:pt-0">
+            <div key={index} className="pt-16 first:pt-0">
                 <ServiceFeature
                 key={index}
                 title={service.title}
