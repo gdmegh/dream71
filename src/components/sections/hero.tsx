@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import * as THREE from 'three';
-import TOPOLOGY from 'vanta/dist/vanta.topology.min.js';
+import VANTA from 'vanta/dist/vanta.topology.min.js';
 
 const heroImages = [
     { src: "/images/Slider/1.jpeg", alt: "Hero Image 1", dataAiHint: "software development", caption: "Innovative Software Solutions" },
@@ -30,19 +30,22 @@ export default function Hero() {
 
     useEffect(() => {
         if (!vantaEffect && vantaRef.current) {
-            setVantaEffect(TOPOLOGY({
-                el: vantaRef.current,
-                THREE: THREE,
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0x3b82f6,
-                backgroundColor: 0x0a0a0a,
-            }));
+            const topology = VANTA;
+            if (topology) {
+                setVantaEffect(topology({
+                    el: vantaRef.current,
+                    THREE: THREE,
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false,
+                    minHeight: 200.00,
+                    minWidth: 200.00,
+                    scale: 1.00,
+                    scaleMobile: 1.00,
+                    color: 0x3b82f6,
+                    backgroundColor: 0x0a0a0a,
+                }));
+            }
         }
         return () => {
             if (vantaEffect) vantaEffect.destroy();
