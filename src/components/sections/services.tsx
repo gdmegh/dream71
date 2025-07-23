@@ -7,12 +7,9 @@ import { Button } from '../ui/button';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { generateImage } from '@/ai/flows/generate-image-flow';
-import type { GenerateImageInput } from '@/ai/flows/generate-image-flow';
-import { useState, useEffect } from 'react';
 
 
-const initialServices = [
+const services = [
   {
     title: "e-Governance Solutions",
     description: "e-Governance solutions use digital platforms to streamline government operations, enhance public services, and increase transparency and citizen engagement.",
@@ -68,28 +65,6 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
 };
 
 export default function Services() {
-  const [services, setServices] = useState(initialServices);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchGeneratedImage = async () => {
-      try {
-        const input: GenerateImageInput = { prompt: 'A concept image for e-governance, showing digital transformation in public services, with data flowing and citizens interacting with government services online.' };
-        const result = await generateImage(input);
-        const newServices = [...initialServices];
-        newServices[0].image = result.dataUri;
-        setServices(newServices);
-      } catch (error) {
-        console.error('Failed to generate image:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchGeneratedImage();
-  }, []);
-
-
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32">
       <div className="container space-y-12 px-4 md:px-6">
