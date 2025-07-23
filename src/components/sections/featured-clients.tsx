@@ -40,7 +40,7 @@ export default function FeaturedClients() {
             >
                 <CarouselContent className="-ml-8">
                     {clientLogos.map((logo, index) => (
-                      <CarouselItem key={index} className="pl-8 basis-auto">
+                      <CarouselItem key={index} className="pl-8 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6">
                           <Image
                               src={logo.src}
                               alt={logo.alt}
