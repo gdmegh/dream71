@@ -4,9 +4,9 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import Image from 'next/image';
+import { AreaChart, BarChart, LineChart } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 
 
 const services = [
@@ -16,6 +16,7 @@ const services = [
     image: "/images/e_gov.jpeg",
     imageHint: "government building",
     link: "/services",
+    isChart: true,
   },
   {
     title: "Business Automation Based on Artificial Intelligence",
@@ -23,6 +24,7 @@ const services = [
     image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
     link: "/services",
+    isChart: true,
   },
   {
     title: "Web Development",
@@ -30,26 +32,59 @@ const services = [
     image: "https://placehold.co/800x600.png",
     imageHint: "web development",
     link: "/services",
+    isChart: true,
   }
 ];
 
-const ServiceFeature = ({ title, description, image, imageHint, link, reverse = false }: { title: string, description: string, image: string, imageHint: string, link: string, reverse?: boolean }) => {
+const chartData = [
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
+  { month: 'April', desktop: 73, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'June', desktop: 214, mobile: 140 },
+];
+
+const chartConfig = {
+  desktop: {
+    label: 'Desktop',
+    color: 'hsl(var(--chart-1))',
+  },
+  mobile: {
+    label: 'Mobile',
+    color: 'hsl(var(--chart-2))',
+  },
+};
+
+const ServiceFeature = ({ title, description, link, reverse = false, isChart = false, chartType, index }: { title: string, description: string, link: string, reverse?: boolean, isChart?: boolean, chartType: 'area' | 'bar' | 'line', index: number }) => {
+    const ChartComponent = chartType === 'area' ? AreaChart : chartType === 'bar' ? BarChart : LineChart;
+    
     return (
       <div className={cn(
         'flex flex-col md:flex-row items-center gap-8',
         reverse && 'md:flex-row-reverse'
       )}>
         <div className="md:w-1/2">
-            <div className="overflow-hidden rounded-md">
-              <Image
-                src={image}
-                alt={imageHint}
-                width={800}
-                height={600}
-                className="object-cover"
-                data-ai-hint={imageHint}
-              />
+          {isChart ? (
+            <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+              <ChartComponent
+                accessibilityLayer
+                data={chartData}
+                margin={{
+                  left: 12,
+                  right: 12,
+                }}
+              >
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent indicator="dot" />}
+                />
+              </ChartComponent>
+            </ChartContainer>
+          ) : (
+             <div className="overflow-hidden rounded-md">
             </div>
+          )}
         </div>
         <div className="md:w-1/2 flex flex-col items-center text-center gap-4">
             <h3 className="text-2xl font-bold">{title}</h3>
@@ -65,6 +100,7 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
 };
 
 export default function Services() {
+  const chartTypes: ('area' | 'bar' | 'line')[] = ['area', 'bar', 'line'];
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32">
       <div className="container space-y-12 px-4 md:px-6">
@@ -85,10 +121,11 @@ export default function Services() {
               key={index}
               title={service.title}
               description={service.description}
-              image={service.image}
-              imageHint={service.imageHint}
               link={service.link}
               reverse={index % 2 !== 0}
+              isChart={service.isChart}
+              chartType={chartTypes[index % chartTypes.length]}
+              index={index}
             />
           ))}
         </div>
