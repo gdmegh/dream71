@@ -35,7 +35,7 @@ const GovernanceChart = () => (
         </CardHeader>
         <CardContent>
              <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer width="100%" height={500}>
                     <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                         <XAxis dataKey="year" tickLine={false} axisLine={false} />
