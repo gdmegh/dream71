@@ -1,12 +1,12 @@
 
 
 'use client';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, CircleCheckBig } from 'lucide-react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ComposedChart } from 'recharts';
-import { ChartContainer } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 
 
@@ -102,10 +102,10 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 'area':
                 return (
                     <AreaChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <XAxis dataKey="year" />
+                        <CartesianGrid vertical={false} />
+                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
-                        <Tooltip />
-                        <Legend />
+                        <Tooltip content={<ChartTooltipContent />} />
                         <Area type="monotone" dataKey="desktop" stackId="1" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" />
                         <Area type="monotone" dataKey="mobile" stackId="1" stroke="hsl(var(--chart-2))" fill="hsl(var(--chart-2))" />
                     </AreaChart>
@@ -113,34 +113,38 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 'bar':
                 return (
                     <BarChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <XAxis dataKey="year" />
+                         <CartesianGrid vertical={false} />
+                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
-                        <Tooltip />
+                        <Tooltip content={<ChartTooltipContent />} />
                         <Legend />
-                        <Bar dataKey="desktop" fill="hsl(var(--chart-1))" />
-                        <Bar dataKey="mobile" fill="hsl(var(--chart-2))" />
+                        <Bar dataKey="desktop" fill="hsl(var(--chart-1))" radius={4} />
+                        <Bar dataKey="mobile" fill="hsl(var(--chart-2))" radius={4} />
                     </BarChart>
                 );
             case 'line':
                  return (
                     <LineChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <XAxis dataKey="year" />
+                        <CartesianGrid vertical={false} />
+                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
-                        <Tooltip />
+                        <Tooltip content={<ChartTooltipContent />} />
                         <Legend />
-                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} />
-                        <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" strokeWidth={2} />
+                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
+                        <Line type="monotone" dataKey="mobile" stroke="hsl(var(--chart-2))" strokeWidth={2} dot={false} />
                     </LineChart>
                 );
             case 'composed':
                 return (
                     <ComposedChart data={chartData} margin={{ left: 12, right: 12 }}>
-                        <XAxis dataKey="year" />
+                        <CartesianGrid vertical={false} />
+                        <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis />
-                        <Tooltip />
+                        <Tooltip content={<ChartTooltipContent />} />
                         <Legend />
                         <Area type="monotone" dataKey="mobile" fill="hsl(var(--chart-2))" stroke="hsl(var(--chart-2))" />
                         <Bar dataKey="desktop" fill="hsl(var(--chart-1))" />
+                        <Line type="monotone" dataKey="desktop" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} />
                     </ComposedChart>
                 );
             default:
@@ -164,7 +168,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-4">
                     {points.map((point, i) => (
                         <div key={i} className="flex items-start text-muted-foreground">
-                            <CheckCircle className="h-5 w-5 mr-3 text-primary flex-shrink-0 mt-1" />
+                            <CircleCheckBig className="h-6 w-6 text-primary mr-3 flex-shrink-0 mt-1 md:mt-0" />
                             <span>{point}</span>
                         </div>
                     ))}
