@@ -1,4 +1,6 @@
 
+'use client';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -8,6 +10,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import React from 'react';
 
 const testimonials = [
   {
@@ -34,6 +38,10 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
+
   return (
     <section 
       id="testimonials" 
@@ -50,6 +58,9 @@ export default function Testimonials() {
           </p>
         </div>
         <Carousel
+          plugins={[plugin.current]}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
           opts={{
             align: "start",
             loop: true,
@@ -62,16 +73,14 @@ export default function Testimonials() {
                 <div className="p-1">
                   <Card className="h-full bg-background/90 backdrop-blur-sm">
                       <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
-                          <p className="text-muted-foreground font-body text-lg mb-8 flex-grow">"{item.testimonial}"</p>
-                          <div className="flex items-center">
-                              <Avatar className="h-16 w-16 mr-4">
-                                  <AvatarImage src={item.avatar} alt={item.name} data-ai-hint={item.dataAiHint} />
-                                  <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                  <p className="font-headline text-xl font-semibold">{item.name}</p>
-                                  <p className="text-md text-muted-foreground">{item.title}</p>
-                              </div>
+                          <Avatar className="h-20 w-20 mb-6 border-4 border-primary/20">
+                              <AvatarImage src={item.avatar} alt={item.name} data-ai-hint={item.dataAiHint} />
+                              <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <p className="text-muted-foreground font-body text-lg mb-6 flex-grow">"{item.testimonial}"</p>
+                          <div className="flex flex-col items-center">
+                              <p className="font-headline text-xl font-semibold">{item.name}</p>
+                              <p className="text-md text-muted-foreground">{item.title}</p>
                           </div>
                       </CardContent>
                   </Card>
