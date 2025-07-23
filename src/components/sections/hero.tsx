@@ -11,14 +11,21 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import * as THREE from 'three';
-import TOPOLOGY from 'vanta/dist/vanta.topology.min.js';
 
 const heroImages = [
     { src: "/images/Slider/1.jpeg", alt: "Hero Image 1", dataAiHint: "software development", caption: "Innovative Software Solutions" },
     { src: "/images/Slider/2.jpg", alt: "Hero Image 2", dataAiHint: "team meeting", caption: "Your Vision, Our Mission" },
     { src: "/images/Slider/3.jpg", alt: "Hero Image 3", dataAiHint: "digital solution", caption: "Delivering Excellence" },
 ];
+
+declare global {
+  interface Window {
+    THREE: any;
+    VANTA: {
+      TOPOLOGY: (options: any) => any;
+    };
+  }
+}
 
 export default function Hero() {
     const plugin = React.useRef(
@@ -29,10 +36,10 @@ export default function Hero() {
     const [vantaEffect, setVantaEffect] = useState<any>(null);
 
     useEffect(() => {
-        if (!vantaEffect && vantaRef.current) {
-            setVantaEffect(TOPOLOGY({
+        if (!vantaEffect && vantaRef.current && window.VANTA) {
+            setVantaEffect(window.VANTA.TOPOLOGY({
                 el: vantaRef.current,
-                THREE: THREE,
+                THREE: window.THREE,
                 mouseControls: true,
                 touchControls: true,
                 gyroControls: false,
