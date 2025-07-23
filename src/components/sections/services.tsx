@@ -48,6 +48,24 @@ const automationChartConfig = {
   },
 };
 
+const webDevChartData = [
+    { quarter: "Q1", loadTime: 2.5, conversion: 2.0 },
+    { quarter: "Q2", loadTime: 2.1, conversion: 2.8 },
+    { quarter: "Q3", loadTime: 1.8, conversion: 3.5 },
+    { quarter: "Q4", loadTime: 1.5, conversion: 4.2 },
+];
+
+const webDevChartConfig = {
+    loadTime: {
+        label: "Page Load (s)",
+        color: "hsl(var(--chart-3))",
+    },
+    conversion: {
+        label: "Conversion (%)",
+        color: "hsl(var(--chart-5))",
+    },
+};
+
 const GovernanceChart = () => (
     <Card className='w-full bg-white text-gray-800'>
         <CardHeader>
@@ -102,6 +120,35 @@ const AutomationChart = () => (
     </Card>
 );
 
+const WebDevChart = () => (
+    <Card className='w-full bg-white text-gray-800'>
+        <CardHeader>
+            <CardTitle className="text-gray-900">Website Performance Growth</CardTitle>
+            <CardDescription className="text-gray-600">Post-Launch Performance Metrics</CardDescription>
+        </CardHeader>
+        <CardContent>
+             <ChartContainer config={webDevChartConfig} className="min-h-[200px] w-full">
+                <ResponsiveContainer width="100%" height={500}>
+                    <LineChart data={webDevChartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="quarter" tickLine={false} axisLine={false} stroke="#374151" />
+                        <YAxis yAxisId="left" orientation="left" tickLine={false} axisLine={false} stroke="#374151" unit="s" />
+                        <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} stroke="#374151" unit="%" />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent indicator="dot" />}
+                        />
+                        <Legend />
+                        <Line yAxisId="left" type="monotone" dataKey="loadTime" stroke="var(--color-loadTime)" strokeWidth={3} />
+                        <Line yAxisId="right" type="monotone" dataKey="conversion" stroke="var(--color-conversion)" strokeWidth={3} />
+                    </LineChart>
+                </ResponsiveContainer>
+             </ChartContainer>
+        </CardContent>
+    </Card>
+);
+
+
 const services = [
   {
     title: "e-Governance Solutions",
@@ -124,10 +171,11 @@ const services = [
   {
     title: "Web Development",
     description: "Robust, scalable, and high-performance web applications tailored to your specific business needs.",
-    image: "https://placehold.co/800x600.png",
+    image: "",
     imageHint: "web development",
     link: "/services",
-    isChart: false,
+    isChart: true,
+    chartType: 'webDev'
   }
 ];
 
@@ -143,9 +191,9 @@ const ServiceFeature = ({ title, description, image, imageHint, link, reverse = 
                     </Link>
                 </Button>
             </div>
-            <div className='flex items-center justify-center w-full'>
+            <div className={cn('flex items-center justify-center w-full', reverse && "md:order-first")}>
                 {isChart ? (
-                    chartType === 'governance' ? <GovernanceChart /> : <AutomationChart />
+                    chartType === 'governance' ? <GovernanceChart /> : chartType === 'automation' ? <AutomationChart /> : <WebDevChart />
                 ) : (
                     <Image
                         src={image}
