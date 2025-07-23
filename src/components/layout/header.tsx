@@ -52,7 +52,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex-shrink-0">
             <Image
-              src="https://placehold.co/150x40/399958/white?text=Dream71"
+              src="/images/Logo.png"
               alt="Dream71 Logo"
               width={150}
               height={40}

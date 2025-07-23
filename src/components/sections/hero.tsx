@@ -28,7 +28,7 @@ export default function Hero() {
           </div>
           <div className="relative">
             <Image 
-              src="https://placehold.co/600x400.png"
+              src="/images/hero.png"
               alt="Team working on a project"
               width={600}
               height={400}
