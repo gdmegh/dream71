@@ -48,12 +48,12 @@ export default function AboutPage() {
                                 ))}
                             </ul>
                         </div>
-                        <div>
+                        <div className="md:order-last">
                             <Image
-                                src="https://placehold.co/700x550.png"
+                                src="https://placehold.co/800x600.png"
                                 alt="Dream71 team in a meeting"
-                                width={700}
-                                height={550}
+                                width={800}
+                                height={600}
                                 className="rounded-lg shadow-xl"
                                 data-ai-hint="team meeting"
                             />
