@@ -8,14 +8,14 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit/zod';
+import { z } from 'zod';
 
-export const GenerateImageInputSchema = z.object({
+const GenerateImageInputSchema = z.object({
   prompt: z.string().describe('The text prompt to generate an image from.'),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
-export const GenerateImageOutputSchema = z.object({
+const GenerateImageOutputSchema = z.object({
   dataUri: z.string().describe('The generated image as a data URI.'),
 });
 export type GenerateImageOutput = z.infer<typeof GenerateImageOutputSchema>;
