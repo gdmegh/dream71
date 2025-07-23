@@ -122,10 +122,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 {renderChart()}
             </ChartContainer>
         </div>
-        <div className={cn(
-            "md:w-full flex flex-col gap-4",
-            index === 0 ? "items-start text-left" : "items-center text-center"
-            )}>
+        <div className="md:w-full flex flex-col gap-4 items-start text-left">
             <h3 className="text-3xl font-bold">{title}</h3>
             <p className="text-muted-foreground">{description}</p>
             {points && (
@@ -164,7 +161,7 @@ export default function Services() {
             </p>
           </div>
         </div>
-        <div className="space-y-12">
+        <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-1 md:gap-12 lg:max-w-none">
           {services.map((service, index) => (
             <ServiceFeature
               key={index}
