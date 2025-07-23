@@ -53,7 +53,7 @@ export default function Testimonials() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-white">What Our Clients Say</h2>
-          <p className="font-body text-lg text-primary-foreground/80 mt-4 max-w-2xl mx-auto">
+          <p className="font-body text-lg text-primary-foreground mt-4 max-w-2xl mx-auto">
             We are proud to have earned the trust of our clients, and we are excited to share their experiences with you. Their feedback is a testament to our commitment to excellence and our passion for delivering outstanding results.
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function Testimonials() {
             {testimonials.map((item, index) => (
               <CarouselItem key={index}>
                 <div className="p-1">
-                  <Card className="h-full bg-white backdrop-blur-sm">
+                  <Card className="h-full bg-white backdrop-blur-sm text-card-foreground">
                       <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
                           <Avatar className="h-20 w-20 mb-6 border-4 border-primary/20">
                               <AvatarImage src={item.avatar} alt={item.name} data-ai-hint={item.dataAiHint} />
@@ -79,7 +79,7 @@ export default function Testimonials() {
                           </Avatar>
                           <p className="text-muted-foreground font-body text-lg mb-6 flex-grow">"{item.testimonial}"</p>
                           <div className="flex flex-col items-center">
-                              <p className="font-headline text-xl font-semibold">{item.name}</p>
+                              <p className="font-headline text-xl font-semibold text-foreground">{item.name}</p>
                               <p className="text-md text-muted-foreground">{item.title}</p>
                           </div>
                       </CardContent>
