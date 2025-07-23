@@ -3,7 +3,6 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Dream71 Digital Hub',
@@ -29,8 +28,6 @@ export default function RootLayout({
             <Footer />
         </div>
         <Toaster />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></Script>
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.topology.min.js"></Script>
       </body>
     </html>
   );
