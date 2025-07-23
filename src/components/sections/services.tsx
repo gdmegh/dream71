@@ -17,7 +17,8 @@ const services = [
     points: [
         "25% reduction in administrative processing times.",
         "40% increase in citizen engagement through digital portals.",
-        "15% decrease in operational costs for public services."
+        "15% decrease in operational costs for public services.",
+        "Enhanced data security and compliance."
     ],
     image: "/images/e_gov.jpeg",
     imageHint: "government building",
@@ -30,7 +31,8 @@ const services = [
     points: [
         "30% increase in workflow efficiency with AI-driven automation.",
         "50% reduction in manual data entry errors.",
-        "20% cost savings through automated resource allocation."
+        "20% cost savings through automated resource allocation.",
+        "Actionable insights from data analysis."
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
@@ -44,9 +46,7 @@ const services = [
         "Responsive web design for optimal user engagement.",
         "Native iOS & Android apps with top performance.",
         "Secure, reliable, and scalable applications.",
-        "Faster load times and better performance.",
-        "Integration with services like Apple Pay and Firebase.",
-        "Adherence to platform-specific design guidelines."
+        "Faster load times and better performance."
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "custom software",
@@ -57,9 +57,10 @@ const services = [
     title: "Game Development",
     description: "Developing immersive and interactive games for mobile and web platforms.",
     points: [
-        "Cross-platform development using engines like Unity or Unreal.",
-        "Engaging gameplay mechanics and stunning 2D/3D graphics.",
-        "Monetization strategies including in-app purchases and ads."
+        "Cross-platform development using Unity or Unreal.",
+        "Engaging gameplay mechanics and stunning graphics.",
+        "Monetization through in-app purchases and ads.",
+        "Multiplayer functionality and social integration."
     ],
     image: "https://placehold.co/800x600.png",
     imageHint: "video game",
