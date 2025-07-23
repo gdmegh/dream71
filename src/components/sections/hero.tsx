@@ -20,7 +20,7 @@ const heroImages = [
 
 export default function Hero() {
     const plugin = React.useRef(
-      Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+      Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: false })
     );
 
     return (
@@ -55,7 +55,7 @@ export default function Hero() {
                                     />
                                     <div className="absolute inset-0 bg-black/30 rounded-[50px]"></div>
                                     <div className="absolute bottom-10 left-10 text-left">
-                                        <p className="font-headline text-3xl font-bold text-white shadow-lg">{image.caption}</p>
+                                        <p className="font-headline text-3xl font-bold text-white">{image.caption}</p>
                                     </div>
                                 </CarouselItem>
                             ))}
