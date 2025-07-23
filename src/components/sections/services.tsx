@@ -1,7 +1,8 @@
 
 'use client';
+import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { ChartContainer } from '@/components/ui/chart';
@@ -159,7 +160,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
     
     return (
       <div className={cn(
-        'grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-8'
+        'grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12'
       )}>
         <div className={cn("md:w-full", reverse && "md:order-last")}>
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
@@ -205,7 +206,7 @@ export default function Services() {
             </p>
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-1 md:gap-12 lg:max-w-none">
+        <div className="mx-auto grid max-w-5xl items-start gap-12 sm:grid-cols-1 md:gap-16 lg:max-w-none">
           {services.map((service, index) => (
             <ServiceFeature
               key={index}
