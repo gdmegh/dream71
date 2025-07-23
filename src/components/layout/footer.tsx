@@ -32,13 +32,13 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-primary/5 border-t border-primary/20">
+    <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="md:col-span-4 lg:col-span-2">
             <Link href="/" className="mb-4 inline-block">
                <Image
-                  src="https://placehold.co/150x40/399958/white?text=Dream71"
+                  src="https://placehold.co/150x40/FFFFFF/000000?text=Dream71"
                   alt="Dream71 Logo"
                   width={150}
                   height={40}
@@ -85,7 +85,7 @@ export default function Footer() {
               </ul>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-primary/20 text-center text-muted-foreground font-body">
+        <div className="mt-12 pt-8 border-t border-border text-center text-muted-foreground font-body">
           <p>&copy; {new Date().getFullYear()} Dream71. All rights reserved.</p>
         </div>
       </div>
