@@ -34,7 +34,7 @@ export default function Footer() {
   return (
     <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center md:text-left">
           <div className="md:col-span-4 lg:col-span-2">
             <Link href="/" className="mb-4 inline-block">
                <Image
@@ -46,10 +46,10 @@ export default function Footer() {
                   className="h-10 w-auto"
                 />
             </Link>
-            <p className="text-muted-foreground max-w-sm mb-6 font-body">
+            <p className="text-muted-foreground max-w-sm mb-6 font-body mx-auto md:mx-0">
               Dream71 is a leading software development company in Bangladesh, building innovative solutions for a global clientele.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 justify-center md:justify-start">
               {socialLinks.map((social, index) => (
                 <Link key={index} href={social.href} className="text-muted-foreground hover:text-primary transition-colors">
                   <social.icon className="h-6 w-6" />
