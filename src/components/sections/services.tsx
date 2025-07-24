@@ -89,9 +89,9 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                             <YAxis />
                             <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
-                            <Bar dataKey="Online Game" fill="var(--color-Online Game)" radius={4} />
-                            <Bar dataKey="Mobile Game" fill="var(--color-Mobile Game)" radius={4} />
-                            <Bar dataKey="Desktop Game" fill="var(--color-Desktop Game)" radius={4} />
+                            <Bar dataKey="Online Game" fill="var(--color-chart-1)" radius={4} />
+                            <Bar dataKey="Mobile Game" fill="var(--color-chart-2)" radius={4} />
+                            <Bar dataKey="Desktop Game" fill="var(--color-chart-5)" radius={4} />
                         </BarChart>
                     </ChartContainer>
                 );
