@@ -90,7 +90,7 @@ export const services: Service[] = [
 export const chartData = {
   'e-governance': [
     { name: 'Projects', value: 120, fill: 'hsl(var(--chart-1))' },
-    { name: 'Success Rate', value: 98, unit: '%', fill: 'hsl(var(--chart-3))'  },
+    { name: 'Success Rate', value: 98, unit: '%', fill: 'hsl(var(--chart-2))'  },
     { name: 'Satisfaction', value: 95, unit: '%', fill: 'hsl(var(--chart-2))'  },
   ],
   'business-automation': [
@@ -108,8 +108,8 @@ export const chartData = {
     { month: 'Jun', web: 8, mobile: 6 },
   ],
   'game-development': [
-    { name: 'Mobile', projects: 15, fill: 'hsl(var(--chart-1))' },
-    { name: 'Web', projects: 8, fill: 'hsl(var(--chart-2))' },
-    { name: 'PC', projects: 4, fill: 'hsl(var(--chart-3))' }
+    { name: '2021', mobile: 15, web: 8, pc: 4 },
+    { name: '2022', mobile: 20, web: 12, pc: 6 },
+    { name: '2023', mobile: 25, web: 18, pc: 8 },
   ]
 };

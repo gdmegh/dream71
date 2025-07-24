@@ -12,8 +12,8 @@ import { services, chartData } from '@/lib/services-data';
 
 const chartConfig = {
   projects: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
-  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(120, 70%, 40%)' },
-  'Success Rate': { label: 'Success Rate (%)', color: 'hsl(120, 70%, 40%)' },
+  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-2))' },
+  'Success Rate': { label: 'Success Rate (%)', color: 'hsl(var(--chart-2))' },
   costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))', icon: Cpu },
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
@@ -81,15 +81,16 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 'game-development':
                 return (
                      <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                        <PieChart>
-                            <Tooltip content={<ChartTooltipContent nameKey="name" />} />
+                        <BarChart data={serviceChartData as any[]}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
-                            <Pie data={serviceChartData as any[]} dataKey="projects" nameKey="name" cx="50%" cy="50%" outerRadius={90} fill="var(--color-projects)">
-                                {(serviceChartData as any[]).map((entry, idx) => (
-                                    <Cell key={`cell-${idx}`} fill={entry.fill} />
-                                ))}
-                            </Pie>
-                        </PieChart>
+                            <Bar dataKey="web" fill="var(--color-web)" radius={4} />
+                            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                            <Bar dataKey="pc" fill="var(--color-pc)" radius={4} />
+                        </BarChart>
                     </ChartContainer>
                 );
             default:
@@ -142,7 +143,7 @@ export default function Services() {
             </div>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Innovative Solutions for a Digital-First World</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We deliver bespoke digital experiences, from advanced e-governance systems to intelligent automation and captivating games, turning your vision into reality with cutting-edge technology and a commitment to excellence.
+             We deliver bespoke digital experiences, from advanced e-governance systems to intelligent automation and captivating games, turning your vision into reality with cutting-edge technology and a commitment to excellence.
             </p>
           </div>
         </div>
