@@ -7,75 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-const projects = {
-  all: [
-    {
-      title: "E-commerce Platform",
-      description: "A scalable online marketplace for a major retail brand.",
-      image: "https://placehold.co/600x400.png",
-      tags: ["React", "Node.js", "PostgreSQL"],
-      link: "#",
-      category: "web",
-      dataAiHint: "ecommerce shopping"
-    },
-    {
-      title: "Fintech Mobile App",
-      description: "A secure mobile banking application with biometric authentication.",
-      image: "https://placehold.co/600x400.png",
-      tags: ["Flutter", "Firebase", "Biometrics"],
-      link: "#",
-      category: "mobile",
-      dataAiHint: "finance app"
-    },
-    {
-      title: "Healthcare Management System",
-      description: "An EHR system for hospitals to manage patient data efficiently.",
-      image: "https://placehold.co/600x400.png",
-      tags: ["Angular", ".NET Core", "Azure"],
-      link: "#",
-      category: "web",
-      dataAiHint: "healthcare system"
-    },
-    {
-      title: "Logistics & Supply Chain Portal",
-      description: "A real-time tracking and management portal for a global logistics company.",
-      image: "https://placehold.co/600x400.png",
-      tags: ["Vue.js", "Python/Django", "AWS"],
-      link: "#",
-      category: "web",
-      dataAiHint: "logistics truck"
-    },
-    {
-        title: "AI-Powered Chatbot",
-        description: "A customer service chatbot that understands natural language.",
-        image: "https://placehold.co/600x400.png",
-        tags: ["Python", "TensorFlow", "NLP"],
-        link: "#",
-        category: "ai",
-        dataAiHint: "robot chatbot"
-    },
-    {
-        title: "Ride-Sharing App",
-        description: "A mobile application for booking and sharing rides.",
-        image: "https://placehold.co/600x400.png",
-        tags: ["React Native", "GraphQL", "Maps API"],
-        link: "#",
-        category: "mobile",
-        dataAiHint: "person using phone"
-    }
-  ],
-  web() {
-    return this.all.filter(project => project.category === 'web');
-  },
-  mobile() {
-    return this.all.filter(project => project.category === 'mobile');
-  },
-  ai() {
-    return this.all.filter(project => project.category === 'ai');
-  }
-};
-
+import { projects } from '@/lib/portfolio-data';
 
 const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
     <Card className="overflow-hidden group w-full bg-white text-gray-800">
@@ -99,7 +31,7 @@ const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
               <Badge key={tag} variant="secondary">{tag}</Badge>
             ))}
           </div>
-           <Link href={project.link} className="inline-flex items-center font-semibold text-primary hover:underline font-body text-sm">
+           <Link href={`/portfolio/${project.slug}`} className="inline-flex items-center font-semibold text-primary hover:underline font-body text-sm">
             View Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
