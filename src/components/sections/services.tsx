@@ -11,7 +11,7 @@ import { services, chartData } from '@/lib/services-data';
 
 const chartConfig = {
   projects: { label: 'Projects Completed', color: 'hsl(var(--chart-2))' },
-  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-1))' },
+  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-4))' },
   'Success Rate': { label: 'Success Rate (%)', color: 'hsl(var(--chart-3))' },
   costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))', icon: Cpu },
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
