@@ -108,8 +108,8 @@ export const chartData = {
     { month: 'Jun', web: 8, mobile: 6 },
   ],
   'game-development': [
-    { name: '2021', mobile: 15, web: 8, 'Desktop game': 4 },
-    { name: '2022', mobile: 20, web: 12, 'Desktop game': 6 },
-    { name: '2023', mobile: 25, web: 18, 'Desktop game': 8 },
+    { name: '2021', 'Mobile Game': 15, 'Online Game': 8, 'Desktop Game': 4 },
+    { name: '2022', 'Mobile Game': 20, 'Online Game': 12, 'Desktop Game': 6 },
+    { name: '2023', 'Mobile Game': 25, 'Online Game': 18, 'Desktop Game': 8 },
   ]
 };

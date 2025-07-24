@@ -18,7 +18,9 @@ const chartConfig = {
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
   mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
-  'Desktop game': { label: 'Desktop game', color: 'hsl(var(--primary))' },
+  'Desktop Game': { label: 'Desktop Game', color: 'hsl(var(--chart-3))' },
+  'Online Game': { label: 'Online Game', color: 'hsl(var(--chart-1))' },
+  'Mobile Game': { label: 'Mobile Game', color: 'hsl(var(--chart-2))' },
   value: {
     color: 'hsl(var(--foreground))',
   },
@@ -87,9 +89,9 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                             <YAxis />
                             <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
-                            <Bar dataKey="web" fill="var(--color-web)" radius={4} />
-                            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-                            <Bar dataKey="Desktop game" fill="var(--color-Desktop-game)" radius={4} />
+                            <Bar dataKey="Online Game" fill="var(--color-Online Game)" radius={4} />
+                            <Bar dataKey="Mobile Game" fill="var(--color-Mobile Game)" radius={4} />
+                            <Bar dataKey="Desktop Game" fill="var(--color-Desktop Game)" radius={4} />
                         </BarChart>
                     </ChartContainer>
                 );
