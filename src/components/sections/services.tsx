@@ -18,7 +18,7 @@ const chartConfig = {
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
   mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
-  'Desktop game': { label: 'Desktop game', color: 'hsl(var(--chart-3))' },
+  'Desktop game': { label: 'Desktop game', color: 'hsl(var(--primary))' },
   value: {
     color: 'hsl(var(--foreground))',
   },
