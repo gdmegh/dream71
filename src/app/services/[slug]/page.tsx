@@ -75,6 +75,21 @@ const MethodologyProcess = () => (
     </div>
 );
 
+const MethodologySection = () => (
+    <section className="space-y-12 text-center py-16">
+        <div className="space-y-2">
+            <Workflow className="h-10 w-10 text-primary mx-auto" />
+            <h2 className="font-headline text-3xl font-bold">Our Methodology</h2>
+            <p className="font-body text-muted-foreground max-w-3xl mx-auto">
+                We follow a proven methodology to ensure project success, from initial discovery and planning through to deployment and ongoing support. Our process is transparent, collaborative, and focused on delivering value at every stage.
+            </p>
+        </div>
+        <div className="relative w-full py-8">
+            <MethodologyProcess />
+        </div>
+    </section>
+);
+
 
 const EGovernancePage = ({ service }: { service: any }) => {
     
@@ -137,18 +152,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                 reverse={true}
                             />
 
-                             <section className="space-y-12 text-center">
-                                <div className="space-y-2">
-                                    <Workflow className="h-10 w-10 text-primary mx-auto" />
-                                    <h2 className="font-headline text-3xl font-bold">Our Methodology</h2>
-                                    <p className="font-body text-muted-foreground max-w-3xl mx-auto">
-                                        We follow a proven methodology to ensure project success, from initial discovery and planning through to deployment and ongoing support. Our process is transparent, collaborative, and focused on delivering value at every stage.
-                                    </p>
-                                </div>
-                                <div className="relative w-full py-8">
-                                    <MethodologyProcess />
-                                </div>
-                            </section>
+                            <MethodologySection />
 
                         </div>
 
@@ -255,6 +259,7 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                             />
                         </div>
                     </div>
+                     <MethodologySection />
                 </div>
             </section>
 
