@@ -115,7 +115,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         ))}
                     </div>
                 )}
-                 <Button asChild className="mt-6 hidden md:inline-flex" variant="outline">
+                 <Button asChild className="mt-6" variant="outline">
                     <Link href={link}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
@@ -126,11 +126,6 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 <div className="w-full">
                     {renderChart()}
                 </div>
-                 <Button asChild className="mt-4 md:hidden w-full max-w-xs" variant="outline">
-                    <Link href={link}>
-                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
             </div>
         </div>
     );
@@ -140,7 +135,7 @@ export default function Services() {
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
-        <div className="flex flex-col items-start justify-center space-y-4 text-left">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">
               Our Services
