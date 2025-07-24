@@ -37,7 +37,7 @@ export default function Hero() {
                     </h1>
                 </div>
             </div>
-            <div className="w-full mt-16 group">
+            <div className="w-full max-w-7xl mx-auto mt-16 group">
                <Carousel
                     plugins={[plugin.current]}
                     className="w-full"
@@ -50,7 +50,7 @@ export default function Hero() {
                                     src={image.src}
                                     alt={image.alt}
                                     fill
-                                    className="shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover"
+                                    className="rounded-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover"
                                     data-ai-hint={image.dataAiHint}
                                     priority={index === 0}
                                 />
