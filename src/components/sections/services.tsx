@@ -18,7 +18,7 @@ const chartConfig = {
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
   mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
-  pc: { label: 'Desktop game', color: 'hsl(var(--chart-3))' },
+  'Desktop game': { label: 'Desktop game', color: 'hsl(var(--chart-3))' },
   value: {
     color: 'hsl(var(--foreground))',
   },
@@ -89,7 +89,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                             <Legend />
                             <Bar dataKey="web" fill="var(--color-web)" radius={4} />
                             <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-                            <Bar dataKey="pc" fill="var(--color-pc)" radius={4} />
+                            <Bar dataKey="Desktop game" fill="var(--color-Desktop-game)" radius={4} />
                         </BarChart>
                     </ChartContainer>
                 );
@@ -141,7 +141,7 @@ export default function Services() {
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">
               Our Services
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Revolutionizing Industries Through Cutting-Edge Technology and Bespoke Digital Solutions</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Innovative Solutions Tailored for a Modern, Dynamic, and Digital-First World</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
              From advanced e-governance systems and intelligent automation to captivating games and custom software, we deliver bespoke digital experiences that turn your vision into reality with a steadfast commitment to excellence.
             </p>

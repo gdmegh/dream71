@@ -71,7 +71,7 @@ export const services: Service[] = [
   },
   {
     slug: "game-development",
-    title: "Developing and Publishing Immersive, Captivating, and Unforgettable Gaming Experiences for a Global Audience",
+    title: "Creating Immersive and Captivating Gaming Experiences for a Global Audience",
     description: "Our passion lies in the creation of high-quality, interactive games for mobile, web, and desktop platforms. We focus on delivering engaging gameplay, breathtaking visuals, and memorable narratives that captivate and entertain players of all ages, all around the world.",
     longDescription: "We create engaging and memorable gaming experiences for players around the world. Our game development services cover everything from initial concept and design to development, testing, and launch. We specialize in creating games for mobile and web platforms, with a focus on compelling gameplay, stunning visuals, and robust monetization strategies.",
     link: "/services/game-development",
@@ -108,8 +108,8 @@ export const chartData = {
     { month: 'Jun', web: 8, mobile: 6 },
   ],
   'game-development': [
-    { name: '2021', mobile: 15, web: 8, pc: 4 },
-    { name: '2022', mobile: 20, web: 12, pc: 6 },
-    { name: '2023', mobile: 25, web: 18, pc: 8 },
+    { name: '2021', mobile: 15, web: 8, 'Desktop game': 4 },
+    { name: '2022', mobile: 20, web: 12, 'Desktop game': 6 },
+    { name: '2023', mobile: 25, web: 18, 'Desktop game': 8 },
   ]
 };
