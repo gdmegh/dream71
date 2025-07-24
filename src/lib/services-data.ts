@@ -39,8 +39,8 @@ export const services: Service[] = [
   },
   {
     slug: "business-automation",
-    title: "Driving Growth and Efficiency with Intelligent Business Automation and AI",
-    description: "We leverage the power of Artificial Intelligence to automate complex business processes, unlock actionable insights from your data, and foster a culture of innovation that positions you for sustained success in a competitive market.",
+    title: "Driving Business Growth and Unprecedented Efficiency with Intelligent Automation and AI",
+    description: "We empower your business to thrive in a competitive landscape by leveraging the transformative power of Artificial Intelligence to automate complex processes, uncover actionable insights from your data, and foster a culture of continuous innovation and sustained success.",
     longDescription: "Unlock the full potential of your business with our AI-powered automation solutions. We help you identify opportunities for automation, from routine administrative tasks to complex decision-making processes. Our solutions integrate seamlessly with your existing systems to reduce costs, minimize errors, and free up your team to focus on strategic initiatives.",
     link: "/services/business-automation",
     image: "https://placehold.co/800x600.png",
@@ -55,8 +55,8 @@ export const services: Service[] = [
   },
   {
     slug: "custom-software",
-    title: "Crafting Bespoke Software Solutions to Propel Your Business Forward",
-    description: "We specialize in designing and developing high-quality, scalable, and secure custom software applications that are meticulously tailored to your unique operational needs and strategic objectives, ensuring a perfect fit for your business.",
+    title: "Architecting and Engineering Bespoke Software Solutions to Propel Your Business into the Future",
+    description: "We specialize in the design, development, and deployment of high-quality, scalable, and secure custom software applications. Each solution is meticulously crafted to align with your unique operational workflows, strategic business objectives, and long-term goals, ensuring a perfect technological fit for your organization.",
     longDescription: "We build bespoke software solutions from the ground up, tailored to your specific needs. Our team works closely with you to understand your goals and challenges, delivering high-quality, scalable, and secure applications. Whether you need a complex enterprise system or a user-friendly mobile app, we have the expertise to bring your vision to life.",
     link: "/services/custom-software",
     image: "https://placehold.co/800x600.png",
@@ -71,8 +71,8 @@ export const services: Service[] = [
   },
   {
     slug: "game-development",
-    title: "Creating Immersive and Captivating Gaming Experiences for a Global Audience",
-    description: "We specialize in developing high-quality, interactive games for mobile and web platforms, focusing on engaging gameplay, stunning visuals, and memorable narratives that captivate and entertain players worldwide.",
+    title: "Developing and Publishing Immersive, Captivating, and Unforgettable Gaming Experiences for a Global Audience",
+    description: "Our passion lies in the creation of high-quality, interactive games for mobile, web, and desktop platforms. We focus on delivering engaging gameplay, breathtaking visuals, and memorable narratives that captivate and entertain players of all ages, all around the world.",
     longDescription: "We create engaging and memorable gaming experiences for players around the world. Our game development services cover everything from initial concept and design to development, testing, and launch. We specialize in creating games for mobile and web platforms, with a focus on compelling gameplay, stunning visuals, and robust monetization strategies.",
     link: "/services/game-development",
     image: "https://placehold.co/800x600.png",
@@ -89,8 +89,8 @@ export const services: Service[] = [
 
 export const chartData = {
   'e-governance': [
-    { name: 'Projects', value: 120, fill: 'hsl(var(--chart-1))' },
-    { name: 'Success Rate', value: 98, unit: '%', fill: 'hsl(var(--chart-2))'  },
+    { name: 'Projects', value: 120, fill: 'hsl(var(--primary))' },
+    { name: 'Success Rate', value: 98, unit: '%', fill: 'hsl(var(--chart-1))'  },
     { name: 'Satisfaction', value: 95, unit: '%', fill: 'hsl(var(--chart-2))'  },
   ],
   'business-automation': [

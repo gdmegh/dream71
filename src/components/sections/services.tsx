@@ -13,12 +13,12 @@ import { services, chartData } from '@/lib/services-data';
 const chartConfig = {
   projects: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
   satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-2))' },
-  'Success Rate': { label: 'Success Rate (%)', color: 'hsl(var(--chart-2))' },
+  'Success Rate': { label: 'Success Rate (%)', color: 'hsl(var(--chart-1))' },
   costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))', icon: Cpu },
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
   mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
-  pc: { label: 'PC Projects', color: 'hsl(var(--chart-3))' },
+  pc: { label: 'Desktop game', color: 'hsl(var(--chart-3))' },
   value: {
     color: 'hsl(var(--foreground))',
   },
@@ -141,9 +141,9 @@ export default function Services() {
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">
               Our Services
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Innovative Solutions for a Digital-First World</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Revolutionizing Industries Through Cutting-Edge Technology and Bespoke Digital Solutions</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-             We deliver bespoke digital experiences, from advanced e-governance systems to intelligent automation and captivating games, turning your vision into reality with cutting-edge technology and a commitment to excellence.
+             From advanced e-governance systems and intelligent automation to captivating games and custom software, we deliver bespoke digital experiences that turn your vision into reality with a steadfast commitment to excellence.
             </p>
           </div>
         </div>
