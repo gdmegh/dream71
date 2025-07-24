@@ -1,5 +1,4 @@
 
-
 'use client';
 import { CircleCheckBig, Aperture, Cpu } from 'lucide-react';
 import Link from 'next/link';
@@ -15,8 +14,8 @@ const chartConfig = {
   projects: { label: 'Projects Completed', color: 'hsl(var(--chart-2))' },
   satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-1))' },
   'Success Rate': { label: 'Success Rate (%)', color: 'hsl(var(--chart-3))' },
-  costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))', icon: () => <Cpu className="h-4 w-4 text-muted-foreground" /> },
-  efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: () => <Aperture className="h-4 w-4 text-muted-foreground" /> },
+  costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))', icon: Cpu },
+  efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
   mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
   pc: { label: 'PC Projects', color: 'hsl(var(--chart-3))' },
@@ -29,28 +28,31 @@ const chartConfig = {
 const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, index }: { title: string, description: string, points?: { title: string, icon: React.ElementType, description: string }[], link: string, reverse?: boolean, isChart?: boolean, index: number }) => {
     
     const renderChart = () => {
-        switch (index) {
-            case 0: // e-Governance
+        const serviceChartData = chartData[services[index].slug];
+        if(!serviceChartData) return null;
+
+        switch (services[index].slug) {
+            case 'e-governance':
                 return (
                     <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                        <BarChart data={chartData.eGovernance}>
+                        <BarChart data={serviceChartData as any[]}>
                             <CartesianGrid vertical={false} />
                             <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
                             <Bar dataKey="value" radius={4}>
-                                {chartData.eGovernance.map((entry) => (
+                                {(serviceChartData as any[]).map((entry) => (
                                     <Cell key={`cell-${entry.name}`} fill={entry.fill} />
                                 ))}
                             </Bar>
                         </BarChart>
                     </ChartContainer>
                 );
-            case 1: // AI Automation
+            case 'business-automation':
                 return (
                     <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                        <ComposedChart data={chartData.aiAutomation}>
+                        <ComposedChart data={serviceChartData as any[]}>
                             <CartesianGrid vertical={false} />
                             <XAxis dataKey="year" />
                             <YAxis yAxisId="left" orientation="left" unit="k" />
@@ -62,10 +64,10 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         </ComposedChart>
                     </ChartContainer>
                 );
-            case 2: // Custom Software
+            case 'custom-software':
                  return (
                     <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                        <AreaChart accessibilityLayer data={chartData.customSoftware} margin={{ left: 12, right: 12, top: 10 }}>
+                        <AreaChart accessibilityLayer data={serviceChartData as any[]} margin={{ left: 12, right: 12, top: 10 }}>
                             <CartesianGrid vertical={false} />
                             <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
                             <YAxis />
@@ -76,14 +78,14 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         </AreaChart>
                     </ChartContainer>
                 );
-            case 3: // Game Development
+            case 'game-development':
                 return (
                      <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
                         <PieChart>
                             <Tooltip content={<ChartTooltipContent nameKey="name" />} />
                             <Legend />
-                            <Pie data={chartData.gameDev} dataKey="projects" nameKey="name" cx="50%" cy="50%" outerRadius={90} fill="var(--color-projects)">
-                                {chartData.gameDev.map((entry, idx) => (
+                            <Pie data={serviceChartData as any[]} dataKey="projects" nameKey="name" cx="50%" cy="50%" outerRadius={90} fill="var(--color-projects)">
+                                {(serviceChartData as any[]).map((entry, idx) => (
                                     <Cell key={`cell-${idx}`} fill={entry.fill} />
                                 ))}
                             </Pie>
@@ -113,7 +115,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                         ))}
                     </div>
                 )}
-                 <Button asChild className="mt-6 hidden md:inline-flex">
+                 <Button asChild className="mt-6 hidden md:inline-flex" variant="outline">
                     <Link href={link}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
@@ -124,7 +126,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 <div className="w-full">
                     {renderChart()}
                 </div>
-                 <Button asChild className="mt-4 md:hidden w-full max-w-xs">
+                 <Button asChild className="mt-4 md:hidden w-full max-w-sm" variant="outline">
                     <Link href={link}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
@@ -138,14 +140,14 @@ export default function Services() {
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
+        <div className="flex flex-col items-start justify-center space-y-4 text-left">
           <div className="space-y-2">
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">
               Our Services
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Solutions for a Modern World</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Innovative Solutions Tailored for a Modern, Dynamic, and Digital-First World</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We offer a wide range of services to help you achieve your goals. From e-governance to AI-powered automation and web development, we have you covered.
+              We offer a wide range of services to help you achieve your goals. From e-governance to AI-powered automation and web development, our dedicated team has the expertise and commitment to deliver exceptional results that drive growth and success.
             </p>
           </div>
         </div>
