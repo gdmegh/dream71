@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle, Landmark, Workflow } from 'lucide-react';
+import { CheckCircle, Landmark, Workflow, Search, Draft, Code, TestTubeDiagonal, Rocket, LifeBuoy } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -37,6 +37,40 @@ const InfoSection = ({ title, description, items, image, imageHint, reverse = fa
                     </li>
                 ))}
             </ul>
+        </div>
+    </div>
+);
+
+const methodologySteps = [
+    { icon: Search, title: "Discovery", description: "We begin by understanding your vision, goals, and challenges." },
+    { icon: Draft, title: "Planning & Design", description: "Crafting blueprints and visual designs to map out the solution." },
+    { icon: Code, title: "Development", description: "Building the core application with clean, efficient code." },
+    { icon: TestTubeDiagonal, title: "Testing", description: "Rigorous QA to ensure a bug-free, reliable product." },
+    { icon: Rocket, title: "Deployment", description: "Launching the solution and making it available to your users." },
+    { icon: LifeBuoy, title: "Support", description: "Providing ongoing maintenance and support to ensure success." },
+];
+
+const MethodologyProcess = () => (
+    <div className="relative">
+        {/* The connecting line */}
+        <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary/20 hidden md:block"></div>
+        <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
+            {methodologySteps.map((step, index) => {
+                const isLeft = index % 2 === 0;
+                return (
+                    <div key={index} className={`relative flex items-center gap-6 ${isLeft ? '' : 'md:flex-row-reverse'}`}>
+                        {/* The circle on the line */}
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background hidden md:block"></div>
+                        <div className="p-4 bg-primary/10 rounded-full text-primary">
+                            <step.icon className="h-8 w-8" />
+                        </div>
+                        <div className={isLeft ? 'text-left' : 'md:text-right'}>
+                            <h4 className="font-headline text-xl font-bold">{step.title}</h4>
+                            <p className="text-muted-foreground">{step.description}</p>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     </div>
 );
@@ -103,7 +137,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                 reverse={true}
                             />
 
-                             <section className="space-y-8 text-center">
+                             <section className="space-y-12 text-center">
                                 <div className="space-y-2">
                                     <Workflow className="h-10 w-10 text-primary mx-auto" />
                                     <h2 className="font-headline text-3xl font-bold">Our Methodology</h2>
@@ -111,15 +145,8 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                         We follow a proven methodology to ensure project success, from initial discovery and planning through to deployment and ongoing support. Our process is transparent, collaborative, and focused on delivering value at every stage.
                                     </p>
                                 </div>
-                                <div className="relative w-full">
-                                    <Image
-                                        src="https://placehold.co/1200x600.png"
-                                        alt="Our Methodology Infographic"
-                                        width={1200}
-                                        height={600}
-                                        className="rounded-[20px] shadow-xl"
-                                        data-ai-hint="infographic process"
-                                    />
+                                <div className="relative w-full py-8">
+                                    <MethodologyProcess />
                                 </div>
                             </section>
 
