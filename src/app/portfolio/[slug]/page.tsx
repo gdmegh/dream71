@@ -19,7 +19,7 @@ const LoadingScreen = () => (
         
         <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-8 space-y-8">
-                <Skeleton className="h-[500px] w-full rounded-lg" />
+                <Skeleton className="h-[500px] w-full rounded-[20px]" />
                 <Skeleton className="h-64 w-full" />
                 <Skeleton className="h-64 w-full" />
             </div>
@@ -81,7 +81,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                 
                 {/* Main Content */}
                 <div className="lg:col-span-8 space-y-12">
-                    <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-xl shadow-2xl">
+                    <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl">
                         <Image
                             src={project.imageUrl || 'https://placehold.co/1200x600.png'}
                             alt={project.title}
@@ -98,7 +98,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-12 items-start">
-                        <Card className="bg-primary/5 border-primary/20 h-full">
+                        <Card className="bg-primary/5 border-primary/20 h-full" rounded="20px">
                             <CardHeader>
                                 <CardTitle className="font-headline text-2xl flex items-center gap-3"><Puzzle /> The Challenge</CardTitle>
                             </CardHeader>
@@ -106,7 +106,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                                 <p className="font-body text-muted-foreground">{project.problemStatement}</p>
                             </CardContent>
                         </Card>
-                        <Card className="bg-primary/5 border-primary/20 h-full">
+                        <Card className="bg-primary/5 border-primary/20 h-full" rounded="20px">
                             <CardHeader>
                                 <CardTitle className="font-headline text-2xl flex items-center gap-3"><Target /> The Solution</CardTitle>
                             </CardHeader>
@@ -129,7 +129,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                 {/* Right Sidebar */}
                 <div className="lg:col-span-4">
                     <div className="sticky top-24">
-                        <Card>
+                        <Card rounded="20px">
                             <CardHeader>
                                 <CardTitle className="font-headline text-2xl">Project Details</CardTitle>
                             </CardHeader>

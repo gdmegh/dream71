@@ -1,50 +1,6 @@
 import ParallaxService from '@/components/sections/parallax-service';
-import { Code, Smartphone, Palette, ShieldCheck, Rocket, BrainCircuit } from 'lucide-react';
+import { services } from '@/lib/services';
 
-const services = [
-  {
-    icon: Code,
-    title: "Web Development",
-    description: "We specialize in creating robust, scalable, and high-performance web applications tailored to your specific business needs. From custom e-commerce platforms and content management systems to complex enterprise-level web portals, our team leverages the latest technologies to build solutions that are both powerful and easy to use. We focus on clean code, responsive design, and a seamless user experience to ensure your web presence stands out.",
-    imageUrl: "https://placehold.co/1920x1080.png",
-    imageHint: "web application dashboard"
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile App Development",
-    description: "Native and cross-platform mobile apps that deliver seamless user experiences on iOS and Android.",
-    imageUrl: "https://placehold.co/1920x1081.png",
-    imageHint: "mobile app interface"
-  },
-  {
-    icon: Palette,
-    title: "UI/UX Design",
-    description: "Intuitive and beautiful user interfaces that are a joy to use, enhancing user engagement and satisfaction.",
-    imageUrl: "https://placehold.co/1920x1082.png",
-    imageHint: "design wireframe"
-  },
-  {
-    icon: ShieldCheck,
-    title: "QA & Testing",
-    description: "Rigorous quality assurance processes to ensure your software is reliable, secure, and bug-free.",
-    imageUrl: "https://placehold.co/1920x1083.png",
-    imageHint: "quality assurance check"
-  },
-  {
-    icon: Rocket,
-    title: "DevOps",
-    description: "Streamlining development and operations to deliver high-quality software faster and more reliably.",
-    imageUrl: "https://placehold.co/1920x1084.png",
-    imageHint: "server deployment"
-  },
-  {
-    icon: BrainCircuit,
-    title: "AI & ML Solutions",
-    description: "Integrating artificial intelligence and machine learning to build intelligent, data-driven applications.",
-    imageUrl: "https://placehold.co/1920x1085.png",
-    imageHint: "artificial intelligence brain"
-  },
-];
 
 export default function ServicesPage() {
   return (

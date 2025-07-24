@@ -18,7 +18,7 @@ import { Skeleton } from '../ui/skeleton';
 
 const LoadingSkeleton = () => (
     <div className="w-full max-w-4xl mx-auto">
-        <Card className="h-full bg-white text-gray-800">
+        <Card className="h-full bg-white text-gray-800" rounded="20px">
             <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
                 <Skeleton className="h-20 w-20 rounded-full mb-6" />
                 <Skeleton className="h-6 w-3/4 mb-6" />
@@ -84,7 +84,7 @@ export default function Testimonials() {
                 {testimonials.map((item, index) => (
                 <CarouselItem key={index}>
                     <div className="p-1">
-                    <Card className="h-full bg-white text-gray-800">
+                    <Card className="h-full bg-white text-gray-800" rounded="20px">
                         <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
                             <Avatar className="h-20 w-20 mb-6 border-4 border-primary/20">
                                 <AvatarImage src={item.avatar || 'https://placehold.co/100x100.png'} alt={item.name} data-ai-hint="person face" />
@@ -111,4 +111,3 @@ export default function Testimonials() {
     </section>
   );
 }
-

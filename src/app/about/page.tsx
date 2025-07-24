@@ -54,7 +54,7 @@ export default function AboutPage() {
                                 alt="Dream71 team in a meeting"
                                 width={800}
                                 height={600}
-                                className="rounded-lg shadow-xl"
+                                className="rounded-[20px] shadow-xl"
                                 data-ai-hint="team meeting"
                             />
                         </div>
@@ -72,7 +72,7 @@ export default function AboutPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {teamMembers.map((member) => (
-                            <Card key={member.name} className="text-center">
+                            <Card key={member.name} className="text-center" rounded="20px">
                                 <CardContent className="p-6">
                                     <Avatar className="w-24 h-24 mx-auto mb-4 border-4 border-primary/20">
                                         <AvatarImage src={member.image} alt={member.name} data-ai-hint={member.dataAiHint} />

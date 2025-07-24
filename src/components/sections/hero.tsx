@@ -50,7 +50,7 @@ export default function Hero() {
                                     src={image.src}
                                     alt={image.alt}
                                     fill
-                                    className="rounded-lg shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover"
+                                    className="rounded-[20px] shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover"
                                     data-ai-hint={image.dataAiHint}
                                     priority={index === 0}
                                 />

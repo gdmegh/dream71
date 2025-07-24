@@ -36,7 +36,7 @@ export default function WhyChooseUs() {
               alt="Team collaborating"
               width={800}
               height={600}
-              className="rounded-lg shadow-xl mx-auto"
+              className="rounded-[20px] shadow-xl mx-auto"
               data-ai-hint="team collaboration"
             />
           </div>

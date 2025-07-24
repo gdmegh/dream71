@@ -1,28 +1,9 @@
-
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
-
-// Dummy data for services, as the original file was removed.
-// In a real application, this would also come from a database.
-const services = [
-    {
-        slug: "web-development",
-        title: "Web Development",
-        description: "Building modern, responsive, and scalable web applications.",
-        longDescription: "We craft beautiful and functional web experiences, from simple landing pages to complex enterprise applications. Our team uses the latest technologies to ensure your project is fast, secure, and ready to scale.",
-        image: "https://placehold.co/800x600.png",
-        imageHint: "web development code",
-        points: [
-            { title: "Frontend", description: "React, Next.js" },
-            { title: "Backend", description: "Node.js, Python" },
-            { title: "Databases", description: "PostgreSQL, MongoDB" },
-            { title: "DevOps", description: "Docker, Kubernetes" },
-        ]
-    }
-]
-
+import { services } from '@/lib/services';
+import { CheckCircle } from 'lucide-react';
 
 export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
   const service = services.find(s => s.slug === params.slug);
@@ -50,6 +31,17 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
                       <p className="font-body text-muted-foreground mb-6">
                           {service.longDescription}
                       </p>
+                       <h3 className="font-headline text-2xl font-bold text-foreground mb-4">Key Areas</h3>
+                        <ul className="space-y-3">
+                            {service.points.map((point, index) => (
+                                <li key={index} className="flex items-start font-body text-muted-foreground">
+                                    <CheckCircle className="h-5 w-5 mr-3 mt-1 text-primary flex-shrink-0" />
+                                    <div>
+                                        <span className="font-bold text-foreground">{point.title}:</span> {point.description}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
                   </div>
                   <div className="md:order-last">
                       <Image
@@ -57,7 +49,7 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
                           alt={service.title}
                           width={800}
                           height={600}
-                          className="rounded-lg shadow-xl"
+                          className="rounded-[20px] shadow-xl"
                           data-ai-hint={service.imageHint}
                       />
                   </div>

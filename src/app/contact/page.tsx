@@ -21,7 +21,7 @@ export default function ContactPage() {
                     alt="Map showing office location"
                     layout="fill"
                     objectFit="cover"
-                    className="rounded-lg"
+                    className="rounded-[20px]"
                     data-ai-hint="map"
                 />
             </div>
