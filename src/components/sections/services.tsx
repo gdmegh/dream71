@@ -1,4 +1,3 @@
-
 'use client';
 import { CircleCheckBig, Aperture, Cpu } from 'lucide-react';
 import Link from 'next/link';
@@ -140,9 +139,9 @@ export default function Services() {
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">
               Our Services
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Innovative Solutions Tailored for a Modern, Dynamic, and Digital-First World</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Pioneering Digital Solutions for a Dynamic World</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We offer a wide range of services to help you achieve your goals. From e-governance to AI-powered automation and web development, our dedicated team has the expertise and commitment to deliver exceptional results that drive growth and success.
+              We craft bespoke digital experiences, from robust e-governance platforms to intelligent automation and captivating games. Our passion is turning your vision into reality with cutting-edge technology and a commitment to excellence.
             </p>
           </div>
         </div>
