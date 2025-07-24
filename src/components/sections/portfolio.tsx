@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Image from 'next/image';
@@ -10,33 +11,35 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { projects } from '@/lib/portfolio-data';
 
 const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
-    <Card className="overflow-hidden group w-full bg-white text-gray-800">
-      <CardContent className="p-0">
-        <div className="relative h-56">
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            style={{ objectFit: 'cover' }}
-            data-ai-hint={project.dataAiHint}
-            className="transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
-        </div>
-        <div className="p-6">
-          <h3 className="font-headline text-xl font-bold mb-2">{project.title}</h3>
-          <p className="text-gray-600 mb-4 font-body text-sm h-10">{project.description}</p>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {project.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">{tag}</Badge>
-            ))}
-          </div>
-           <Link href={`/portfolio/${project.slug}`} className="inline-flex items-center font-semibold text-primary hover:underline font-body text-sm">
-            View Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+    <Link href={`/portfolio/${project.slug}`} className="group block">
+        <Card className="overflow-hidden group w-full h-full bg-card text-card-foreground">
+          <CardContent className="p-0 flex flex-col h-full">
+            <div className="relative h-56">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                data-ai-hint={project.dataAiHint}
+                className="transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
+            </div>
+            <div className="p-6 flex flex-col flex-grow">
+              <h3 className="font-headline text-xl font-bold mb-2 text-foreground">{project.title}</h3>
+              <p className="text-muted-foreground mb-4 font-body text-sm flex-grow">{project.description}</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {project.tags.slice(0, 3).map((tag) => (
+                  <Badge key={tag} variant="secondary">{tag}</Badge>
+                ))}
+              </div>
+               <span className="inline-flex items-center font-semibold text-primary group-hover:underline font-body text-sm mt-auto">
+                View Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+    </Link>
 );
 
 export default function Portfolio() {
