@@ -79,7 +79,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
             >
                 <CarouselContent>
                     {project.gallery.map((image, index) => (
-                        <CarouselItem key={index} className="relative h-[300px] sm:h-[400px] md:h-[600px]">
+                        <CarouselItem key={index} className="relative h-[300px] sm:h-[400px] md:h-[600px] md:basis-1/2 lg:basis-1/3">
                             <Image
                                 src={image.src}
                                 alt={`${project.title} gallery image ${index + 1}`}
