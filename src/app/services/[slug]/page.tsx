@@ -7,11 +7,9 @@ import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle, Landmark, ArrowRight } from 'lucide-react';
+import { CheckCircle, Landmark, Workflow } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
 const InfoSection = ({ title, description, items, image, imageHint, reverse = false }: { title: string, description?: string, items: {title: string, description: string}[], image: string, imageHint: string, reverse?: boolean }) => (
     <div className="grid md:grid-cols-2 gap-12 items-center py-8">
@@ -104,6 +102,27 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                 imageHint="team collaboration"
                                 reverse={true}
                             />
+
+                             <section className="space-y-8 text-center">
+                                <div className="space-y-2">
+                                    <Workflow className="h-10 w-10 text-primary mx-auto" />
+                                    <h2 className="font-headline text-3xl font-bold">Our Methodology</h2>
+                                    <p className="font-body text-muted-foreground max-w-3xl mx-auto">
+                                        We follow a proven methodology to ensure project success, from initial discovery and planning through to deployment and ongoing support. Our process is transparent, collaborative, and focused on delivering value at every stage.
+                                    </p>
+                                </div>
+                                <div className="relative w-full">
+                                    <Image
+                                        src="https://placehold.co/1200x600.png"
+                                        alt="Our Methodology Infographic"
+                                        width={1200}
+                                        height={600}
+                                        className="rounded-[20px] shadow-xl"
+                                        data-ai-hint="infographic process"
+                                    />
+                                </div>
+                            </section>
+
                         </div>
 
                         {/* Right Sidebar */}
