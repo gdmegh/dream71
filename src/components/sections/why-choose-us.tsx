@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { CheckCircle } from 'lucide-react';
 
@@ -15,10 +16,10 @@ export default function WhyChooseUs() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why Choose Dream71?
+              Your Trusted Partner for Digital Innovation and Excellence
             </h2>
             <p className="font-body text-lg text-muted-foreground mb-8 max-w-xl mx-auto md:mx-0">
-              We are more than just a software company. We are your partner in innovation and growth, committed to turning your vision into reality.
+              We are more than just a software company. We are your dedicated partner in navigating the complexities of the digital landscape, committed to turning your ambitious vision into a tangible reality with solutions that are built to last.
             </p>
             <ul className="space-y-4">
               {features.map((feature, index) => (
