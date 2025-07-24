@@ -23,8 +23,8 @@ interface Service {
 export const services: Service[] = [
   {
     slug: "e-governance",
-    title: "Transforming Public Services with Innovative e-Governance Solutions",
-    description: "We develop and implement cutting-edge digital platforms designed to streamline government operations, enhance the delivery of public services, and foster greater transparency and citizen engagement.",
+    title: "Pioneering Digital Transformation in Public Services Through Advanced e-Governance Solutions",
+    description: "We develop and implement cutting-edge digital platforms designed to streamline government operations, enhance the delivery of public services, and foster greater transparency and citizen engagement across all sectors.",
     longDescription: "Our e-Governance solutions are designed to bridge the gap between governments and citizens. We build secure, scalable, and user-friendly digital platforms that transform public service delivery. We specialize in creating comprehensive systems for digital identity management, online tax and revenue collection, and transparent public procurement portals. From digital document management to online citizen portals for accessing services like licenses and permits, we empower governments to become more efficient, transparent, and responsive. By leveraging modern technologies, we help reduce bureaucracy, increase citizen participation, and build greater trust in public institutions.",
     link: "/services/e-governance",
     image: "/images/e_gov.jpeg",
@@ -40,7 +40,7 @@ export const services: Service[] = [
   {
     slug: "business-automation",
     title: "Driving Growth and Efficiency with Intelligent Business Automation and AI",
-    description: "We leverage the power of Artificial Intelligence to automate complex business processes, unlock actionable insights from your data, and foster a culture of innovation that positions you for sustained success.",
+    description: "We leverage the power of Artificial Intelligence to automate complex business processes, unlock actionable insights from your data, and foster a culture of innovation that positions you for sustained success in a competitive market.",
     longDescription: "Unlock the full potential of your business with our AI-powered automation solutions. We help you identify opportunities for automation, from routine administrative tasks to complex decision-making processes. Our solutions integrate seamlessly with your existing systems to reduce costs, minimize errors, and free up your team to focus on strategic initiatives.",
     link: "/services/business-automation",
     image: "https://placehold.co/800x600.png",
@@ -55,8 +55,8 @@ export const services: Service[] = [
   },
   {
     slug: "custom-software",
-    title: "Bespoke Software Development to Meet Your Unique Business Needs",
-    description: "We specialize in creating tailor-made software solutions from the ground up. Our expert team designs and develops high-quality, scalable, and secure applications that align perfectly with your strategic goals and operational requirements.",
+    title: "Crafting Bespoke Software Solutions to Propel Your Business Forward",
+    description: "We specialize in designing and developing high-quality, scalable, and secure custom software applications that are meticulously tailored to your unique operational needs and strategic objectives, ensuring a perfect fit for your business.",
     longDescription: "We build bespoke software solutions from the ground up, tailored to your specific needs. Our team works closely with you to understand your goals and challenges, delivering high-quality, scalable, and secure applications. Whether you need a complex enterprise system or a user-friendly mobile app, we have the expertise to bring your vision to life.",
     link: "/services/custom-software",
     image: "https://placehold.co/800x600.png",
@@ -71,8 +71,8 @@ export const services: Service[] = [
   },
   {
     slug: "game-development",
-    title: "Game Development",
-    description: "Developing immersive and interactive games for mobile and web platforms that captivate and entertain.",
+    title: "Creating Immersive and Captivating Gaming Experiences for a Global Audience",
+    description: "We specialize in developing high-quality, interactive games for mobile and web platforms, focusing on engaging gameplay, stunning visuals, and memorable narratives that captivate and entertain players worldwide.",
     longDescription: "We create engaging and memorable gaming experiences for players around the world. Our game development services cover everything from initial concept and design to development, testing, and launch. We specialize in creating games for mobile and web platforms, with a focus on compelling gameplay, stunning visuals, and robust monetization strategies.",
     link: "/services/game-development",
     image: "https://placehold.co/800x600.png",
