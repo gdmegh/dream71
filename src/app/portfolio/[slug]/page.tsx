@@ -30,14 +30,14 @@ const LoadingScreen = () => (
 );
 
 
-export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
+export default function PortfolioDetailPage({ params: { slug } }: { params: { slug: string } }) {
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProject = async () => {
       setLoading(true);
-      const q = query(collection(db, "Project"), where("slug", "==", params.slug), where("isPublic", "==", true));
+      const q = query(collection(db, "Project"), where("slug", "==", slug), where("isPublic", "==", true));
       const querySnapshot = await getDocs(q);
       
       if (querySnapshot.empty) {
@@ -50,7 +50,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
     };
 
     fetchProject();
-  }, [params.slug]);
+  }, [slug]);
 
 
   if (loading) {
