@@ -24,6 +24,9 @@ const chartConfig = {
   value: {
     color: 'hsl(var(--foreground))',
   },
+  games: {
+    label: "Games",
+  },
 };
 
 
@@ -83,16 +86,15 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
             case 'game-development':
                 return (
                      <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                        <BarChart data={serviceChartData as any[]}>
-                            <CartesianGrid vertical={false} />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip content={<ChartTooltipContent />} />
-                            <Legend />
-                            <Bar dataKey="Online Game" fill="var(--color-chart-1)" radius={4} />
-                            <Bar dataKey="Mobile Game" fill="var(--color-chart-2)" radius={4} />
-                            <Bar dataKey="Desktop Game" fill="var(--color-chart-5)" radius={4} />
-                        </BarChart>
+                        <PieChart>
+                          <Tooltip content={<ChartTooltipContent nameKey="name" />} />
+                          <Pie data={serviceChartData as any[]} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" label>
+                            {(serviceChartData as any[]).map((entry) => (
+                              <Cell key={`cell-${entry.name}`} fill={entry.fill} />
+                            ))}
+                          </Pie>
+                          <Legend />
+                        </PieChart>
                     </ChartContainer>
                 );
             default:

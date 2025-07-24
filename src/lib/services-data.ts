@@ -108,8 +108,8 @@ export const chartData = {
     { month: 'Jun', web: 8, mobile: 6 },
   ],
   'game-development': [
-    { name: '2021', 'Mobile Game': 15, 'Online Game': 8, 'Desktop Game': 4 },
-    { name: '2022', 'Mobile Game': 20, 'Online Game': 12, 'Desktop Game': 6 },
-    { name: '2023', 'Mobile Game': 25, 'Online Game': 18, 'Desktop Game': 8 },
+    { name: 'Mobile Game', value: 60, fill: 'hsl(var(--chart-1))' },
+    { name: 'Online Game', value: 38, fill: 'hsl(var(--chart-2))' },
+    { name: 'Desktop Game', value: 18, fill: 'hsl(var(--chart-3))' },
   ]
 };
