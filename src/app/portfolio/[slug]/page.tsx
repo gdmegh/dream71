@@ -1,19 +1,21 @@
 
 'use client';
 
-import { projects } from '@/lib/portfolio-data';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Calendar, User, MessageSquare, Target, Puzzle, GitBranch, BarChart2, ArrowUpRight } from 'lucide-react';
+import { ExternalLink, Calendar, User, MessageSquare, Target, Puzzle, GitBranch, BarChart2, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const chartConfig = {
   'Conversion Rate': { label: 'Conversion Rate (%)', color: 'hsl(var(--chart-1))' },
@@ -26,20 +28,79 @@ const chartConfig = {
   'Cost per query ($)': { label: 'Cost per query ($)', color: 'hsl(var(--chart-2))' },
 };
 
+const LoadingScreen = () => (
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        <Skeleton className="h-12 w-1/2 mx-auto" />
+        <Skeleton className="h-8 w-3/4 mx-auto" />
+        <Skeleton className="h-96 w-full" />
+        <div className="grid lg:grid-cols-3 gap-12 items-start">
+            <div className="lg:col-span-2 space-y-12">
+                <Skeleton className="h-64 w-full" />
+                <Skeleton className="h-64 w-full" />
+            </div>
+            <aside className="lg:col-span-1 space-y-8 sticky top-24">
+                 <Skeleton className="h-96 w-full" />
+            </aside>
+        </div>
+    </div>
+);
+
+
 export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
-  const project = projects.all.find(p => p.slug === params.slug);
-  const relatedProjects = projects.all.filter(p => p.category === project?.category && p.slug !== project?.slug).slice(0, 2);
+  const [project, setProject] = useState<any>(null);
+  const [relatedProjects, setRelatedProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: false })
   );
 
-  if (!project) {
-    notFound();
+  useEffect(() => {
+    const fetchProject = async () => {
+      setLoading(true);
+      const q = query(collection(db, "projects"), where("slug", "==", params.slug));
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        notFound();
+      }
+      
+      const projectData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+      setProject(projectData);
+    };
+
+    fetchProject();
+  }, [params.slug]);
+
+  useEffect(() => {
+    if (project) {
+        const fetchRelatedProjects = async () => {
+            const q = query(
+                collection(db, "projects"),
+                where("category", "==", project.category),
+                where("slug", "!=", project.slug),
+                limit(2)
+            );
+            const querySnapshot = await getDocs(q);
+            const relatedData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setRelatedProjects(relatedData);
+            setLoading(false);
+        }
+        fetchRelatedProjects();
+    }
+  }, [project])
+
+
+  if (loading) {
+    return <LoadingScreen />;
   }
 
-  const renderChart = (project: typeof projects.all[0]) => {
-    if (!project.impact?.chartData) return null;
+  if (!project) {
+    return notFound();
+  }
+
+  const renderChart = (project: any) => {
+    if (!project.impact?.chartData || project.impact.chartData.length === 0) return null;
 
     const keys = Object.keys(project.impact.chartData[0]).filter(key => key !== 'name');
 
@@ -78,7 +139,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                 opts={{ loop: true }}
             >
                 <CarouselContent>
-                    {project.gallery.map((image, index) => (
+                    {project.gallery.map((image: { src: string, dataAiHint: string }, index: number) => (
                         <CarouselItem key={index} className="relative h-[300px] sm:h-[400px] md:h-[600px]">
                             <Image
                                 src={image.src}
@@ -165,7 +226,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                                 <div>
                                     <p className='font-semibold'>Tech Stack</p>
                                      <div className="flex flex-wrap gap-1 mt-1">
-                                          {project.tags.map((tag) => (
+                                          {project.tags.map((tag: string) => (
                                               <Badge key={tag} variant="secondary">{tag}</Badge>
                                           ))}
                                       </div>
@@ -211,7 +272,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                                         alt={related.title}
                                         fill
                                         style={{ objectFit: 'cover' }}
-                                        data-ai-hint={related.dataAiHint}
+                                        data-ai-hint={related.dataAiHint || 'project image'}
                                         className="transition-transform duration-500 group-hover:scale-105"
                                       />
                                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
@@ -220,7 +281,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                                       <h3 className="font-headline text-xl font-bold mb-2 text-foreground">{related.title}</h3>
                                       <p className="text-muted-foreground font-body text-sm flex-grow">{related.description}</p>
                                       <div className="flex flex-wrap gap-2 my-4">
-                                        {related.tags.slice(0, 3).map((tag) => (
+                                        {related.tags.slice(0, 3).map((tag: string) => (
                                           <Badge key={tag} variant="secondary">{tag}</Badge>
                                         ))}
                                       </div>

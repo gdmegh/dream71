@@ -8,9 +8,12 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { projects } from '@/lib/portfolio-data';
+import { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { Skeleton } from '../ui/skeleton';
 
-const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
+const ProjectCard = ({ project }: { project: any }) => (
     <Link href={`/portfolio/${project.slug}`} className="group block">
         <Card rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground">
           <CardContent className="p-0 flex flex-col h-full">
@@ -20,7 +23,7 @@ const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
                 alt={project.title}
                 fill
                 style={{ objectFit: 'cover' }}
-                data-ai-hint={project.dataAiHint}
+                data-ai-hint={project.dataAiHint || 'project image'}
                 className="transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
@@ -29,7 +32,7 @@ const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
               <h3 className="font-headline text-xl font-bold mb-2 text-foreground">{project.title}</h3>
               <p className="text-muted-foreground mb-4 font-body text-sm flex-grow">{project.description}</p>
               <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.slice(0, 3).map((tag) => (
+                {project.tags.slice(0, 3).map((tag: string) => (
                   <Badge key={tag} variant="secondary">{tag}</Badge>
                 ))}
               </div>
@@ -42,12 +45,61 @@ const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
     </Link>
 );
 
+const ProjectGrid = ({ projects }: { projects: any[] }) => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {projects.map((project) => (
+      <ProjectCard key={project.id} project={project} />
+    ))}
+  </div>
+);
+
+const LoadingSkeleton = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {[...Array(3)].map((_, i) => (
+       <Card key={i} rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground">
+          <CardContent className="p-0 flex flex-col h-full">
+            <Skeleton className="h-56 w-full" />
+            <div className="p-6 space-y-4">
+               <Skeleton className="h-6 w-3/4" />
+               <Skeleton className="h-4 w-full" />
+               <Skeleton className="h-4 w-1/2" />
+               <div className="flex gap-2">
+                  <Skeleton className="h-6 w-16" />
+                  <Skeleton className="h-6 w-20" />
+               </div>
+            </div>
+            </CardContent>
+        </Card>
+    ))}
+  </div>
+);
+
 export default function Portfolio() {
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setLoading(true);
+      const querySnapshot = await getDocs(collection(db, "projects"));
+      const projectsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setProjects(projectsData);
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
+
+  const getProjectsByCategory = (category: string) => {
+    if (category === 'all') return projects;
+    return projects.filter(p => p.category === category);
+  }
+
   const tabs = [
-    { value: 'all', label: 'All Projects', projects: projects.all },
-    { value: 'web', label: 'Web Apps', projects: projects.web() },
-    { value: 'mobile', label: 'Mobile Apps', projects: projects.mobile() },
-    { value: 'ai', label: 'AI/ML', projects: projects.ai() }
+    { value: 'all', label: 'All Projects' },
+    { value: 'web', label: 'Web Apps' },
+    { value: 'mobile', label: 'Mobile Apps' },
+    { value: 'ai', label: 'AI/ML' }
   ];
 
   return (
@@ -68,11 +120,7 @@ export default function Portfolio() {
           </TabsList>
           {tabs.map((tab) => (
             <TabsContent key={tab.value} value={tab.value} className="mt-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {tab.projects.map((project, index) => (
-                  <ProjectCard key={index} project={project} />
-                ))}
-              </div>
+              {loading ? <LoadingSkeleton /> : <ProjectGrid projects={getProjectsByCategory(tab.value)} />}
             </TabsContent>
           ))}
         </Tabs>

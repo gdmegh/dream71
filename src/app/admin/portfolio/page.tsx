@@ -1,6 +1,6 @@
 
+'use client';
 
-import { projects } from '@/lib/portfolio-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -8,8 +8,46 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { PlusCircle, MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useEffect, useState } from 'react';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function PortfolioCMS() {
+  const [projects, setProjects] = useState<any[]>([]);
+  const { toast } = useToast();
+
+  const fetchProjects = async () => {
+    const querySnapshot = await getDocs(collection(db, "projects"));
+    const projectsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setProjects(projectsData);
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+  
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "projects", id));
+      toast({ title: "Success", description: "Project deleted successfully." });
+      fetchProjects(); // Refresh list
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete project.", variant: "destructive" });
+    }
+  };
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -35,14 +73,14 @@ export default function PortfolioCMS() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {projects.all.map((project) => (
-              <TableRow key={project.slug}>
+            {projects.map((project) => (
+              <TableRow key={project.id}>
                 <TableCell className="font-medium">{project.title}</TableCell>
                 <TableCell>
                     <Badge variant="outline">{project.category}</Badge>
                 </TableCell>
                 <TableCell className="space-x-1">
-                    {project.tags.slice(0, 3).map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                    {project.tags.slice(0, 3).map((tag: string) => <Badge key={tag} variant="secondary">{tag}</Badge>)}
                 </TableCell>
                 <TableCell className="text-right">
                     <DropdownMenu>
@@ -52,8 +90,26 @@ export default function PortfolioCMS() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                            <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+                            <AlertDialog>
+                               <AlertDialogTrigger asChild>
+                                    <button className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full text-destructive">
+                                        Delete
+                                    </button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete this project.
+                                    </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDelete(project.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </TableCell>

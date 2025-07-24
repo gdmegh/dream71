@@ -19,10 +19,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { db } from "@/lib/firebase";
+import { addDoc, collection } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
-  slug: z.string().min(2, "Slug must be at least 2 characters."),
+  slug: z.string().min(2, "Slug must be at least 2 characters.").refine(s => !s.includes(' '), "Slug cannot contain spaces."),
   category: z.enum(["web", "mobile", "ai"], { required_error: "Please select a category." }),
   client: z.string().min(2, "Client name is required."),
   timeline: z.string().min(2, "Timeline is required."),
@@ -45,6 +49,7 @@ const formSchema = z.object({
 
 export default function NewPortfolioProject() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,14 +76,42 @@ export default function NewPortfolioProject() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, you'd send this to a server
-    console.log(values);
-    toast({
-      title: "Project Submitted!",
-      description: "The new project has been added (console only).",
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+        const docRef = await addDoc(collection(db, "projects"), {
+            ...values,
+            tags: values.tags.split(',').map(tag => tag.trim()),
+            gallery: [
+                { src: values.galleryImage1, dataAiHint: "project image" },
+                { src: values.galleryImage2, dataAiHint: "project image" },
+                { src: values.galleryImage3, dataAiHint: "project image" }
+            ],
+            testimonial: {
+                text: values.testimonialText,
+                author: values.testimonialAuthor,
+                title: values.testimonialTitle
+            },
+            impact: {
+                summary: values.impactSummary,
+                // You might want to add a way to input chart data in the form
+                chartData: [] 
+            }
+        });
+        console.log("Document written with ID: ", docRef.id);
+        toast({
+            title: "Project Submitted!",
+            description: "The new project has been added to the database.",
+        });
+        form.reset();
+        router.push('/admin/portfolio');
+    } catch (e) {
+        console.error("Error adding document: ", e);
+        toast({
+            title: "Error",
+            description: "There was an error submitting the project.",
+            variant: "destructive",
+        });
+    }
   }
 
   return (
@@ -113,6 +146,9 @@ export default function NewPortfolioProject() {
                         <FormControl>
                             <Input placeholder="e.g., ecommerce-platform" {...field} />
                         </FormControl>
+                        <FormDescription>
+                            A unique, URL-friendly identifier. No spaces allowed.
+                        </FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}
@@ -399,7 +435,9 @@ export default function NewPortfolioProject() {
             </Card>
 
 
-            <Button type="submit" size="lg">Create Project</Button>
+            <Button type="submit" size="lg" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "Creating..." : "Create Project"}
+            </Button>
           </form>
         </Form>
       </CardContent>
