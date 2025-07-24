@@ -134,6 +134,39 @@ export const projects = {
         ]
       }
     },
+    {
+      slug: "travel-planner-app",
+      title: "AI Travel Planner App",
+      description: "A mobile app that uses AI to create personalized travel itineraries.",
+      longDescription: "<p>We developed a smart travel planning application that leverages AI to simplify trip planning for users. The app provides personalized recommendations for flights, hotels, and attractions based on user preferences and budget. It also features a dynamic itinerary builder that adjusts to real-time changes and user feedback.</p>",
+      image: "https://placehold.co/600x400.png",
+      dataAiHint: "travel app",
+      gallery: [
+          { src: "https://placehold.co/1200x800.png", dataAiHint: "map itinerary" },
+          { src: "https://placehold.co/1200x800.png", dataAiHint: "hotel booking" },
+          { src: "https://placehold.co/1200x800.png", dataAiHint: "flight search" }
+      ],
+      tags: ["React Native", "Python", "AI/ML", "Google Maps API"],
+      link: "#",
+      category: "mobile",
+      client: "Wanderlust Inc.",
+      timeline: "7 Months",
+      testimonial: {
+        text: "The AI travel planner has been a huge success with our users. The personalized itineraries are a fantastic feature, and we've seen a significant increase in user engagement since launch.",
+        author: "Product Manager",
+        title: "PM, Wanderlust Inc."
+      },
+      problemStatement: "Travel planning is often time-consuming and overwhelming for users, who have to switch between multiple apps and websites to plan a single trip.",
+      coreObjective: "To create a one-stop travel planning app that uses AI to provide a seamless, personalized, and enjoyable trip planning experience for users.",
+      solutionMethodology: "We used React Native to build a cross-platform mobile app and a Python-based backend with a custom machine learning model for recommendations. The app integrates with various travel APIs to provide real-time data.",
+      impact: {
+        summary: "The app achieved a 50% higher user retention rate compared to the industry average and reduced the average trip planning time for users by 70%.",
+        chartData: [
+            { name: 'Manual', 'Planning Time (hrs)': 10, 'Satisfaction': 3.5 },
+            { name: 'AI App', 'Planning Time (hrs)': 3, 'Satisfaction': 4.8 },
+        ]
+      }
+    }
   ],
   web() {
     return this.all.filter(project => project.category === 'web');
