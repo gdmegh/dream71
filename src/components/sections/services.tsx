@@ -12,8 +12,8 @@ import { services, chartData } from '@/lib/services-data';
 
 const chartConfig = {
   projects: { label: 'Projects Completed', color: 'hsl(var(--chart-1))' },
-  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-2))' },
-  'Success Rate': { label: 'Success Rate (%)', color: 'hsl(var(--chart-3))' },
+  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(120, 70%, 40%)' },
+  'Success Rate': { label: 'Success Rate (%)', color: 'hsl(120, 70%, 40%)' },
   costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))', icon: Cpu },
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
@@ -136,13 +136,13 @@ export default function Services() {
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
+          <div className="space-y-2 text-center">
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-muted-foreground">
               Our Services
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Pioneering Digital Solutions for a Dynamic World</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Innovative Solutions for a Digital-First World</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We craft bespoke digital experiences, from robust e-governance platforms to intelligent automation and captivating games. Our passion is turning your vision into reality with cutting-edge technology and a commitment to excellence.
+              We deliver bespoke digital experiences, from advanced e-governance systems to intelligent automation and captivating games, turning your vision into reality with cutting-edge technology and a commitment to excellence.
             </p>
           </div>
         </div>
