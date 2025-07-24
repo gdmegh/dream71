@@ -30,29 +30,28 @@ const LoadingScreen = () => (
 );
 
 
-export default function PortfolioDetailPage({ params: { slug } }: { params: { slug: string } }) {
+export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProject = async () => {
+      if (!slug) return;
       setLoading(true);
       const q = query(collection(db, "Project"), where("slug", "==", slug), where("isPublic", "==", true), limit(1));
       const querySnapshot = await getDocs(q);
       
       if (querySnapshot.empty) {
-        notFound();
-        return;
+        setProject(null);
+      } else {
+        const projectData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+        setProject(projectData);
       }
-      
-      const projectData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
-      setProject(projectData);
       setLoading(false);
     };
 
-    if (slug) {
-        fetchProject();
-    }
+    fetchProject();
   }, [slug]);
 
 
