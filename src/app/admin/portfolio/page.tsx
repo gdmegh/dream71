@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { PlusCircle, MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -21,7 +21,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
 export default function PortfolioCMS() {
@@ -29,7 +28,9 @@ export default function PortfolioCMS() {
   const { toast } = useToast();
 
   const fetchProjects = async () => {
-    const querySnapshot = await getDocs(collection(db, "projects"));
+    // Note: In a real app, you might want to filter by owner
+    const q = query(collection(db, "Project"));
+    const querySnapshot = await getDocs(q);
     const projectsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setProjects(projectsData);
   };
@@ -40,7 +41,7 @@ export default function PortfolioCMS() {
   
   const handleDelete = async (id: string) => {
     try {
-      await deleteDoc(doc(db, "projects", id));
+      await deleteDoc(doc(db, "Project", id));
       toast({ title: "Success", description: "Project deleted successfully." });
       fetchProjects(); // Refresh list
     } catch (error) {
@@ -67,8 +68,8 @@ export default function PortfolioCMS() {
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Tags</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created At</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -77,10 +78,10 @@ export default function PortfolioCMS() {
               <TableRow key={project.id}>
                 <TableCell className="font-medium">{project.title}</TableCell>
                 <TableCell>
-                    <Badge variant="outline">{project.category}</Badge>
+                    <Badge variant={project.isPublic ? "default" : "secondary"}>{project.isPublic ? "Public" : "Private"}</Badge>
                 </TableCell>
-                <TableCell className="space-x-1">
-                    {project.tags.slice(0, 3).map((tag: string) => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                <TableCell>
+                    {project.createdAt?.toDate().toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right">
                     <DropdownMenu>
@@ -90,6 +91,9 @@ export default function PortfolioCMS() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <DropdownMenuItem asChild>
+                               <Link href={`/portfolio/${project.slug}`}>View</Link>
+                            </DropdownMenuItem>
                             <DropdownMenuItem disabled>Edit</DropdownMenuItem>
                             <AlertDialog>
                                <AlertDialogTrigger asChild>

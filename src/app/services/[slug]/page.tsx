@@ -1,13 +1,28 @@
 
-import { services } from '@/lib/services-data';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle } from 'lucide-react';
-import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
-import CtaSection from '@/components/sections/cta-section';
 import { notFound } from 'next/navigation';
+import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
+
+// Dummy data for services, as the original file was removed.
+// In a real application, this would also come from a database.
+const services = [
+    {
+        slug: "web-development",
+        title: "Web Development",
+        description: "Building modern, responsive, and scalable web applications.",
+        longDescription: "We craft beautiful and functional web experiences, from simple landing pages to complex enterprise applications. Our team uses the latest technologies to ensure your project is fast, secure, and ready to scale.",
+        image: "https://placehold.co/800x600.png",
+        imageHint: "web development code",
+        points: [
+            { title: "Frontend", description: "React, Next.js" },
+            { title: "Backend", description: "Node.js, Python" },
+            { title: "Databases", description: "PostgreSQL, MongoDB" },
+            { title: "DevOps", description: "Docker, Kubernetes" },
+        ]
+    }
+]
+
 
 export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
   const service = services.find(s => s.slug === params.slug);
@@ -48,30 +63,6 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
                   </div>
               </div>
           </div>
-      </section>
-
-      <section id="features" className="py-20 bg-primary/5">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-                <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Key Features</h2>
-                <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-                    Explore the core features that make our {service.title} stand out.
-                </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                {service.points.map((feature, index) => (
-                    <Card key={index} className="text-center">
-                        <CardContent className="p-6">
-                           <div className="bg-primary/10 text-primary p-3 rounded-full w-fit mx-auto mb-4">
-                               <feature.icon className="h-8 w-8" />
-                           </div>
-                            <h3 className="font-headline text-lg font-semibold">{feature.title}</h3>
-                            <p className="text-muted-foreground text-sm mt-2">{feature.description}</p>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
-        </div>
       </section>
 
       <Portfolio />

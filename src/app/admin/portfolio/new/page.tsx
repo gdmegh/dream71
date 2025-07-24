@@ -18,33 +18,26 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { db } from "@/lib/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { Switch } from "@/components/ui/switch";
 
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
+  subtitle: z.string().optional(),
   slug: z.string().min(2, "Slug must be at least 2 characters.").refine(s => !s.includes(' '), "Slug cannot contain spaces."),
-  category: z.enum(["web", "mobile", "ai"], { required_error: "Please select a category." }),
-  client: z.string().min(2, "Client name is required."),
-  timeline: z.string().min(2, "Timeline is required."),
-  link: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
-  description: z.string().min(10, "Short description must be at least 10 characters."),
-  longDescription: z.string().min(20, "Long description must be at least 20 characters."),
+  overview: z.string().min(20, "Overview must be at least 20 characters."),
   problemStatement: z.string().min(20, "Problem statement is required."),
-  coreObjective: z.string().min(20, "Core objective is required."),
   solutionMethodology: z.string().min(20, "Solution methodology is required."),
-  impactSummary: z.string().min(20, "Impact summary is required."),
-  testimonialText: z.string().min(20, "Testimonial text is required."),
-  testimonialAuthor: z.string().min(2, "Testimonial author is required."),
-  testimonialTitle: z.string().min(2, "Testimonial author's title is required."),
-  tags: z.string().min(2, "Please provide at least one tag."),
-  image: z.string().url("Please enter a valid image URL."),
-  galleryImage1: z.string().url("Please enter a valid image URL."),
-  galleryImage2: z.string().url("Please enter a valid image URL."),
-  galleryImage3: z.string().url("Please enter a valid image URL."),
+  impact: z.string().min(20, "Impact summary is required."),
+  clientInfo: z.string().min(2, "Client info is required."),
+  projectTimeline: z.string().min(2, "Timeline is required."),
+  repositoryUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
+  demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
+  isPublic: z.boolean().default(true),
+  // For simplicity, we'll handle images and categories separately after creation for now.
 });
 
 export default function NewPortfolioProject() {
@@ -55,47 +48,28 @@ export default function NewPortfolioProject() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
+      subtitle: "",
       slug: "",
-      client: "",
-      timeline: "",
-      link: "",
-      description: "",
-      longDescription: "",
+      overview: "",
       problemStatement: "",
-      coreObjective: "",
       solutionMethodology: "",
-      impactSummary: "",
-      testimonialText: "",
-      testimonialAuthor: "",
-      testimonialTitle: "",
-      tags: "",
-      image: "",
-      galleryImage1: "",
-      galleryImage2: "",
-      galleryImage3: "",
+      impact: "",
+      clientInfo: "",
+      projectTimeline: "",
+      repositoryUrl: "",
+      demoUrl: "",
+      isPublic: true,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        const docRef = await addDoc(collection(db, "projects"), {
+        const docRef = await addDoc(collection(db, "Project"), {
             ...values,
-            tags: values.tags.split(',').map(tag => tag.trim()),
-            gallery: [
-                { src: values.galleryImage1, dataAiHint: "project image" },
-                { src: values.galleryImage2, dataAiHint: "project image" },
-                { src: values.galleryImage3, dataAiHint: "project image" }
-            ],
-            testimonial: {
-                text: values.testimonialText,
-                author: values.testimonialAuthor,
-                title: values.testimonialTitle
-            },
-            impact: {
-                summary: values.impactSummary,
-                // You might want to add a way to input chart data in the form
-                chartData: [] 
-            }
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            // In a real app, you would associate this with the logged-in user.
+            // owner: "some-user-id" 
         });
         console.log("Document written with ID: ", docRef.id);
         toast({
@@ -118,11 +92,33 @@ export default function NewPortfolioProject() {
     <Card>
       <CardHeader>
         <CardTitle>Add New Portfolio Project</CardTitle>
-        <CardDescription>Fill out the details for the new project.</CardDescription>
+        <CardDescription>Fill out the details for the new project based on the defined schema.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            
+            <FormField
+              control={form.control}
+              name="isPublic"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Public</FormLabel>
+                    <FormDescription>
+                     Make this project visible to everyone.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             <div className="grid md:grid-cols-2 gap-8">
                 <FormField
                     control={form.control}
@@ -131,122 +127,110 @@ export default function NewPortfolioProject() {
                         <FormItem>
                         <FormLabel>Project Title</FormLabel>
                         <FormControl>
-                            <Input placeholder="e.g., E-commerce Platform" {...field} />
+                            <Input placeholder="e.g., Megh Gallery" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="slug"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>URL Slug</FormLabel>
-                        <FormControl>
-                            <Input placeholder="e.g., ecommerce-platform" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                            A unique, URL-friendly identifier. No spaces allowed.
-                        </FormDescription>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </div>
-            
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a project category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="web">Web App</SelectItem>
-                      <SelectItem value="mobile">Mobile App</SelectItem>
-                      <SelectItem value="ai">AI/ML</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid md:grid-cols-2 gap-8">
                  <FormField
                     control={form.control}
-                    name="client"
+                    name="subtitle"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Client</FormLabel>
+                        <FormLabel>Subtitle</FormLabel>
                         <FormControl>
-                            <Input placeholder="e.g., Global Retail Inc." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="timeline"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Timeline</FormLabel>
-                        <FormControl>
-                            <Input placeholder="e.g., 6 Months" {...field} />
+                            <Input placeholder="A short, catchy subtitle" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
                     )}
                 />
             </div>
-
              <FormField
                 control={form.control}
-                name="link"
+                name="slug"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Live URL</FormLabel>
+                    <FormLabel>URL Slug</FormLabel>
                     <FormControl>
-                        <Input placeholder="https://example.com" {...field} />
+                        <Input placeholder="e.g., megh-gallery" {...field} />
                     </FormControl>
+                    <FormDescription>
+                        A unique, URL-friendly identifier. No spaces allowed.
+                    </FormDescription>
                     <FormMessage />
                     </FormItem>
                 )}
             />
+            
+            <div className="grid md:grid-cols-2 gap-8">
+                 <FormField
+                    control={form.control}
+                    name="clientInfo"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Client Information</FormLabel>
+                        <FormControl>
+                            <Input placeholder="e.g., A client from the arts industry" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="projectTimeline"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Project Timeline</FormLabel>
+                        <FormControl>
+                            <Input placeholder="e.g., 3 Months" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+                <FormField
+                    control={form.control}
+                    name="repositoryUrl"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Repository URL</FormLabel>
+                        <FormControl>
+                            <Input placeholder="https://github.com/user/repo" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="demoUrl"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Demo URL</FormLabel>
+                        <FormControl>
+                            <Input placeholder="https://your-demo.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
 
             <FormField
               control={form.control}
-              name="description"
+              name="overview"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Short Description</FormLabel>
+                  <FormLabel>Project Overview</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="A brief summary of the project." {...field} />
+                    <Textarea placeholder="A detailed overview of the project." rows={5} {...field} />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-             <FormField
-              control={form.control}
-              name="longDescription"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Project Overview (Long Description)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="A detailed overview of the project. You can use HTML here." rows={5} {...field} />
-                  </FormControl>
-                   <FormDescription>
-                    You can use basic HTML tags like {'<p> and <strong>'} for formatting.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -260,19 +244,6 @@ export default function NewPortfolioProject() {
                   <FormLabel>Problem Statement</FormLabel>
                   <FormControl>
                     <Textarea placeholder="What was the core problem the client was facing?" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="coreObjective"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Core Objective</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="What was the main goal of the project?" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -294,10 +265,10 @@ export default function NewPortfolioProject() {
 
             <FormField
               control={form.control}
-              name="impactSummary"
+              name="impact"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Impact Analysis Summary</FormLabel>
+                  <FormLabel>Impact</FormLabel>
                   <FormControl>
                     <Textarea placeholder="Summarize the positive impact of the project." {...field} />
                   </FormControl>
@@ -305,134 +276,8 @@ export default function NewPortfolioProject() {
                 </FormItem>
               )}
             />
-
-            <Card className="bg-muted/30">
-                <CardHeader>
-                    <CardTitle className="text-xl">Client Testimonial</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    <FormField
-                    control={form.control}
-                    name="testimonialText"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Testimonial Text</FormLabel>
-                        <FormControl>
-                            <Textarea placeholder="The client's feedback." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                    <div className="grid md:grid-cols-2 gap-8">
-                        <FormField
-                            control={form.control}
-                            name="testimonialAuthor"
-                            render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>Author Name</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="e.g., John Doe" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                         <FormField
-                            control={form.control}
-                            name="testimonialTitle"
-                            render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>Author Title</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="e.g., CEO, Example Inc." {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                </CardContent>
-            </Card>
-
-             <FormField
-                control={form.control}
-                name="tags"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Tech Stack / Tags</FormLabel>
-                    <FormControl>
-                        <Input placeholder="React, Node.js, AWS" {...field} />
-                    </FormControl>
-                     <FormDescription>
-                        Enter a comma-separated list of technologies or tags.
-                      </FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-
-             <FormField
-                control={form.control}
-                name="image"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Main Project Image URL</FormLabel>
-                    <FormControl>
-                        <Input placeholder="https://placehold.co/600x400.png" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-
-            <Card className="bg-muted/30">
-                <CardHeader>
-                    <CardTitle className="text-xl">Image Gallery</CardTitle>
-                    <CardDescription>Provide URLs for 3 gallery images.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                     <FormField
-                        control={form.control}
-                        name="galleryImage1"
-                        render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Gallery Image 1</FormLabel>
-                            <FormControl>
-                                <Input placeholder="https://placehold.co/1200x800.png" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                     <FormField
-                        control={form.control}
-                        name="galleryImage2"
-                        render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Gallery Image 2</FormLabel>
-                            <FormControl>
-                                <Input placeholder="https://placehold.co/1200x800.png" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                     <FormField
-                        control={form.control}
-                        name="galleryImage3"
-                        render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Gallery Image 3</FormLabel>
-                            <FormControl>
-                                <Input placeholder="https://placehold.co/1200x800.png" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                </CardContent>
-            </Card>
+            
+            <p className="text-sm text-muted-foreground">Note: Project images, categories, and skills will be managed on the project's edit page after creation.</p>
 
 
             <Button type="submit" size="lg" disabled={form.formState.isSubmitting}>
