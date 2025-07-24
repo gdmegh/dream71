@@ -142,7 +142,7 @@ export default function Services() {
               Our Services
             </div>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Innovative Solutions Tailored for a Modern, Dynamic, and Digital-First World</h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+            <p className="max-w-[900px] mx-auto text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
              From advanced e-governance systems and intelligent automation to captivating games and custom software, we deliver bespoke digital experiences that turn your vision into reality with a steadfast commitment to excellence.
             </p>
           </div>
