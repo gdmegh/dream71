@@ -1,31 +1,49 @@
 
 
 'use client';
-import { CircleCheckBig } from 'lucide-react';
+import { CircleCheckBig, Aperture, Cpu } from 'lucide-react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, ComposedChart, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, YAxis, XAxis } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, ComposedChart, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, YAxis, XAxis, RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
-import { services, chartData, chartConfig } from '@/lib/services-data';
+import { services, chartData } from '@/lib/services-data';
 
 
-const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, index }: { title: string, description: string, points?: { title: string, icon: React.ElementType }[], link: string, reverse?: boolean, isChart?: boolean, index: number }) => {
+const chartConfig = {
+  projects: { label: 'Projects Completed', color: 'hsl(var(--chart-2))' },
+  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-1))' },
+  'Success Rate': { label: 'Success Rate (%)', color: 'hsl(var(--chart-3))' },
+  costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))', icon: () => <Cpu className="h-4 w-4 text-muted-foreground" /> },
+  efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: () => <Aperture className="h-4 w-4 text-muted-foreground" /> },
+  web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
+  mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
+  pc: { label: 'PC Projects', color: 'hsl(var(--chart-3))' },
+  value: {
+    color: 'hsl(var(--foreground))',
+  },
+};
+
+
+const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, index }: { title: string, description: string, points?: { title: string, icon: React.ElementType, description: string }[], link: string, reverse?: boolean, isChart?: boolean, index: number }) => {
     
     const renderChart = () => {
         switch (index) {
             case 0: // e-Governance
                 return (
                     <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                        <BarChart accessibilityLayer data={chartData.eGovernance}>
+                        <BarChart data={chartData.eGovernance}>
                             <CartesianGrid vertical={false} />
-                            <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
+                            <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip content={<ChartTooltipContent />} />
                             <Legend />
-                            <Bar dataKey="projects" fill="var(--color-projects)" radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="satisfaction" fill="var(--color-satisfaction)" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="value" radius={4}>
+                                {chartData.eGovernance.map((entry) => (
+                                    <Cell key={`cell-${entry.name}`} fill={entry.fill} />
+                                ))}
+                            </Bar>
                         </BarChart>
                     </ChartContainer>
                 );
@@ -66,7 +84,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                             <Legend />
                             <Pie data={chartData.gameDev} dataKey="projects" nameKey="name" cx="50%" cy="50%" outerRadius={90} fill="var(--color-projects)">
                                 {chartData.gameDev.map((entry, idx) => (
-                                    <Cell key={`cell-${idx}`} fill={chartConfig[entry.name.toLowerCase() as keyof typeof chartConfig]?.color} />
+                                    <Cell key={`cell-${idx}`} fill={entry.fill} />
                                 ))}
                             </Pie>
                         </PieChart>
@@ -83,11 +101,14 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 <h3 className="text-3xl font-bold">{title}</h3>
                 <p className="text-muted-foreground mt-4">{description}</p>
                 {points && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-4 w-full">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-6 w-full">
                         {points.map((point, i) => (
-                            <div key={i} className="flex items-center text-muted-foreground">
-                                <point.icon className="h-6 w-6 text-primary mr-3 flex-shrink-0" />
-                                <span>{point.title}</span>
+                            <div key={i} className="flex items-start text-left">
+                                <point.icon className="h-8 w-8 text-primary mr-4 flex-shrink-0" />
+                                <div>
+                                    <h4 className="font-semibold">{point.title}</h4>
+                                    <p className="text-sm text-muted-foreground">{point.description}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -103,7 +124,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 <div className="w-full">
                     {renderChart()}
                 </div>
-                 <Button asChild className="mt-4 md:hidden w-full max-w-sm">
+                 <Button asChild className="mt-4 md:hidden w-full max-w-xs">
                     <Link href={link}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>

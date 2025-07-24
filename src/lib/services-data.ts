@@ -30,10 +30,10 @@ export const services: Service[] = [
     imageHint: "government building",
     isChart: true,
     points: [
-        { title: "Digital Transformation", icon: GitBranch, description: "Modernize legacy systems and processes." },
-        { title: "Citizen Engagement", icon: Code, description: "Improve communication and access to services." },
-        { title: "Operational Efficiency", icon: Aperture, description: "Automate workflows and reduce paperwork." },
-        { title: "Data Security", icon: ShieldCheck, description: "Protect sensitive government and citizen data." }
+        { title: "Digital Transformation", icon: GitBranch, description: "Modernize legacy systems and processes for enhanced efficiency and accessibility." },
+        { title: "Citizen Engagement", icon: Code, description: "Improve communication and access to services through intuitive online platforms." },
+        { title: "Operational Efficiency", icon: Aperture, description: "Automate workflows, reduce paperwork, and optimize resource allocation." },
+        { title: "Data Security", icon: ShieldCheck, description: "Protect sensitive government and citizen data with robust security measures." }
     ],
   },
   {
@@ -46,10 +46,10 @@ export const services: Service[] = [
     imageHint: "artificial intelligence",
     isChart: true,
     points: [
-        { title: "Workflow Automation", icon: GitBranch, description: "Streamline and automate repetitive tasks." },
-        { title: "Actionable Insights", icon: Cpu, description: "Gain data-driven insights for better decisions." },
-        { title: "Cost Savings", icon: Aperture, description: "Reduce operational costs and improve ROI." },
-        { title: "Reduced Errors", icon: ShieldCheck, description: "Minimize human error in critical processes." }
+        { title: "Workflow Automation", icon: GitBranch, description: "Streamline and automate repetitive tasks to boost productivity and reduce manual effort." },
+        { title: "Actionable Insights", icon: Cpu, description: "Gain data-driven insights for better decision-making and strategic planning." },
+        { title: "Cost Savings", icon: Aperture, description: "Reduce operational costs, improve resource allocation, and maximize your return on investment." },
+        { title: "Reduced Errors", icon: ShieldCheck, description: "Minimize human error in critical processes to ensure accuracy and compliance." }
     ],
   },
   {
@@ -62,10 +62,10 @@ export const services: Service[] = [
     imageHint: "custom software",
     isChart: true,
     points: [
-        { title: "Responsive Web Design", icon: Code, description: "Engaging websites that work on any device." },
-        { title: "Native Mobile Apps", icon: Aperture, description: "High-performance apps for iOS and Android." },
-        { title: "Scalable Architecture", icon: GitBranch, description: "Solutions that grow with your business." },
-        { title: "High Performance", icon: Cpu, description: "Fast, reliable, and efficient applications." }
+        { title: "Responsive Web Design", icon: Code, description: "Engaging and intuitive websites that provide a seamless experience on any device." },
+        { title: "Native Mobile Apps", icon: Aperture, description: "High-performance, feature-rich mobile applications for both iOS and Android platforms." },
+        { title: "Scalable Architecture", icon: GitBranch, description: "Flexible and robust solutions that are designed to grow with your business." },
+        { title: "High Performance", icon: Cpu, description: "Fast, reliable, and efficient applications that deliver an exceptional user experience." }
     ],
   },
   {
@@ -78,20 +78,19 @@ export const services: Service[] = [
     imageHint: "video game",
     isChart: true,
     points: [
-        { title: "Cross-Platform Support", icon: Gamepad2, description: "Reach a wider audience on web and mobile." },
-        { title: "Engaging Gameplay", icon: Aperture, description: "Create fun and addictive game mechanics." },
-        { title: "Monetization Strategy", icon: GitBranch, description: "Maximize revenue with effective strategies." },
-        { title: "Multiplayer Functionality", icon: Code, description: "Build real-time, interactive experiences." }
+        { title: "Cross-Platform Support", icon: Gamepad2, description: "Reach a wider audience with games that run seamlessly on both web and mobile devices." },
+        { title: "Engaging Gameplay", icon: Aperture, description: "Create fun, addictive, and memorable game mechanics that keep players coming back." },
+        { title: "Monetization Strategy", icon: GitBranch, description: "Maximize revenue with effective and player-friendly in-game monetization strategies." },
+        { title: "Multiplayer Functionality", icon: Code, description: "Build real-time, interactive, and social experiences with robust multiplayer features." }
     ],
   }
 ];
 
 export const chartData = {
     eGovernance: [
-      { year: '2021', projects: 12, satisfaction: 92 },
-      { year: '2022', projects: 18, satisfaction: 95 },
-      { year: '2023', projects: 25, satisfaction: 97 },
-      { year: '2024', projects: 32, satisfaction: 98 },
+      { name: 'Projects', value: 120, fill: 'hsl(var(--chart-1))' },
+      { name: 'Success Rate', value: 98, fill: 'hsl(var(--chart-2))'  },
+      { name: 'Satisfaction', value: 95, fill: 'hsl(var(--chart-3))'  },
     ],
     aiAutomation: [
       { year: '2021', costSavings: 50, efficiencyGain: 20 },
@@ -112,14 +111,4 @@ export const chartData = {
       { name: 'Web', projects: 8, fill: 'hsl(var(--chart-2))' },
       { name: 'PC', projects: 4, fill: 'hsl(var(--chart-3))' }
     ]
-};
-
-export const chartConfig = {
-  projects: { label: 'Projects Completed', color: 'hsl(var(--chart-2))' },
-  satisfaction: { label: 'Satisfaction Rate (%)', color: 'hsl(var(--chart-1))' },
-  costSavings: { label: 'Cost Savings ($k)', color: 'hsl(var(--chart-1))' },
-  efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))' },
-  web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
-  mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
-  pc: { label: 'PC Projects', color: 'hsl(var(--chart-3))' }
 };
