@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle, Landmark, Workflow, Search, Draft, Code, TestTubeDiagonal, Rocket, LifeBuoy } from 'lucide-react';
+import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -43,7 +43,7 @@ const InfoSection = ({ title, description, items, image, imageHint, reverse = fa
 
 const methodologySteps = [
     { icon: Search, title: "Discovery", description: "We begin by understanding your vision, goals, and challenges." },
-    { icon: Draft, title: "Planning & Design", description: "Crafting blueprints and visual designs to map out the solution." },
+    { icon: DraftingCompass, title: "Planning & Design", description: "Crafting blueprints and visual designs to map out the solution." },
     { icon: Code, title: "Development", description: "Building the core application with clean, efficient code." },
     { icon: TestTubeDiagonal, title: "Testing", description: "Rigorous QA to ensure a bug-free, reliable product." },
     { icon: Rocket, title: "Deployment", description: "Launching the solution and making it available to your users." },
