@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/about', label: 'About Us' },
   { href: '/testimonials', label: 'Testimonials' },
+  { href: '/admin/portfolio', label: 'Portfolio CMS' },
 ];
 
 export default function Header() {
