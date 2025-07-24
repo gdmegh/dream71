@@ -101,7 +101,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid lg:grid-cols-3 gap-12 items-start">
                   <div className="lg:col-span-2 space-y-12">
-                      <Card>
+                      <Card rounded="20px">
                         <CardHeader>
                             <CardTitle className="font-headline text-3xl flex items-center gap-3"><GitBranch /> Project Overview</CardTitle>
                         </CardHeader>
@@ -109,7 +109,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                             <div className="prose prose-invert max-w-none font-body text-muted-foreground" dangerouslySetInnerHTML={{ __html: project.longDescription }} />
                         </CardContent>
                       </Card>
-                       <Card>
+                       <Card rounded="20px">
                         <CardHeader>
                             <CardTitle className="font-headline text-3xl flex items-center gap-3"><Puzzle /> Problem & Objective</CardTitle>
                         </CardHeader>
@@ -124,7 +124,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                             </div>
                         </CardContent>
                       </Card>
-                       <Card>
+                       <Card rounded="20px">
                         <CardHeader>
                             <CardTitle className="font-headline text-3xl flex items-center gap-3"><Target /> Solution Methodology</CardTitle>
                         </CardHeader>
@@ -132,7 +132,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                             <p className="font-body text-muted-foreground">{project.solutionMethodology}</p>
                         </CardContent>
                       </Card>
-                       <Card>
+                       <Card rounded="20px">
                         <CardHeader>
                             <CardTitle className="font-headline text-3xl flex items-center gap-3"><BarChart2 /> Impact Analysis</CardTitle>
                         </CardHeader>
@@ -143,7 +143,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                       </Card>
                   </div>
                   <aside className="lg:col-span-1 space-y-8 sticky top-24">
-                      <Card>
+                      <Card rounded="20px">
                           <CardHeader><CardTitle className="font-headline text-xl">Project Info</CardTitle></CardHeader>
                           <CardContent className="space-y-4">
                               <div className='flex items-center gap-3'>
@@ -181,7 +181,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                           </CardContent>
                       </Card>
 
-                       <Card>
+                       <Card rounded="20px">
                           <CardHeader><CardTitle className="font-headline text-xl flex items-center gap-2"><MessageSquare /> Client Testimonial</CardTitle></CardHeader>
                           <CardContent>
                               <div className="flex flex-col items-center text-center">
@@ -203,7 +203,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                   <div className="grid md:grid-cols-2 gap-8">
                       {relatedProjects.map((related) => (
                            <Link key={related.slug} href={`/portfolio/${related.slug}`} className="group block">
-                                <Card className="overflow-hidden group w-full h-full bg-card text-card-foreground">
+                                <Card rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground">
                                   <CardContent className="p-0 flex flex-col h-full">
                                     <div className="relative h-56">
                                       <Image

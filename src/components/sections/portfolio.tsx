@@ -12,7 +12,7 @@ import { projects } from '@/lib/portfolio-data';
 
 const ProjectCard = ({ project }: { project: typeof projects.all[0] }) => (
     <Link href={`/portfolio/${project.slug}`} className="group block">
-        <Card className="overflow-hidden group w-full h-full bg-card text-card-foreground">
+        <Card rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground">
           <CardContent className="p-0 flex flex-col h-full">
             <div className="relative h-56">
               <Image
