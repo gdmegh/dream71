@@ -32,7 +32,8 @@ const LoadingScreen = () => (
 );
 
 
-export default function PortfolioDetailPage({ params: { slug } }: { params: { slug: string } }) {
+export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
