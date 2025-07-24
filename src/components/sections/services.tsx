@@ -4,7 +4,7 @@ import { CircleCheckBig, Aperture, Cpu } from 'lucide-react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, ComposedChart, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, YAxis, XAxis, RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, ComposedChart, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, YAxis, XAxis } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 import { services, chartData } from '@/lib/services-data';
@@ -28,7 +28,7 @@ const chartConfig = {
 const ServiceFeature = ({ title, description, points, link, reverse = false, isChart = false, index }: { title: string, description: string, points?: { title: string, icon: React.ElementType, description: string }[], link: string, reverse?: boolean, isChart?: boolean, index: number }) => {
     
     const renderChart = () => {
-        const serviceChartData = chartData[services[index].slug];
+        const serviceChartData = chartData[services[index].slug as keyof typeof chartData];
         if(!serviceChartData) return null;
 
         switch (services[index].slug) {
@@ -99,7 +99,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
     
     return (
         <div className={cn('grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12')}>
-            <div className={cn("flex flex-col md:w-full items-center text-center md:text-left", reverse ? "md:order-last" : "md:order-first")}>
+            <div className={cn("flex flex-col md:w-full items-start text-left", reverse ? "md:order-last" : "md:order-first")}>
                 <h3 className="text-3xl font-bold">{title}</h3>
                 <p className="text-muted-foreground mt-4">{description}</p>
                 {points && (
@@ -126,7 +126,7 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 <div className="w-full">
                     {renderChart()}
                 </div>
-                 <Button asChild className="mt-4 md:hidden w-full max-w-sm" variant="outline">
+                 <Button asChild className="mt-4 md:hidden w-full max-w-xs" variant="outline">
                     <Link href={link}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
