@@ -85,10 +85,10 @@ const ServiceFeature = ({ title, description, points, link, reverse = false, isC
                 );
             case 'game-development':
                 return (
-                     <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+                     <ChartContainer config={chartConfig} className="min-h-[400px] w-full">
                         <PieChart>
                           <Tooltip content={<ChartTooltipContent nameKey="name" />} />
-                          <Pie data={serviceChartData as any[]} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" label>
+                          <Pie data={serviceChartData as any[]} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={150} fill="#8884d8" label>
                             {(serviceChartData as any[]).map((entry) => (
                               <Cell key={`cell-${entry.name}`} fill={entry.fill} />
                             ))}
