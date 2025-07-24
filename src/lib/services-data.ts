@@ -39,9 +39,9 @@ export const services: Service[] = [
   },
   {
     slug: "business-automation",
-    title: "Business Automation with AI",
-    description: "Leverage AI to automate complex business processes, improve efficiency, and drive innovation across your organization.",
-    longDescription: "Unlock the potential of your business with our AI-powered automation solutions. We help you identify opportunities for automation, from routine administrative tasks to complex decision-making processes. Our solutions integrate seamlessly with your existing systems to reduce costs, minimize errors, and free up your team to focus on strategic initiatives.",
+    title: "Intelligent Business Automation Powered by Artificial Intelligence",
+    description: "Utilize the power of AI to automate complex business processes, drive unprecedented efficiency, and foster a culture of innovation across your entire organization.",
+    longDescription: "Unlock the full potential of your business with our AI-powered automation solutions. We help you identify opportunities for automation, from routine administrative tasks to complex decision-making processes. Our solutions integrate seamlessly with your existing systems to reduce costs, minimize errors, and free up your team to focus on strategic initiatives.",
     link: "/services/business-automation",
     image: "https://placehold.co/800x600.png",
     imageHint: "artificial intelligence",
@@ -90,8 +90,8 @@ export const services: Service[] = [
 export const chartData = {
   'e-governance': [
     { name: 'Projects', value: 120, fill: 'hsl(var(--chart-1))' },
-    { name: 'Success Rate', value: 98, unit: '%', fill: 'hsl(var(--chart-2))'  },
-    { name: 'Satisfaction', value: 95, unit: '%', fill: 'hsl(var(--chart-3))'  },
+    { name: 'Success Rate', value: 98, unit: '%', fill: 'hsl(var(--chart-3))'  },
+    { name: 'Satisfaction', value: 95, unit: '%', fill: 'hsl(var(--chart-2))'  },
   ],
   'business-automation': [
       { year: '2021', costSavings: 50, efficiencyGain: 20 },
