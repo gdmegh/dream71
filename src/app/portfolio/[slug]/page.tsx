@@ -37,11 +37,12 @@ export default function PortfolioDetailPage({ params: { slug } }: { params: { sl
   useEffect(() => {
     const fetchProject = async () => {
       setLoading(true);
-      const q = query(collection(db, "Project"), where("slug", "==", slug), where("isPublic", "==", true));
+      const q = query(collection(db, "Project"), where("slug", "==", slug), where("isPublic", "==", true), limit(1));
       const querySnapshot = await getDocs(q);
       
       if (querySnapshot.empty) {
         notFound();
+        return;
       }
       
       const projectData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
@@ -49,7 +50,9 @@ export default function PortfolioDetailPage({ params: { slug } }: { params: { sl
       setLoading(false);
     };
 
-    fetchProject();
+    if (slug) {
+        fetchProject();
+    }
   }, [slug]);
 
 
