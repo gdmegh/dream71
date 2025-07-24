@@ -7,11 +7,13 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Calendar, User, MessageSquare, Target, Puzzle, GitBranch, BarChart2 } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Calendar, User, MessageSquare, Target, Puzzle, GitBranch, BarChart2, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import Autoplay from "embla-carousel-autoplay";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import React from 'react';
 
 const chartConfig = {
   'Conversion Rate': { label: 'Conversion Rate (%)', color: 'hsl(var(--chart-1))' },
@@ -27,6 +29,10 @@ const chartConfig = {
 export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
   const project = projects.all.find(p => p.slug === params.slug);
   const relatedProjects = projects.all.filter(p => p.category === project?.category && p.slug !== project?.slug).slice(0, 2);
+
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: false })
+  );
 
   if (!project) {
     notFound();
@@ -55,38 +61,45 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
 
   return (
     <>
-      <section className="bg-primary/5 pt-12 pb-8">
+      <section className="bg-primary/5 pt-20 pb-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">{project.title}</h1>
+            <p className="font-body mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+              {project.description}
+            </p>
+        </div>
+      </section>
+
+      <section className="pb-12 bg-primary/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <Button asChild variant="outline" className="mb-8">
-                <Link href="/portfolio">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Portfolio
-                </Link>
-            </Button>
-            <div className='grid md:grid-cols-5 gap-8'>
-                <div className='md:col-span-3'>
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      width={1200}
-                      height={800}
-                      className="rounded-lg shadow-xl w-full"
-                      data-ai-hint={project.dataAiHint}
-                    />
-                </div>
-                <div className='md:col-span-2'>
-                    <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">{project.title}</h1>
-                    <p className="font-body mt-4 text-lg text-muted-foreground">
-                      {project.description}
-                    </p>
-                </div>
-            </div>
+            <Carousel
+                plugins={[plugin.current]}
+                className="w-full"
+                opts={{ loop: true }}
+            >
+                <CarouselContent>
+                    {project.gallery.map((image, index) => (
+                        <CarouselItem key={index} className="relative h-[300px] sm:h-[400px] md:h-[600px]">
+                            <Image
+                                src={image.src}
+                                alt={`${project.title} gallery image ${index + 1}`}
+                                fill
+                                className="rounded-lg shadow-2xl object-cover"
+                                data-ai-hint={image.dataAiHint}
+                                priority={index === 0}
+                            />
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="left-4" />
+                <CarouselNext className="right-4" />
+            </Carousel>
         </div>
       </section>
 
       <section className="py-16 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid lg:grid-cols-3 gap-12">
+              <div className="grid lg:grid-cols-3 gap-12 items-start">
                   <div className="lg:col-span-2 space-y-12">
                       <Card>
                         <CardHeader>
@@ -129,7 +142,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                         </CardContent>
                       </Card>
                   </div>
-                  <div className="space-y-8">
+                  <aside className="lg:col-span-1 space-y-8 sticky top-24">
                       <Card>
                           <CardHeader><CardTitle className="font-headline text-xl">Project Info</CardTitle></CardHeader>
                           <CardContent className="space-y-4">
@@ -178,7 +191,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                               </div>
                           </CardContent>
                       </Card>
-                  </div>
+                  </aside>
               </div>
           </div>
       </section>
@@ -189,32 +202,35 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                   <h2 className="font-headline text-3xl font-bold text-foreground mb-8 text-center">Related Projects</h2>
                   <div className="grid md:grid-cols-2 gap-8">
                       {relatedProjects.map((related) => (
-                          <Link key={related.slug} href={`/portfolio/${related.slug}`} className="group">
-                             <Card className="overflow-hidden h-full">
-                               <CardContent className="p-0">
-                                 <div className="relative h-56">
-                                   <Image
-                                     src={related.image}
-                                     alt={related.title}
-                                     fill
-                                     style={{ objectFit: 'cover' }}
-                                     data-ai-hint={related.dataAiHint}
-                                     className="transition-transform duration-500 group-hover:scale-105"
-                                   />
-                                 </div>
-                                 <div className="p-6">
-                                   <h3 className="font-headline text-xl font-bold mb-2">{related.title}</h3>
-                                   <p className="text-muted-foreground font-body text-sm h-10">{related.description}</p>
-                                    <div className="flex flex-wrap gap-2 my-4">
-                                        {related.tags.map((tag) => (
-                                        <Badge key={tag} variant="secondary">{tag}</Badge>
-                                        ))}
+                           <Link key={related.slug} href={`/portfolio/${related.slug}`} className="group block">
+                                <Card className="overflow-hidden group w-full h-full bg-card text-card-foreground">
+                                  <CardContent className="p-0 flex flex-col h-full">
+                                    <div className="relative h-56">
+                                      <Image
+                                        src={related.image}
+                                        alt={related.title}
+                                        fill
+                                        style={{ objectFit: 'cover' }}
+                                        data-ai-hint={related.dataAiHint}
+                                        className="transition-transform duration-500 group-hover:scale-105"
+                                      />
+                                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
                                     </div>
-                                    <span className="font-semibold text-primary group-hover:underline">View Case Study <ArrowLeft className="inline-block ml-1 h-4 w-4 transition-transform group-hover:-translate-x-1" /></span>
-                                 </div>
-                               </CardContent>
-                             </Card>
-                          </Link>
+                                    <div className="p-6 flex flex-col flex-grow">
+                                      <h3 className="font-headline text-xl font-bold mb-2 text-foreground">{related.title}</h3>
+                                      <p className="text-muted-foreground font-body text-sm flex-grow">{related.description}</p>
+                                      <div className="flex flex-wrap gap-2 my-4">
+                                        {related.tags.slice(0, 3).map((tag) => (
+                                          <Badge key={tag} variant="secondary">{tag}</Badge>
+                                        ))}
+                                      </div>
+                                       <span className="inline-flex items-center font-semibold text-primary group-hover:underline font-body text-sm mt-auto">
+                                        View Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
+                                      </span>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                            </Link>
                       ))}
                   </div>
               </div>
