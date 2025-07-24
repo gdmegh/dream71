@@ -3,28 +3,30 @@
 
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Calendar, User, GitBranch, Puzzle, Target, BarChart2 } from 'lucide-react';
+import { ExternalLink, Calendar, User, GitBranch, Puzzle, Target, BarChart2, Briefcase, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
 
 const LoadingScreen = () => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         <Skeleton className="h-12 w-1/2 mx-auto" />
         <Skeleton className="h-8 w-3/4 mx-auto" />
-        <Skeleton className="h-96 w-full" />
-        <div className="grid lg:grid-cols-3 gap-12 items-start">
-            <div className="lg:col-span-2 space-y-12">
-                <Skeleton className="h-64 w-full" />
-                <Skeleton className="h-64 w-full" />
-            </div>
-            <aside className="lg:col-span-1 space-y-8 sticky top-24">
-                 <Skeleton className="h-96 w-full" />
-            </aside>
+        <Skeleton className="h-[500px] w-full rounded-lg" />
+
+        <div className="grid md:grid-cols-3 gap-8">
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-24 w-full" />
+        </div>
+
+        <div className="space-y-12">
+            <Skeleton className="h-64 w-full" />
+            <Skeleton className="h-64 w-full" />
         </div>
     </div>
 );
@@ -75,77 +77,89 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
       </section>
 
       <section className="py-16 bg-background">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid lg:grid-cols-3 gap-12 items-start">
-                  <div className="lg:col-span-2 space-y-12">
-                      <Card rounded="20px">
-                        <CardHeader>
-                            <CardTitle className="font-headline text-3xl flex items-center gap-3"><GitBranch /> Overview</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                           <p className="font-body text-muted-foreground">{project.overview}</p>
-                        </CardContent>
-                      </Card>
-                       <Card rounded="20px">
-                        <CardHeader>
-                            <CardTitle className="font-headline text-3xl flex items-center gap-3"><Puzzle /> Problem Statement</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="font-body text-muted-foreground">{project.problemStatement}</p>
-                        </CardContent>
-                      </Card>
-                       <Card rounded="20px">
-                        <CardHeader>
-                            <CardTitle className="font-headline text-3xl flex items-center gap-3"><Target /> Solution Methodology</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="font-body text-muted-foreground">{project.solutionMethodology}</p>
-                        </CardContent>
-                      </Card>
-                       <Card rounded="20px">
-                        <CardHeader>
-                            <CardTitle className="font-headline text-3xl flex items-center gap-3"><BarChart2 /> Impact</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                           <p className="font-body text-muted-foreground mb-6">{project.impact}</p>
-                        </CardContent>
-                      </Card>
-                  </div>
-                  <aside className="lg:col-span-1 space-y-8 sticky top-24">
-                      <Card rounded="20px">
-                          <CardHeader><CardTitle className="font-headline text-xl">Project Info</CardTitle></CardHeader>
-                          <CardContent className="space-y-4">
-                              <div className='flex items-center gap-3'>
-                                <User className='h-5 w-5 text-primary' />
-                                <div>
-                                    <p className='font-semibold'>Client</p>
-                                    <p className='text-muted-foreground'>{project.clientInfo}</p>
-                                </div>
-                              </div>
-                               <div className='flex items-center gap-3'>
-                                <Calendar className='h-5 w-5 text-primary' />
-                                <div>
-                                    <p className='font-semibold'>Timeline</p>
-                                    <p className='text-muted-foreground'>{project.projectTimeline}</p>
-                                </div>
-                              </div>
-                               {project.demoUrl && (
-                                 <Button asChild className="w-full mt-4">
-                                     <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-                                         Visit Demo <ExternalLink className="ml-2 h-4 w-4" />
-                                     </a>
-                                 </Button>
-                               )}
-                                {project.repositoryUrl && (
-                                 <Button asChild className="w-full" variant="secondary">
-                                     <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
-                                         View Repository <ExternalLink className="ml-2 h-4 w-4" />
-                                     </a>
-                                 </Button>
-                               )}
-                          </CardContent>
-                      </Card>
-                  </aside>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+              
+              <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-xl shadow-2xl">
+                <Image
+                    src={project.imageUrl || 'https://placehold.co/1200x600.png'}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    data-ai-hint={'project image'}
+                />
+              </div>
+
+              <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline text-2xl">Project Details</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
+                        <div className='flex items-center gap-4'>
+                            <Briefcase className='h-8 w-8 text-primary' />
+                            <div>
+                                <p className='font-semibold text-lg'>Client</p>
+                                <p className='text-muted-foreground'>{project.clientInfo}</p>
+                            </div>
+                        </div>
+                        <div className='flex items-center gap-4'>
+                            <Clock className='h-8 w-8 text-primary' />
+                            <div>
+                                <p className='font-semibold text-lg'>Timeline</p>
+                                <p className='text-muted-foreground'>{project.projectTimeline}</p>
+                            </div>
+                        </div>
+                         {project.demoUrl && (
+                            <Button asChild size="lg" className="w-full">
+                                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                                    Visit Demo <ExternalLink className="ml-2 h-4 w-4" />
+                                </a>
+                            </Button>
+                        )}
+                        {project.repositoryUrl && (
+                            <Button asChild size="lg" className="w-full" variant="secondary">
+                                <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
+                                    View Repository <ExternalLink className="ml-2 h-4 w-4" />
+                                </a>
+                            </Button>
+                        )}
+                    </div>
+                </CardContent>
+              </Card>
+              
+              <Separator />
+
+              <div className="space-y-4">
+                  <GitBranch className="h-10 w-10 text-primary mx-auto" />
+                  <h2 className="font-headline text-3xl font-bold text-center">Project Overview</h2>
+                  <p className="font-body text-lg text-muted-foreground max-w-4xl mx-auto text-center">{project.overview}</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 items-start py-12">
+                   <Card className="bg-primary/5 border-primary/20">
+                    <CardHeader>
+                        <CardTitle className="font-headline text-2xl flex items-center gap-3"><Puzzle /> The Challenge</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="font-body text-muted-foreground">{project.problemStatement}</p>
+                    </CardContent>
+                  </Card>
+                   <Card className="bg-primary/5 border-primary/20">
+                    <CardHeader>
+                        <CardTitle className="font-headline text-2xl flex items-center gap-3"><Target /> The Solution</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="font-body text-muted-foreground">{project.solutionMethodology}</p>
+                    </CardContent>
+                  </Card>
+              </div>
+              
+              <Separator />
+
+               <div className="space-y-4 py-12">
+                  <BarChart2 className="h-10 w-10 text-primary mx-auto" />
+                  <h2 className="font-headline text-3xl font-bold text-center">Results & Impact</h2>
+                  <p className="font-body text-lg text-muted-foreground max-w-4xl mx-auto text-center">{project.impact}</p>
               </div>
           </div>
       </section>
