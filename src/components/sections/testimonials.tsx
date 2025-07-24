@@ -11,36 +11,45 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { Skeleton } from '../ui/skeleton';
 
-const testimonials = [
-  {
-    name: "John Doe",
-    title: "CEO, Tech Innovators",
-    avatar: "/images/bdlogo.png",
-    testimonial: "Dream71's team is incredibly talented. They delivered our project on time and exceeded our expectations with their quality and professionalism.",
-    dataAiHint: "man face"
-  },
-  {
-    name: "Jane Smith",
-    title: "Product Manager, Creative Solutions",
-    avatar: "https://placehold.co/100x100.png",
-    testimonial: "Working with Dream71 was a fantastic experience. Their communication was clear, and they were always responsive to our needs. Highly recommended!",
-    dataAiHint: "woman face"
-  },
-  {
-    name: "Samuel Green",
-    title: "CTO, Future Corp",
-    avatar: "https://placehold.co/100x100.png",
-    testimonial: "The mobile app they developed for us is a masterpiece of design and functionality. It has significantly boosted our user engagement.",
-    dataAiHint: "person portrait"
-  },
-];
+const LoadingSkeleton = () => (
+    <div className="w-full max-w-4xl mx-auto">
+        <Card className="h-full bg-white text-gray-800">
+            <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
+                <Skeleton className="h-20 w-20 rounded-full mb-6" />
+                <Skeleton className="h-6 w-3/4 mb-6" />
+                <Skeleton className="h-5 w-1/4 mb-1" />
+                <Skeleton className="h-4 w-1/3" />
+            </CardContent>
+        </Card>
+    </div>
+);
+
 
 export default function Testimonials() {
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
+  
+  const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      setLoading(true);
+      const q = query(collection(db, "Testimonial"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const testimonialsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setTestimonials(testimonialsData);
+      setLoading(false);
+    };
+
+    fetchTestimonials();
+  }, []);
 
   return (
     <section 
@@ -57,41 +66,49 @@ export default function Testimonials() {
             We are proud to have earned the trust of our clients, and we are excited to share their experiences with you. Their feedback is a testament to our commitment to excellence and our passion for delivering outstanding results.
           </p>
         </div>
-        <Carousel
-          plugins={[plugin.current]}
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full max-w-4xl mx-auto"
-        >
-          <CarouselContent>
-            {testimonials.map((item, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1">
-                  <Card className="h-full bg-white text-gray-800">
-                      <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
-                          <Avatar className="h-20 w-20 mb-6 border-4 border-primary/20">
-                              <AvatarImage src={item.avatar} alt={item.name} data-ai-hint={item.dataAiHint} />
-                              <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <p className="text-lg mb-6 flex-grow">"{item.testimonial}"</p>
-                          <div className="flex flex-col items-center">
-                              <p className="font-headline text-xl font-semibold">{item.name}</p>
-                              <p className="text-md text-gray-600">{item.title}</p>
-                          </div>
-                      </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="text-white bg-white/20 hover:bg-white/30 border-none"/>
-          <CarouselNext className="text-white bg-white/20 hover:bg-white/30 border-none"/>
-        </Carousel>
+
+        {loading ? (
+            <LoadingSkeleton />
+        ) : testimonials.length > 0 ? (
+            <Carousel
+                plugins={[plugin.current]}
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
+                opts={{
+                    align: "start",
+                    loop: true,
+                }}
+                className="w-full max-w-4xl mx-auto"
+            >
+            <CarouselContent>
+                {testimonials.map((item, index) => (
+                <CarouselItem key={index}>
+                    <div className="p-1">
+                    <Card className="h-full bg-white text-gray-800">
+                        <CardContent className="flex flex-col items-center text-center p-8 md:p-12 h-full">
+                            <Avatar className="h-20 w-20 mb-6 border-4 border-primary/20">
+                                <AvatarImage src={item.avatar || 'https://placehold.co/100x100.png'} alt={item.name} data-ai-hint="person face" />
+                                <AvatarFallback>{item.name.split(' ').map((n:string) => n[0]).join('')}</AvatarFallback>
+                            </Avatar>
+                            <p className="text-lg mb-6 flex-grow">"{item.testimonial}"</p>
+                            <div className="flex flex-col items-center">
+                                <p className="font-headline text-xl font-semibold">{item.name}</p>
+                                <p className="text-md text-gray-600">{item.title}</p>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    </div>
+                </CarouselItem>
+                ))}
+            </CarouselContent>
+            <CarouselPrevious className="text-white bg-white/20 hover:bg-white/30 border-none"/>
+            <CarouselNext className="text-white bg-white/20 hover:bg-white/30 border-none"/>
+            </Carousel>
+        ) : (
+             <div className="text-center text-white/80 font-body">No testimonials yet.</div>
+        )}
       </div>
     </section>
   );
 }
+

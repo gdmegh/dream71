@@ -14,6 +14,7 @@ const navLinks = [
   { href: '/about', label: 'About Us' },
   { href: '/testimonials', label: 'Testimonials' },
   { href: '/admin/portfolio', label: 'Portfolio CMS' },
+  { href: '/admin/testimonials', label: 'Testimonials CMS' },
 ];
 
 export default function Header() {
