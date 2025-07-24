@@ -1,39 +1,52 @@
 
+
 'use client';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import { services } from '@/lib/services';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 
-const services = [
-  {
-    slug: "e-governance",
-    title: "Pioneering Digital Transformation in Public Services Through Advanced e-Governance Solutions",
-    description: "We develop and implement cutting-edge digital platforms designed to streamline government operations, enhance the delivery of public services, and foster greater transparency and citizen engagement across all sectors.",
-    link: "/services/e-governance",
-  },
-  {
-    slug: "business-automation",
-    title: "Driving Business Growth and Unprecedented Efficiency with Intelligent Automation and AI",
-    description: "We empower your business to thrive in a competitive landscape by leveraging the transformative power of Artificial Intelligence to automate complex processes, uncover actionable insights from your data, and foster a culture of continuous innovation and sustained success.",
-    link: "/services/business-automation",
-  },
-  {
-    slug: "custom-software",
-    title: "Architecting and Engineering Bespoke Software Solutions to Propel Your Business into the Future",
-    description: "We specialize in the design, development, and deployment of high-quality, scalable, and secure custom software applications. Each solution is meticulously crafted to align with your unique operational workflows, strategic business objectives, and long-term goals, ensuring a perfect technological fit for your organization.",
-    link: "/services/custom-software",
-  },
-  {
-    slug: "game-development",
-    title: "Creating Immersive and Captivating Gaming Experiences for a Global Audience",
-    description: "Our passion lies in the creation of high-quality, interactive games for mobile, web, and desktop platforms. We focus on delivering engaging gameplay, breathtaking visuals, and memorable narratives that captivate and entertain players of all ages, all around the world.",
-    link: "/services/game-development",
-  }
-];
+const ServiceChart = ({ data }: { data: any[] }) => {
+    const chartData = data.map((d: any) => ({...d, year: d.year.toString()}));
+    const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
+    
+    return (
+        <div className="w-full bg-card rounded-[20px] h-80 p-4">
+             <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                    <defs>
+                        <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                        </linearGradient>
+                         <linearGradient id="colorAdoption" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                    <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={valueFormatter} />
+                    <Tooltip
+                        contentStyle={{
+                            backgroundColor: 'hsl(var(--background))',
+                            borderColor: 'hsl(var(--border))',
+                            color: 'hsl(var(--card-foreground))'
+                        }}
+                    />
+                    <Area type="monotone" dataKey="Projects" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorProjects)" />
+                    {chartData[0]['Adoption Rate'] && <Area type="monotone" dataKey="Adoption Rate" stroke="hsl(var(--accent))" fillOpacity={1} fill="url(#colorAdoption)" />}
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
+    );
+};
 
-const ServiceFeature = ({ title, description, link, reverse = false }: { title: string, description: string, link: string, reverse?: boolean }) => {
+
+const ServiceFeature = ({ title, description, link, chartData, reverse = false }: { title: string, description: string, link: string, chartData: any[], reverse?: boolean }) => {
     
     return (
         <div className={cn('grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12')}>
@@ -48,15 +61,36 @@ const ServiceFeature = ({ title, description, link, reverse = false }: { title: 
             </div>
             
             <div className={cn("flex flex-col items-center w-full", reverse ? 'md:order-first' : 'md:order-last')}>
-                <div className="w-full bg-muted rounded-lg h-64 flex items-center justify-center">
-                   <p className="text-muted-foreground">Chart or Image Placeholder</p>
-                </div>
+                <ServiceChart data={chartData} />
             </div>
         </div>
     );
 };
 
 export default function Services() {
+  const serviceList = [
+    {
+      slug: "e-governance",
+      title: "Pioneering Digital Transformation in Public Services Through Advanced e-Governance Solutions",
+      description: "We develop and implement cutting-edge digital platforms designed to streamline government operations, enhance the delivery of public services, and foster greater transparency and citizen engagement across all sectors.",
+    },
+    {
+      slug: "business-automation",
+      title: "Driving Business Growth and Unprecedented Efficiency with Intelligent Automation and AI",
+      description: "We empower your business to thrive in a competitive landscape by leveraging the transformative power of Artificial Intelligence to automate complex processes, uncover actionable insights from your data, and foster a culture of continuous innovation and sustained success.",
+    },
+    {
+      slug: "custom-software",
+      title: "Architecting and Engineering Bespoke Software Solutions to Propel Your Business into the Future",
+      description: "We specialize in the design, development, and deployment of high-quality, scalable, and secure custom software applications. Each solution is meticulously crafted to align with your unique operational workflows, strategic business objectives, and long-term goals, ensuring a perfect technological fit for your organization.",
+    },
+    {
+      slug: "game-development",
+      title: "Creating Immersive and Captivating Gaming Experiences for a Global Audience",
+      description: "Our passion lies in the creation of high-quality, interactive games for mobile, web, and desktop platforms. We focus on delivering engaging gameplay, breathtaking visuals, and memorable narratives that captivate and entertain players of all ages, all around the world.",
+    }
+  ];
+
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto space-y-12 px-4 md:px-6">
@@ -72,17 +106,22 @@ export default function Services() {
           </div>
         </div>
         <div className="mx-auto grid max-w-5xl items-start gap-12 divide-y divide-border sm:grid-cols-1 md:gap-16 lg:max-w-none">
-          {services.map((service, index) => (
-            <div key={index} className="pt-16 first:pt-0">
-                <ServiceFeature
-                    key={index}
-                    title={service.title}
-                    description={service.description}
-                    link={service.link}
-                    reverse={index % 2 !== 0}
-                />
-            </div>
-          ))}
+          {serviceList.map((service, index) => {
+            const serviceData = services.find(s => s.slug === service.slug);
+            if (!serviceData || !serviceData.chartData) return null;
+
+            return (
+                <div key={index} className="pt-16 first:pt-0">
+                    <ServiceFeature
+                        title={service.title}
+                        description={service.description}
+                        link={`/services/${service.slug}`}
+                        chartData={serviceData.chartData}
+                        reverse={index % 2 !== 0}
+                    />
+                </div>
+            )
+          })}
         </div>
       </div>
     </section>
