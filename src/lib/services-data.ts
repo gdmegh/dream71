@@ -1,3 +1,4 @@
+
 import { Aperture, Code, Gamepad2, GitBranch, ShieldCheck, Cpu } from 'lucide-react';
 import { type LucideIcon } from 'lucide-react';
 
@@ -24,7 +25,7 @@ export const services: Service[] = [
     slug: "e-governance",
     title: "e-Governance Solutions",
     description: "Digital platforms to streamline government operations, enhance public services, and increase transparency.",
-    longDescription: "Our e-Governance solutions are designed to bridge the gap between governments and citizens. We build secure, scalable, and user-friendly digital platforms that transform public service delivery. From digital document management to online citizen portals, we empower governments to become more efficient, transparent, and responsive to the needs of their people.",
+    longDescription: "Our e-Governance solutions are designed to bridge the gap between governments and citizens. We build secure, scalable, and user-friendly digital platforms that transform public service delivery. We specialize in creating comprehensive systems for digital identity management, online tax and revenue collection, and transparent public procurement portals. From digital document management to online citizen portals for accessing services like licenses and permits, we empower governments to become more efficient, transparent, and responsive. By leveraging modern technologies, we help reduce bureaucracy, increase citizen participation, and build greater trust in public institutions.",
     link: "/services/e-governance",
     image: "/images/e_gov.jpeg",
     imageHint: "government building",
@@ -46,10 +47,10 @@ export const services: Service[] = [
     imageHint: "artificial intelligence",
     isChart: true,
     points: [
-        { title: "Workflow Automation", icon: GitBranch, description: "Streamline and automate repetitive tasks to boost productivity and reduce manual effort." },
-        { title: "Actionable Insights", icon: Cpu, description: "Gain data-driven insights for better decision-making and strategic planning." },
-        { title: "Cost Savings", icon: Aperture, description: "Reduce operational costs, improve resource allocation, and maximize your return on investment." },
-        { title: "Reduced Errors", icon: ShieldCheck, description: "Minimize human error in critical processes to ensure accuracy and compliance." }
+        { title: "Workflow Automation", icon: GitBranch, description: "Streamline and automate repetitive tasks to boost productivity." },
+        { title: "Actionable Insights", icon: Cpu, description: "Gain data-driven insights for better decision-making." },
+        { title: "Cost Savings", icon: Aperture, description: "Reduce operational costs and improve resource allocation." },
+        { title: "Reduced Errors", icon: ShieldCheck, description: "Minimize human error in critical business processes." }
     ],
   },
   {
@@ -62,10 +63,10 @@ export const services: Service[] = [
     imageHint: "custom software",
     isChart: true,
     points: [
-        { title: "Responsive Web Design", icon: Code, description: "Engaging and intuitive websites that provide a seamless experience on any device." },
-        { title: "Native Mobile Apps", icon: Aperture, description: "High-performance, feature-rich mobile applications for both iOS and Android platforms." },
-        { title: "Scalable Architecture", icon: GitBranch, description: "Flexible and robust solutions that are designed to grow with your business." },
-        { title: "High Performance", icon: Cpu, description: "Fast, reliable, and efficient applications that deliver an exceptional user experience." }
+        { title: "Responsive Web Design", icon: Code, description: "Engaging websites for a seamless user experience." },
+        { title: "Native Mobile Apps", icon: Aperture, description: "Feature-rich mobile applications for iOS and Android." },
+        { title: "Scalable Architecture", icon: GitBranch, description: "Solutions designed to grow with your business needs." },
+        { title: "High Performance", icon: Cpu, description: "Fast and reliable applications for an exceptional UX." }
     ],
   },
   {
@@ -78,25 +79,25 @@ export const services: Service[] = [
     imageHint: "video game",
     isChart: true,
     points: [
-        { title: "Cross-Platform Support", icon: Gamepad2, description: "Reach a wider audience with games that run seamlessly on both web and mobile devices." },
-        { title: "Engaging Gameplay", icon: Aperture, description: "Create fun, addictive, and memorable game mechanics that keep players coming back." },
-        { title: "Monetization Strategy", icon: GitBranch, description: "Maximize revenue with effective and player-friendly in-game monetization strategies." },
-        { title: "Multiplayer Functionality", icon: Code, description: "Build real-time, interactive, and social experiences with robust multiplayer features." }
+        { title: "Cross-Platform Support", icon: Gamepad2, description: "Games that run seamlessly on web and mobile devices." },
+        { title: "Engaging Gameplay", icon: Aperture, description: "Fun and addictive mechanics that keep players returning." },
+        { title: "Monetization Strategy", icon: GitBranch, description: "Effective and player-friendly in-game monetization." },
+        { title: "Multiplayer Functionality", icon: Code, description: "Build real-time and interactive social experiences." }
     ],
   }
 ];
 
 export const chartData = {
     eGovernance: [
-      { name: 'Projects', value: 120, fill: 'hsl(var(--chart-1))' },
-      { name: 'Success Rate', value: 98, fill: 'hsl(var(--chart-2))'  },
-      { name: 'Satisfaction', value: 95, fill: 'hsl(var(--chart-3))'  },
+        { name: 'Projects', value: 120, fill: 'hsl(var(--chart-1))' },
+        { name: 'Success Rate', value: 98, unit: '%', fill: 'hsl(var(--chart-2))'  },
+        { name: 'Satisfaction', value: 95, unit: '%', fill: 'hsl(var(--chart-3))'  },
     ],
     aiAutomation: [
-      { year: '2021', costSavings: 50, efficiencyGain: 20 },
-      { year: '2022', costSavings: 75, efficiencyGain: 35 },
-      { year: '2023', costSavings: 120, efficiencyGain: 50 },
-      { year: '2024', costSavings: 200, efficiencyGain: 65 },
+        { year: '2021', costSavings: 50, efficiencyGain: 20 },
+        { year: '2022', costSavings: 75, efficiencyGain: 35 },
+        { year: '2023', costSavings: 120, efficiencyGain: 50 },
+        { year: '2024', costSavings: 200, efficiencyGain: 65 },
     ],
     customSoftware: [
       { month: 'Jan', web: 4, mobile: 2 },
