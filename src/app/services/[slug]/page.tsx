@@ -7,12 +7,41 @@ import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle, Landmark } from 'lucide-react';
+import { CheckCircle, Landmark, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+
+const InfoSection = ({ title, description, items, image, imageHint, reverse = false }: { title: string, description?: string, items: {title: string, description: string}[], image: string, imageHint: string, reverse?: boolean }) => (
+    <div className="grid md:grid-cols-2 gap-12 items-center py-8">
+        <div className={reverse ? 'md:order-last' : ''}>
+            <Image
+                src={image}
+                alt={title}
+                width={800}
+                height={600}
+                className="rounded-[20px] shadow-xl"
+                data-ai-hint={imageHint}
+            />
+        </div>
+        <div>
+            <h3 className="font-headline text-3xl font-bold text-foreground mb-4">{title}</h3>
+            {description && <p className="font-body text-muted-foreground mb-6">{description}</p>}
+            <ul className="space-y-4">
+                {items.map((item, index) => (
+                    <li key={index} className="flex items-start">
+                        <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-bold text-lg text-foreground">{item.title}</h4>
+                            <p className="text-muted-foreground">{item.description}</p>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+);
 
 
 const EGovernancePage = ({ service }: { service: any }) => {
@@ -61,37 +90,20 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                 </CardContent>
                             </Card>
 
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className='font-headline text-3xl'>Key Features</CardTitle>
-                                </CardHeader>
-                                <CardContent className="grid md:grid-cols-2 gap-6">
-                                     {service.points.map((point: any, index: number) => (
-                                        <div key={index} className="flex items-start gap-4">
-                                            <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0"/>
-                                            <div>
-                                                <h4 className='font-bold text-lg'>{point.title}</h4>
-                                                <p className="text-muted-foreground">{point.description}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </CardContent>
-                            </Card>
-
-                             <Card>
-                                <CardHeader>
-                                    <CardTitle className='font-headline text-3xl'>What Makes Us Different</CardTitle>
-                                </CardHeader>
-                                <CardContent className="grid md:grid-cols-2 gap-8">
-                                     {service.differentiators.map((item: any, index: number) => (
-                                        <div key={index}>
-                                            <h4 className='font-bold text-lg mb-2'>{item.title}</h4>
-                                            <p className="text-muted-foreground">{item.description}</p>
-                                        </div>
-                                    ))}
-                                </CardContent>
-                            </Card>
-
+                            <InfoSection 
+                                title="Key Features"
+                                items={service.points}
+                                image="https://placehold.co/800x600.png"
+                                imageHint="digital services"
+                            />
+                            
+                            <InfoSection 
+                                title="What Makes Us Different"
+                                items={service.differentiators}
+                                image="https://placehold.co/800x600.png"
+                                imageHint="team collaboration"
+                                reverse={true}
+                            />
                         </div>
 
                         {/* Right Sidebar */}
@@ -139,20 +151,6 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                                 </AreaChart>
                                             </ResponsiveContainer>
                                         </div>
-                                    </CardContent>
-                                </Card>
-
-                                <Card className='bg-primary/5 border-primary/20'>
-                                     <CardHeader className='text-center'>
-                                        <CardTitle className="font-headline text-2xl">Ready to Transform Your Public Services?</CardTitle>
-                                        <CardDescription>Let's build a more efficient and transparent future together.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <Button asChild size="lg" className="w-full">
-                                            <Link href="/contact">
-                                                Get a Free Quote <ArrowRight className="ml-2 h-5 w-5" />
-                                            </Link>
-                                        </Button>
                                     </CardContent>
                                 </Card>
                             </div>
