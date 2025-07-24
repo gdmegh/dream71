@@ -1,4 +1,4 @@
-import { Code, Smartphone, Palette, ShieldCheck, Rocket, BrainCircuit } from 'lucide-react';
+import { Code, Smartphone, Palette, ShieldCheck, Rocket, BrainCircuit, Landmark } from 'lucide-react';
 
 export const services = [
     {
@@ -95,6 +95,41 @@ export const services = [
             { title: "Predictive Modeling", description: "Building models that forecast future events and behaviors with high accuracy." },
             { title: "Natural Language Processing", description: "Enabling applications to understand and process human language." },
             { title: "Computer Vision", description: "Developing systems that can 'see' and interpret visual information from images and videos." },
+        ]
+    },
+    {
+        slug: 'e-governance',
+        icon: Landmark,
+        title: 'e-Governance Solutions',
+        description: 'Pioneering Digital Transformation in Public Services Through Advanced e-Governance Solutions.',
+        longDescription: 'We develop and implement cutting-edge digital platforms designed to streamline government operations, enhance the delivery of public services, and foster greater transparency and citizen engagement across all sectors.',
+        image: 'https://placehold.co/800x600.png',
+        imageHint: 'government building',
+        imageUrl: 'https://placehold.co/1920x1086.png',
+        points: [
+            { title: 'Public Service Portals', description: 'Developing citizen-centric portals for easy access to government services and information.' },
+            { title: 'Digital Document Management', description: 'Implementing secure systems for managing official records and reducing paperwork.' },
+            { title: 'Online Licensing & Permits', description: 'Streamlining the application and approval processes for various licenses and permits.' },
+            { title: 'Smart City Solutions', description: 'Integrating technology to improve urban services like traffic management and public safety.' },
+        ],
+        stats: [
+            { name: 'Projects Delivered', value: '150+' },
+            { name: 'Citizen Satisfaction', value: '95%' },
+            { name: 'Efficiency Increase', value: '40%' },
+        ],
+        chartData: [
+            { year: 2018, 'Projects': 12, 'Adoption Rate': 50 },
+            { year: 2019, 'Projects': 19, 'Adoption Rate': 65 },
+            { year: 2020, 'Projects': 32, 'Adoption Rate': 75 },
+            { year: 2021, 'Projects': 45, 'Adoption Rate': 80 },
+            { year: 2022, 'Projects': 58, 'Adoption Rate': 85 },
+            { year: 2023, 'Projects': 73, 'Adoption Rate': 92 },
+        ],
+        differentiators: [
+            { title: 'Deep Domain Expertise', description: 'Understanding of public sector workflows and compliance requirements.' },
+            { title: 'Scalable & Secure Architecture', description: 'Building robust systems that can handle nationwide scale and protect sensitive data.' },
+            { title: 'User-Centric Design', description: 'Prioritizing accessibility and ease-of-use for all citizens, regardless of technical skill.' },
+            { title: 'Long-Term Partnership', description: 'Providing ongoing support and maintenance to ensure the longevity of our solutions.' }
         ]
     }
 ];

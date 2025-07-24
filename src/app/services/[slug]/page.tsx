@@ -1,9 +1,225 @@
+
+
+'use client'
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Landmark } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+
+
+const EGovernancePage = ({ service }: { service: any }) => {
+    
+    const chartData = service.chartData.map((d: any) => ({...d, year: d.year.toString()}));
+    
+    const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
+
+    return (
+        <>
+             <section className="bg-primary/5 pt-20 pb-12">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div className="flex justify-center items-center gap-4 mb-4">
+                        <div className="p-3 bg-primary/10 rounded-full text-primary">
+                            <Landmark className="h-8 w-8" />
+                        </div>
+                    </div>
+                    <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">{service.title}</h1>
+                    <p className="font-body mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                        {service.description}
+                    </p>
+                </div>
+            </section>
+            
+            <section className="py-16 bg-background">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                     <div className="grid lg:grid-cols-12 gap-12">
+                        {/* Main Content */}
+                        <div className="lg:col-span-8 space-y-12">
+                            <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl">
+                                <Image
+                                    src={service.image}
+                                    alt={service.title}
+                                    fill
+                                    className="object-cover"
+                                    data-ai-hint={service.imageHint}
+                                />
+                            </div>
+
+                             <Card>
+                                <CardHeader>
+                                    <CardTitle className='font-headline text-3xl'>Service Details</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="font-body text-muted-foreground">{service.longDescription}</p>
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className='font-headline text-3xl'>Key Features</CardTitle>
+                                </CardHeader>
+                                <CardContent className="grid md:grid-cols-2 gap-6">
+                                     {service.points.map((point: any, index: number) => (
+                                        <div key={index} className="flex items-start gap-4">
+                                            <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0"/>
+                                            <div>
+                                                <h4 className='font-bold text-lg'>{point.title}</h4>
+                                                <p className="text-muted-foreground">{point.description}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </CardContent>
+                            </Card>
+
+                             <Card>
+                                <CardHeader>
+                                    <CardTitle className='font-headline text-3xl'>What Makes Us Different</CardTitle>
+                                </CardHeader>
+                                <CardContent className="grid md:grid-cols-2 gap-8">
+                                     {service.differentiators.map((item: any, index: number) => (
+                                        <div key={index}>
+                                            <h4 className='font-bold text-lg mb-2'>{item.title}</h4>
+                                            <p className="text-muted-foreground">{item.description}</p>
+                                        </div>
+                                    ))}
+                                </CardContent>
+                            </Card>
+
+                        </div>
+
+                        {/* Right Sidebar */}
+                         <div className="lg:col-span-4">
+                            <div className="sticky top-24 space-y-8">
+                                <Card rounded="20px">
+                                    <CardHeader>
+                                        <CardTitle className="font-headline text-2xl">Success Statistics</CardTitle>
+                                        <CardDescription>Our track record in e-governance.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-6">
+                                        <div className='grid grid-cols-3 gap-4 text-center'>
+                                            {service.stats.map((stat:any) => (
+                                                <div key={stat.name} className='p-2 bg-primary/5 rounded-lg'>
+                                                    <p className='text-3xl font-bold text-primary'>{stat.value}</p>
+                                                    <p className='text-sm text-muted-foreground'>{stat.name}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                         <div className="h-72 mt-4">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                                    <defs>
+                                                        <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
+                                                            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                                                            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                                                        </linearGradient>
+                                                        <linearGradient id="colorAdoption" x1="0" y1="0" x2="0" y2="1">
+                                                            <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
+                                                            <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
+                                                        </linearGradient>
+                                                    </defs>
+                                                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                                                    <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                                                    <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={valueFormatter} />
+                                                    <Tooltip
+                                                        contentStyle={{
+                                                            backgroundColor: 'hsl(var(--card))',
+                                                            borderColor: 'hsl(var(--border))',
+                                                            color: 'hsl(var(--card-foreground))'
+                                                        }}
+                                                    />
+                                                    <Area type="monotone" dataKey="Projects" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorProjects)" />
+                                                    <Area type="monotone" dataKey="Adoption Rate" stroke="hsl(var(--accent))" fillOpacity={1} fill="url(#colorAdoption)" />
+                                                </AreaChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card className='bg-primary/5 border-primary/20'>
+                                     <CardHeader className='text-center'>
+                                        <CardTitle className="font-headline text-2xl">Ready to Transform Your Public Services?</CardTitle>
+                                        <CardDescription>Let's build a more efficient and transparent future together.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <Button asChild size="lg" className="w-full">
+                                            <Link href="/contact">
+                                                Get a Free Quote <ArrowRight className="ml-2 h-5 w-5" />
+                                            </Link>
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            </section>
+            
+            <Portfolio />
+
+            <CtaSection />
+        </>
+    );
+}
+
+const DefaultServicePage = ({ service }: { service: any }) => {
+    return (
+         <>
+            <section className="bg-primary/5 py-20 md:py-32">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">{service.title}</h1>
+                    <p className="font-body mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                        {service.description}
+                    </p>
+                </div>
+            </section>
+            
+            <section className="py-20 md:py-32">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 className="font-headline text-3xl font-bold text-foreground mb-4">About the Service</h2>
+                            <p className="font-body text-muted-foreground mb-6">
+                                {service.longDescription}
+                            </p>
+                            <h3 className="font-headline text-2xl font-bold text-foreground mb-4">Key Areas</h3>
+                                <ul className="space-y-3">
+                                    {service.points.map((point: any, index: number) => (
+                                        <li key={index} className="flex items-start font-body text-muted-foreground">
+                                            <CheckCircle className="h-5 w-5 mr-3 mt-1 text-primary flex-shrink-0" />
+                                            <div>
+                                                <span className="font-bold text-foreground">{point.title}:</span> {point.description}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                        </div>
+                        <div className="md:order-last">
+                            <Image
+                                src={service.image}
+                                alt={service.title}
+                                width={800}
+                                height={600}
+                                className="rounded-[20px] shadow-xl"
+                                data-ai-hint={service.imageHint}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <Portfolio />
+
+            <CtaSection />
+        </>
+    )
+}
 
 export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
   const service = services.find(s => s.slug === params.slug);
@@ -11,55 +227,11 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
   if (!service) {
     notFound();
   }
+  
+  if (service.slug === 'e-governance') {
+    return <EGovernancePage service={service} />;
+  }
+  
+  return <DefaultServicePage service={service} />;
 
-  return (
-    <>
-      <section className="bg-primary/5 py-20 md:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">{service.title}</h1>
-          <p className="font-body mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-            {service.description}
-          </p>
-        </div>
-      </section>
-      
-      <section className="py-20 md:py-32">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                  <div>
-                      <h2 className="font-headline text-3xl font-bold text-foreground mb-4">About the Service</h2>
-                      <p className="font-body text-muted-foreground mb-6">
-                          {service.longDescription}
-                      </p>
-                       <h3 className="font-headline text-2xl font-bold text-foreground mb-4">Key Areas</h3>
-                        <ul className="space-y-3">
-                            {service.points.map((point, index) => (
-                                <li key={index} className="flex items-start font-body text-muted-foreground">
-                                    <CheckCircle className="h-5 w-5 mr-3 mt-1 text-primary flex-shrink-0" />
-                                    <div>
-                                        <span className="font-bold text-foreground">{point.title}:</span> {point.description}
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                  </div>
-                  <div className="md:order-last">
-                      <Image
-                          src={service.image}
-                          alt={service.title}
-                          width={800}
-                          height={600}
-                          className="rounded-[20px] shadow-xl"
-                          data-ai-hint={service.imageHint}
-                      />
-                  </div>
-              </div>
-          </div>
-      </section>
-
-      <Portfolio />
-
-      <CtaSection />
-    </>
-  );
 }
