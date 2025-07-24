@@ -18,9 +18,9 @@ const chartConfig = {
   efficiencyGain: { label: 'Efficiency Gain (%)', color: 'hsl(var(--chart-2))', icon: Aperture },
   web: { label: 'Web Projects', color: 'hsl(var(--chart-1))' },
   mobile: { label: 'Mobile Projects', color: 'hsl(var(--chart-2))' },
-  'Desktop Game': { label: 'Desktop Game', color: 'hsl(var(--chart-5))' },
-  'Online Game': { label: 'Online Game', color: 'hsl(var(--chart-1))' },
-  'Mobile Game': { label: 'Mobile Game', color: 'hsl(var(--chart-2))' },
+  'Desktop Game': { label: 'Desktop Game', color: 'hsl(var(--chart-4))' },
+  'Online Game': { label: 'Online Game', color: 'hsl(var(--chart-5))' },
+  'Mobile Game': { label: 'Mobile Game', color: 'hsl(var(--chart-1))' },
   value: {
     color: 'hsl(var(--foreground))',
   },
