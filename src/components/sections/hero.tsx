@@ -36,30 +36,30 @@ export default function Hero() {
                         <span className="text-primary">Solutions</span>
                     </h1>
                 </div>
-                <div className="w-full max-w-6xl mt-16 group">
-                   <Carousel
-                        plugins={[plugin.current]}
-                        className="w-full"
-                        opts={{ loop: true }}
-                    >
-                        <CarouselContent>
-                            {heroImages.map((image, index) => (
-                                <CarouselItem key={index} className="relative h-[300px] sm:h-[400px] md:h-[600px]">
-                                    <Image
-                                        src={image.src}
-                                        alt={image.alt}
-                                        fill
-                                        className="rounded-[50px] shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover"
-                                        data-ai-hint={image.dataAiHint}
-                                        priority={index === 0}
-                                    />
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="left-4" />
-                        <CarouselNext className="right-4" />
-                    </Carousel>
-                </div>
+            </div>
+            <div className="w-full mt-16 group">
+               <Carousel
+                    plugins={[plugin.current]}
+                    className="w-full"
+                    opts={{ loop: true }}
+                >
+                    <CarouselContent>
+                        {heroImages.map((image, index) => (
+                            <CarouselItem key={index} className="relative h-[300px] sm:h-[400px] md:h-[600px]">
+                                <Image
+                                    src={image.src}
+                                    alt={image.alt}
+                                    fill
+                                    className="shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover"
+                                    data-ai-hint={image.dataAiHint}
+                                    priority={index === 0}
+                                />
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-4" />
+                    <CarouselNext className="right-4" />
+                </Carousel>
             </div>
         </section>
     );
