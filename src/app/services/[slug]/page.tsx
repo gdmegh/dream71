@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy } from 'lucide-react';
+import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -90,6 +90,33 @@ const MethodologySection = () => (
     </section>
 );
 
+const featureIcons = {
+    'Public Service Portals': MonitorCheck,
+    'Digital Document Management': FileDigit,
+    'Online Licensing & Permits': Award,
+    'Smart City Solutions': Building
+};
+
+const KeyFeatures = ({ features }: { features: { title: string, description: string }[] }) => (
+    <div className="text-center py-8">
+        <h3 className="font-headline text-3xl font-bold text-foreground mb-12">Key Features</h3>
+        <div className="grid md:grid-cols-2 gap-8">
+            {features.map((feature, index) => {
+                const Icon = featureIcons[feature.title as keyof typeof featureIcons] || CheckCircle;
+                return (
+                    <div key={index} className="flex flex-col items-center text-center p-6 bg-primary/5 rounded-[20px]">
+                        <div className="p-3 bg-primary/10 rounded-full text-primary mb-4">
+                            <Icon className="h-8 w-8" />
+                        </div>
+                        <h4 className="font-headline text-xl font-bold text-foreground mb-2">{feature.title}</h4>
+                        <p className="text-muted-foreground font-body">{feature.description}</p>
+                    </div>
+                );
+            })}
+        </div>
+    </div>
+);
+
 
 const EGovernancePage = ({ service }: { service: any }) => {
     
@@ -137,12 +164,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                 </CardContent>
                             </Card>
 
-                            <InfoSection 
-                                title="Key Features"
-                                items={service.points}
-                                image="https://placehold.co/800x600.png"
-                                imageHint="digital services"
-                            />
+                            <KeyFeatures features={service.points} />
                             
                             <InfoSection 
                                 title="What Makes Us Different"
