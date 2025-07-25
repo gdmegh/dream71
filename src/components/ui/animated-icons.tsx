@@ -29,12 +29,12 @@ const LaravelIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const icons = [
-    { Icon: ReactIcon, className: 'absolute top-[10%] left-[15%] w-16 h-16 opacity-10' },
-    { Icon: PHPIcon, className: 'absolute top-[20%] right-[10%] w-24 h-24 opacity-10' },
-    { Icon: LaravelIcon, className: 'absolute bottom-[15%] left-[20%] w-20 h-20 opacity-10' },
-    { Icon: ReactIcon, className: 'absolute bottom-[25%] right-[25%] w-12 h-12 opacity-10' },
-    { Icon: PHPIcon, className: 'absolute top-[60%] left-[5%] w-14 h-14 opacity-10' },
-    { Icon: LaravelIcon, className: 'absolute top-[5%] right-[30%] w-16 h-16 opacity-10' },
+    { Icon: ReactIcon, className: 'absolute top-[10%] left-[15%] w-16 h-16' },
+    { Icon: PHPIcon, className: 'absolute top-[20%] right-[10%] w-24 h-24' },
+    { Icon: LaravelIcon, className: 'absolute bottom-[15%] left-[20%] w-20 h-20' },
+    { Icon: ReactIcon, className: 'absolute bottom-[25%] right-[25%] w-12 h-12' },
+    { Icon: PHPIcon, className: 'absolute top-[60%] left-[5%] w-14 h-14' },
+    { Icon: LaravelIcon, className: 'absolute top-[5%] right-[30%] w-16 h-16' },
 ];
 
 export default function AnimatedIcons() {
