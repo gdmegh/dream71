@@ -27,16 +27,16 @@ export default function AnimatedIcons() {
     return (
         <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none">
              <motion.div
-                className="absolute top-[10%] left-[15%]"
+                className="absolute top-[10%] left-[5%]"
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
             >
-                <ReactIcon className="w-16 h-16" />
+                <ReactIcon className="w-16 h-16 opacity-50" />
             </motion.div>
              <div
-                className="absolute top-[10%] right-[15%]"
+                className="absolute top-[10%] right-[5%]"
             >
-                <NodeJSIcon className="w-16 h-16" />
+                <NodeJSIcon className="w-16 h-16 opacity-50" />
             </div>
         </div>
     );
