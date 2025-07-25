@@ -20,6 +20,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 
@@ -137,7 +138,12 @@ export default function CategoriesCMS() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => startEditing(category)}>Edit</DropdownMenuItem>
                           <AlertDialogTrigger asChild>
-                             <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                             <DropdownMenuItem
+                              className="text-destructive"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              Delete
+                            </DropdownMenuItem>
                           </AlertDialogTrigger>
                         </DropdownMenuContent>
                       </DropdownMenu>
