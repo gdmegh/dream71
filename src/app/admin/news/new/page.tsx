@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -33,6 +34,8 @@ const formSchema = z.object({
 export default function NewNewsArticle() {
   const { toast } = useToast();
   const router = useRouter();
+  const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,9 +49,37 @@ export default function NewNewsArticle() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsUploading(true);
+    let imageUrl = values.imageUrl;
+
+    if (featuredImageFile) {
+        const formData = new FormData();
+        formData.append('file', featuredImageFile);
+
+        try {
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Image upload failed');
+            }
+
+            const { path } = await response.json();
+            imageUrl = path;
+        } catch (error) {
+            console.error("Image upload error: ", error);
+            toast({ title: "Error", description: "Could not upload image.", variant: "destructive" });
+            setIsUploading(false);
+            return;
+        }
+    }
+
     try {
         await addDoc(collection(db, "News"), {
             ...values,
+            imageUrl,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         });
@@ -65,6 +96,8 @@ export default function NewNewsArticle() {
             description: "There was an error submitting the article.",
             variant: "destructive",
         });
+    } finally {
+        setIsUploading(false);
     }
   }
 
@@ -105,20 +138,18 @@ export default function NewNewsArticle() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Featured Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://placehold.co/1200x600.png" {...field} />
-                  </FormControl>
-                  <FormDescription>The URL for the main image of the article.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormItem>
+              <FormLabel>Featured Image</FormLabel>
+              <FormControl>
+                <Input 
+                  type="file" 
+                  onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
+                  accept="image/*"
+                />
+              </FormControl>
+              <FormDescription>Upload the main image for the article.</FormDescription>
+              <FormMessage />
+            </FormItem>
 
             <FormField
               control={form.control}
@@ -148,8 +179,8 @@ export default function NewNewsArticle() {
                 </FormItem>
               )}
             />
-            <Button type="submit" size="lg" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Publishing..." : "Publish Article"}
+            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+              {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Publishing..." : "Publish Article"}
             </Button>
           </form>
         </Form>

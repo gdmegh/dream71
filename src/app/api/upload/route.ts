@@ -17,19 +17,19 @@ export async function POST(request: NextRequest) {
 
   // Create a unique filename to avoid overwrites
   const filename = `${Date.now()}-${file.name.replace(/\s/g, '_')}`;
-  const uploadDir = path.join(process.cwd(), 'public/images');
+  const uploadDir = path.join(process.cwd(), 'public/images/post');
   const uploadPath = path.join(uploadDir, filename);
 
   try {
     // Ensure the upload directory exists
     await mkdir(uploadDir, { recursive: true });
     
-    // Write the file to the public/images directory
+    // Write the file to the public/images/post directory
     await writeFile(uploadPath, buffer);
     console.log(`File saved to ${uploadPath}`);
     
     // Return the public path to the file
-    const publicPath = `/images/${filename}`;
+    const publicPath = `/images/post/${filename}`;
     return NextResponse.json({ success: true, path: publicPath });
   } catch (error) {
     console.error('Error saving file:', error);

@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -35,6 +36,8 @@ const formSchema = z.object({
 export default function NewBlogPost() {
   const { toast } = useToast();
   const router = useRouter();
+  const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,9 +53,38 @@ export default function NewBlogPost() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsUploading(true);
+    let imageUrl = values.imageUrl;
+
+    if (featuredImageFile) {
+        const formData = new FormData();
+        formData.append('file', featuredImageFile);
+
+        try {
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Image upload failed');
+            }
+
+            const { path } = await response.json();
+            imageUrl = path;
+        } catch (error) {
+            console.error("Image upload error: ", error);
+            toast({ title: "Error", description: "Could not upload image.", variant: "destructive" });
+            setIsUploading(false);
+            return;
+        }
+    }
+
+
     try {
         await addDoc(collection(db, "Blog"), {
             ...values,
+            imageUrl,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         });
@@ -69,6 +101,8 @@ export default function NewBlogPost() {
             description: "There was an error submitting the post.",
             variant: "destructive",
         });
+    } finally {
+        setIsUploading(false);
     }
   }
 
@@ -109,20 +143,18 @@ export default function NewBlogPost() {
               )}
             />
             
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Featured Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://placehold.co/1200x600.png" {...field} />
-                  </FormControl>
-                  <FormDescription>The URL for the main image of the blog post.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormItem>
+              <FormLabel>Featured Image</FormLabel>
+              <FormControl>
+                <Input 
+                  type="file" 
+                  onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
+                  accept="image/*"
+                />
+              </FormControl>
+              <FormDescription>Upload the main image for the blog post.</FormDescription>
+              <FormMessage />
+            </FormItem>
             
              <div className="grid md:grid-cols-2 gap-8">
                 <FormField
@@ -147,6 +179,7 @@ export default function NewBlogPost() {
                         <FormControl>
                             <Input placeholder="https://placehold.co/100x100.png" {...field} />
                         </FormControl>
+                        <FormDescription>Optional: URL for the author's avatar.</FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}
@@ -180,8 +213,8 @@ export default function NewBlogPost() {
                 </FormItem>
               )}
             />
-            <Button type="submit" size="lg" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Publishing..." : "Publish Post"}
+            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+              {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Publishing..." : "Publish Post"}
             </Button>
           </form>
         </Form>
