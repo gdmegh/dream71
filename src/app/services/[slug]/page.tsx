@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { collection, query, where, getDocs, limit, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -368,31 +368,40 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
   useEffect(() => {
     const fetchService = async () => {
       setLoading(true);
+      let serviceData: any = null;
+      let isStatic = false;
+
       // First, check the static services
       const staticService = services.find(s => s.slug === slug);
       if (staticService) {
-        setService(staticService);
-        setLoading(false);
-        return;
-      }
-
-      // If not found, check Firestore for dynamic services
-      const q = query(
-        collection(db, 'Service'),
-        where('slug', '==', slug),
-        limit(1)
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        setService(null);
+        serviceData = staticService;
+        isStatic = true;
       } else {
-        const serviceData = {
-          id: querySnapshot.docs[0].id,
-          ...querySnapshot.docs[0].data(),
-        };
-        setService(serviceData);
+        // If not found, check Firestore for dynamic services
+        const q = query(
+          collection(db, 'Service'),
+          where('slug', '==', slug),
+          limit(1)
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          serviceData = {
+            id: querySnapshot.docs[0].id,
+            ...querySnapshot.docs[0].data(),
+          };
+        }
       }
+
+      if (serviceData && serviceData.chartId) {
+        const chartDocRef = doc(db, 'ChartData', serviceData.chartId);
+        const chartDocSnap = await getDoc(chartDocRef);
+        if (chartDocSnap.exists()) {
+          serviceData.chartData = chartDocSnap.data().dataPoints;
+        }
+      }
+      
+      setService(serviceData);
       setLoading(false);
     };
 

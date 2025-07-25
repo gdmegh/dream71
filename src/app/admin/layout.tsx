@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Briefcase, AppWindow, Rss, Newspaper, GalleryHorizontal, MessageSquareQuote, LayoutGrid } from 'lucide-react';
+import { Briefcase, AppWindow, Rss, Newspaper, GalleryHorizontal, MessageSquareQuote, LayoutGrid, BarChartHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const menuItems = [
@@ -17,6 +17,7 @@ const menuItems = [
   { value: 'events', href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
   { value: 'testimonials', href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
   { value: 'tech-stack', href: '/admin/tech-stack', label: 'Tech Stack', icon: LayoutGrid },
+  { value: 'charts', href: '/admin/charts', label: 'Charts', icon: BarChartHorizontal },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -44,7 +45,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
        <main className="flex-1">
             <div className="container mx-auto p-4 md:p-6 lg:p-8">
                  <Tabs value={activeTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 mb-6">
+                    <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 mb-6">
                         {menuItems.map((item) => (
                         <TabsTrigger key={item.value} value={item.value} asChild>
                            <Link href={item.href}>

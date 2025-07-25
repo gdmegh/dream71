@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp, collection, getDocs } from "firebase/firestore";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -33,7 +33,13 @@ const formSchema = z.object({
   content: z.string().min(20, "Content must be at least 20 characters."),
   imageUrl: z.string().optional(),
   template: z.string().min(2, "Please select a template."),
+  chartId: z.string().optional(),
 });
+
+type ChartData = {
+  id: string;
+  name: string;
+};
 
 export default function EditService() {
   const { toast } = useToast();
@@ -45,11 +51,20 @@ export default function EditService() {
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
+  const [charts, setCharts] = useState<ChartData[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
+  
+  useEffect(() => {
+    const fetchCharts = async () => {
+        const querySnapshot = await getDocs(collection(db, 'ChartData'));
+        setCharts(querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name })));
+    };
+    fetchCharts();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -200,6 +215,30 @@ export default function EditService() {
                   <FormMessage />
                 </FormItem>
               )}
+            />
+
+             <FormField
+                control={form.control}
+                name="chartId"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Related Chart</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a chart dataset" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        {charts.map(chart => (
+                            <SelectItem key={chart.id} value={chart.id}>{chart.name}</SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    <FormDescription>Link this service to a chart dataset (optional).</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
             />
 
             <FormItem>
