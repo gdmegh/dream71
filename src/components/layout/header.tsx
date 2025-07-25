@@ -152,17 +152,31 @@ export default function Header() {
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                         <NavigationMenuContent>
-                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                {servicesComponents.map((component) => (
-                                    <ListItem
-                                        key={component.title}
-                                        title={component.title}
-                                        href={component.href}
-                                        icon={component.icon}
-                                    >
-                                        {component.description}
-                                    </ListItem>
-                                ))}
+                             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
+                                <li className="row-span-3">
+                                    <NavigationMenuLink asChild>
+                                        <a
+                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                                        href="/services"
+                                        >
+                                            <div className="mb-2 mt-4 text-lg font-medium">
+                                                Our Services
+                                            </div>
+                                            <p className="text-sm leading-tight text-muted-foreground">
+                                               Explore our comprehensive suite of services designed to transform your visionary ideas into robust digital realities.
+                                            </p>
+                                        </a>
+                                    </NavigationMenuLink>
+                                </li>
+                                <ListItem href="/services/web-development" title="Web Development" icon={AppWindow}>
+                                  Modern, responsive, and scalable web applications.
+                                </ListItem>
+                                <ListItem href="/services/mobile-app-development" title="Mobile Apps" icon={Sparkles}>
+                                    Native and cross-platform apps for iOS and Android.
+                                </ListItem>
+                                <ListItem href="/services/ui-ux-design" title="UI/UX Design" icon={PencilRuler}>
+                                  Intuitive and beautiful user interfaces that delight users.
+                                </ListItem>
                             </ul>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
@@ -332,3 +346,5 @@ const ListItem = React.forwardRef<
   );
 });
 ListItem.displayName = "ListItem";
+
+    
