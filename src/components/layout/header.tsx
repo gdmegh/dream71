@@ -1,22 +1,38 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 
 const navLinks = [
   { href: '/services', label: 'Services' },
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/about', label: 'About Us' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/news', label: 'News' },
-  { href: '/events', label: 'Events' },
-  { href: '/testimonials', label: 'Testimonials' },
 ];
+
+const insightsLinks = [
+    { href: '/blog', label: 'Blog' },
+    { href: '/news', label: 'News' },
+    { href: '/events', label: 'Events' },
+]
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +63,33 @@ export default function Header() {
     );
   };
 
+  const InsightsDropdown = () => {
+     const isAdmin = pathname.startsWith('/admin');
+     if (isAdmin) return null;
+     const isActive = insightsLinks.some(link => pathname.startsWith(link.href));
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button className={cn(
+                    "relative flex items-center gap-1 py-1 transition-colors duration-300 hover:text-primary after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full font-headline outline-none",
+                    isActive ? "text-primary after:w-full" : ""
+                )}>
+                    <span>Insights</span>
+                    <ChevronDown className="h-4 w-4 transition-transform duration-200" />
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                {insightsLinks.map((link) => (
+                    <DropdownMenuItem key={link.href} asChild>
+                        <Link href={link.href}>{link.label}</Link>
+                    </DropdownMenuItem>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+  }
+
   return (
     <header className={cn(
       "sticky top-0 z-50 transition-all duration-300",
@@ -68,6 +111,7 @@ export default function Header() {
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
             ))}
+            <InsightsDropdown />
             {!pathname.startsWith('/admin') && <Button asChild>
               <Link href="/contact">Contact Us</Link>
             </Button>}
@@ -81,10 +125,22 @@ export default function Header() {
       </div>
       {isOpen && (
         <div className="md:hidden bg-background shadow-lg">
-          <nav className="flex flex-col items-center space-y-4 p-4">
+          <nav className="flex flex-col space-y-2 p-4">
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
             ))}
+            <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1" className="border-b-0">
+                    <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Insights</AccordionTrigger>
+                    <AccordionContent className="pl-4">
+                        <div className="flex flex-col space-y-2">
+                         {insightsLinks.map((link) => (
+                            <Link key={link.href} href={link.href} className="font-headline py-1 text-muted-foreground hover:text-primary" onClick={() => setIsOpen(false)}>{link.label}</Link>
+                         ))}
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
             <Button asChild>
               <Link href="/contact" onClick={() => setIsOpen(false)}>Contact Us</Link>
             </Button>

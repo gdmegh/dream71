@@ -15,8 +15,7 @@ const footerLinks = [
     links: [
       { label: 'About Us', href: '/about' },
       { label: 'Portfolio', href: '/portfolio' },
-      { label: 'News', href: '/news' },
-      { label: 'Events', href: '/events' },
+      { label: 'Contact', href: '/contact' },
     ],
   },
   {
@@ -29,10 +28,16 @@ const footerLinks = [
     ],
   },
   {
-    title: 'Resources',
+    title: 'Insights',
     links: [
       { label: 'Blog', href: '/blog' },
-      { label: 'Testimonials', href: '/testimonials' },
+      { label: 'News', href: '/news' },
+      { label: 'Events', href: '/events' },
+    ],
+  },
+   {
+    title: 'Resources',
+    links: [
       { label: 'Admin', href: '/admin/portfolio' },
     ],
   }
