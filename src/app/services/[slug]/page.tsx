@@ -270,8 +270,9 @@ const DefaultServicePage = ({ service }: { service: any }) => {
     )
 }
 
-export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const service = services.find(s => s.slug === params.slug);
+export default async function ServiceDetailPage({ params }: { params: { slug: string } }) {
+  const p = await params;
+  const service = services.find(s => s.slug === p.slug);
 
   if (!service) {
     notFound();
