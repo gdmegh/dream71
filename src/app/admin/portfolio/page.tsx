@@ -25,22 +25,22 @@ import {
 } from "@/components/ui/alert-dialog";
 import Image from 'next/image';
 
-type Category = {
+type TechStack = {
   id: string;
   name: string;
 };
 
 export default function PortfolioCMS() {
   const [projects, setProjects] = useState<any[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [techStack, setTechStack] = useState<TechStack[]>([]);
   const { toast } = useToast();
 
    useEffect(() => {
-    const fetchCategories = async () => {
-      const querySnapshot = await getDocs(collection(db, 'Categories'));
-      setCategories(querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name })));
+    const fetchTechStack = async () => {
+      const querySnapshot = await getDocs(collection(db, 'TechStack'));
+      setTechStack(querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name })));
     };
-    fetchCategories();
+    fetchTechStack();
   }, []);
 
   const fetchProjects = async () => {
@@ -64,9 +64,9 @@ export default function PortfolioCMS() {
     }
   };
 
-  const getCategoryNames = (categoryIds: string[]) => {
-    if (!categoryIds || !categories.length) return 'N/A';
-    return categoryIds.map(id => categories.find(c => c.id === id)?.name).filter(Boolean).join(', ') || 'N/A';
+  const getTechStackNames = (techStackIds: string[]) => {
+    if (!techStackIds || !techStack.length) return 'N/A';
+    return techStackIds.map(id => techStack.find(c => c.id === id)?.name).filter(Boolean).join(', ') || 'N/A';
   };
 
 
@@ -90,7 +90,7 @@ export default function PortfolioCMS() {
             <TableRow>
               <TableHead>Image</TableHead>
               <TableHead>Title</TableHead>
-              <TableHead>Categories</TableHead>
+              <TableHead>Tech Stack</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -103,7 +103,7 @@ export default function PortfolioCMS() {
                   {project.imageUrl && <Image src={project.imageUrl} alt={project.title} width={40} height={40} className="rounded-md object-cover" />}
                 </TableCell>
                 <TableCell className="font-medium">{project.title}</TableCell>
-                <TableCell>{getCategoryNames(project.categoryIds)}</TableCell>
+                <TableCell>{getTechStackNames(project.techStackIds)}</TableCell>
                 <TableCell>
                     <Badge variant={project.isPublic ? "default" : "secondary"}>{project.isPublic ? "Public" : "Private"}</Badge>
                 </TableCell>

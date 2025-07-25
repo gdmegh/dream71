@@ -24,94 +24,94 @@ import {
 } from "@/components/ui/alert-dialog";
 
 
-export default function CategoriesCMS() {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [newCategoryName, setNewCategoryName] = useState('');
-  const [editingCategory, setEditingCategory] = useState<any>(null);
+export default function TechStackCMS() {
+  const [techStack, setTechStack] = useState<any[]>([]);
+  const [newTechName, setNewTechName] = useState('');
+  const [editingTech, setEditingTech] = useState<any>(null);
   const { toast } = useToast();
 
-  const fetchCategories = async () => {
-    const querySnapshot = await getDocs(collection(db, "Categories"));
-    const categoriesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    setCategories(categoriesData);
+  const fetchTechStack = async () => {
+    const querySnapshot = await getDocs(collection(db, "TechStack"));
+    const techStackData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setTechStack(techStackData);
   };
 
   useEffect(() => {
-    fetchCategories();
+    fetchTechStack();
   }, []);
 
-  const handleAddOrUpdateCategory = async (e: React.FormEvent) => {
+  const handleAddOrUpdateTech = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCategoryName.trim()) {
-      toast({ title: "Error", description: "Category name cannot be empty.", variant: "destructive" });
+    if (!newTechName.trim()) {
+      toast({ title: "Error", description: "Tech Stack name cannot be empty.", variant: "destructive" });
       return;
     }
 
-    if (editingCategory) {
-      // Update existing category
-      const docRef = doc(db, "Categories", editingCategory.id);
-      await updateDoc(docRef, { name: newCategoryName });
-      toast({ title: "Success", description: "Category updated successfully." });
+    if (editingTech) {
+      // Update existing tech stack
+      const docRef = doc(db, "TechStack", editingTech.id);
+      await updateDoc(docRef, { name: newTechName });
+      toast({ title: "Success", description: "Tech Stack updated successfully." });
     } else {
-      // Add new category
-      await addDoc(collection(db, "Categories"), {
-        name: newCategoryName,
+      // Add new tech stack
+      await addDoc(collection(db, "TechStack"), {
+        name: newTechName,
         createdAt: serverTimestamp(),
       });
-      toast({ title: "Success", description: "Category added successfully." });
+      toast({ title: "Success", description: "Tech Stack added successfully." });
     }
-    setNewCategoryName('');
-    setEditingCategory(null);
-    fetchCategories();
+    setNewTechName('');
+    setEditingTech(null);
+    fetchTechStack();
   };
 
-  const handleDeleteCategory = async (id: string) => {
+  const handleDeleteTech = async (id: string) => {
     try {
-      await deleteDoc(doc(db, "Categories", id));
-      toast({ title: "Success", description: "Category deleted successfully." });
-      fetchCategories();
+      await deleteDoc(doc(db, "TechStack", id));
+      toast({ title: "Success", description: "Tech Stack deleted successfully." });
+      fetchTechStack();
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete category.", variant: "destructive" });
+      toast({ title: "Error", description: "Failed to delete tech stack.", variant: "destructive" });
     }
   };
 
-  const startEditing = (category: any) => {
-    setEditingCategory(category);
-    setNewCategoryName(category.name);
+  const startEditing = (tech: any) => {
+    setEditingTech(tech);
+    setNewTechName(tech.name);
   };
 
   const cancelEditing = () => {
-    setEditingCategory(null);
-    setNewCategoryName('');
+    setEditingTech(null);
+    setNewTechName('');
   };
 
   return (
     <div className="grid gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>{editingCategory ? 'Edit Category' : 'Add New Category'}</CardTitle>
+          <CardTitle>{editingTech ? 'Edit Tech Stack' : 'Add New Tech Stack'}</CardTitle>
           <CardDescription>
-            {editingCategory ? `Update the name for the "${editingCategory.name}" category.` : 'Add a new category to organize your content.'}
+            {editingTech ? `Update the name for the "${editingTech.name}" tech.` : 'Add a new technology to organize your projects.'}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleAddOrUpdateCategory} className="flex gap-4">
+          <form onSubmit={handleAddOrUpdateTech} className="flex gap-4">
             <Input
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              placeholder="Category Name"
+              value={newTechName}
+              onChange={(e) => setNewTechName(e.target.value)}
+              placeholder="Tech Name (e.g. React)"
               className="flex-grow"
             />
-            <Button type="submit">{editingCategory ? 'Update' : 'Add'}</Button>
-            {editingCategory && <Button type="button" variant="outline" onClick={cancelEditing}>Cancel</Button>}
+            <Button type="submit">{editingTech ? 'Update' : 'Add'}</Button>
+            {editingTech && <Button type="button" variant="outline" onClick={cancelEditing}>Cancel</Button>}
           </form>
         </CardContent>
       </Card>
       
       <Card>
         <CardHeader>
-          <CardTitle>Manage Categories</CardTitle>
-          <CardDescription>View, edit, or delete your existing categories.</CardDescription>
+          <CardTitle>Manage Tech Stack</CardTitle>
+          <CardDescription>View, edit, or delete your existing technologies.</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -123,10 +123,10 @@ export default function CategoriesCMS() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell className="font-medium">{category.name}</TableCell>
-                  <TableCell>{category.createdAt?.toDate().toLocaleDateString()}</TableCell>
+              {techStack.map((tech) => (
+                <TableRow key={tech.id}>
+                  <TableCell className="font-medium">{tech.name}</TableCell>
+                  <TableCell>{tech.createdAt?.toDate().toLocaleDateString()}</TableCell>
                   <TableCell className="text-right">
                     <AlertDialog>
                       <DropdownMenu>
@@ -136,7 +136,7 @@ export default function CategoriesCMS() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => startEditing(category)}>Edit</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => startEditing(tech)}>Edit</DropdownMenuItem>
                           <AlertDialogTrigger asChild>
                              <DropdownMenuItem
                               className="text-destructive"
@@ -151,12 +151,12 @@ export default function CategoriesCMS() {
                           <AlertDialogHeader>
                           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                           <AlertDialogDescription>
-                              This action cannot be undone. This will permanently delete this category.
+                              This action cannot be undone. This will permanently delete this tech stack item.
                           </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDeleteCategory(category.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                          <AlertDialogAction onClick={() => handleDeleteTech(tech.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
                           </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>

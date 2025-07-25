@@ -16,7 +16,7 @@ const menuItems = [
   { value: 'news', href: '/admin/news', label: 'News', icon: Newspaper },
   { value: 'events', href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
   { value: 'testimonials', href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
-  { value: 'categories', href: '/admin/categories', label: 'Categories', icon: LayoutGrid },
+  { value: 'tech-stack', href: '/admin/tech-stack', label: 'Tech Stack', icon: LayoutGrid },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

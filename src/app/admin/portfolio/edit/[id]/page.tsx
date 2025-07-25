@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -41,12 +42,18 @@ const formSchema = z.object({
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
   imageUrl: z.string().optional(),
-  categoryIds: z.array(z.string()).optional(),
+  techStackIds: z.array(z.string()).optional(),
+  serviceId: z.string().optional(),
 });
 
-type Category = {
+type TechStack = {
   value: string;
   label: string;
+};
+
+type Service = {
+  id: string;
+  title: string;
 };
 
 export default function EditPortfolioProject() {
@@ -59,21 +66,27 @@ export default function EditPortfolioProject() {
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [techStack, setTechStack] = useState<TechStack[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      categoryIds: [],
+      techStackIds: [],
     },
   });
 
    useEffect(() => {
-    const fetchCategories = async () => {
-      const querySnapshot = await getDocs(collection(db, 'Categories'));
-      setCategories(querySnapshot.docs.map(doc => ({ value: doc.id, label: doc.data().name })));
+    const fetchTechStack = async () => {
+      const querySnapshot = await getDocs(collection(db, 'TechStack'));
+      setTechStack(querySnapshot.docs.map(doc => ({ value: doc.id, label: doc.data().name })));
     };
-    fetchCategories();
+     const fetchServices = async () => {
+        const querySnapshot = await getDocs(collection(db, 'Service'));
+        setServices(querySnapshot.docs.map(doc => ({ id: doc.id, title: doc.data().title })));
+    };
+    fetchTechStack();
+    fetchServices();
   }, []);
 
   useEffect(() => {
@@ -87,7 +100,7 @@ export default function EditPortfolioProject() {
         const data = docSnap.data();
         form.reset({
           ...data,
-          categoryIds: data.categoryIds || [],
+          techStackIds: data.techStackIds || [],
         });
         setCurrentImageUrl(data.imageUrl);
       } else {
@@ -262,18 +275,42 @@ export default function EditPortfolioProject() {
               <FormMessage />
             </FormItem>
             
+            <FormField
+                control={form.control}
+                name="serviceId"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Related Service</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a related service" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        {services.map(service => (
+                            <SelectItem key={service.id} value={service.id}>{service.title}</SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    <FormDescription>Link this project to a service.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+            />
+
             <Controller
                 control={form.control}
-                name="categoryIds"
+                name="techStackIds"
                 render={({ field: { onChange, value } }) => (
                     <FormItem>
-                        <FormLabel>Categories</FormLabel>
+                        <FormLabel>Tech Stack</FormLabel>
                         <MultiSelect
-                            options={categories}
+                            options={techStack}
                             selected={value || []}
                             onChange={onChange}
                         />
-                        <FormDescription>Associate this project with one or more categories.</FormDescription>
+                        <FormDescription>Associate this project with one or more technologies.</FormDescription>
                         <FormMessage />
                     </FormItem>
                 )}
