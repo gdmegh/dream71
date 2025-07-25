@@ -2,7 +2,7 @@
 
 'use client';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MonitorCheck, FileDigit, Award, Building } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { services } from '@/lib/services';
@@ -45,15 +45,39 @@ const ServiceChart = ({ data }: { data: any[] }) => {
     );
 };
 
+const featureIcons = {
+    'Public Service Portals': MonitorCheck,
+    'Digital Document Management': FileDigit,
+    'Online Licensing & Permits': Award,
+    'Smart City Solutions': Building
+};
 
-const ServiceFeature = ({ title, description, link, chartData, reverse = false }: { title: string, description: string, link: string, chartData: any[], reverse?: boolean }) => {
+const ServiceFeature = ({ title, description, link, chartData, features, reverse = false }: { title: string, description: string, link: string, chartData: any[], features?: any[], reverse?: boolean }) => {
     
     return (
         <div className={cn('grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12')}>
             <div className={cn("flex flex-col md:w-full items-start text-left", reverse ? "md:order-last" : "md:order-first")}>
                 <h3 className="text-3xl font-bold">{title}</h3>
                 <p className="text-muted-foreground mt-4">{description}</p>
-                 <Button asChild className="mt-6" variant="outline">
+                 {features && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mt-6">
+                        {features.map((feature, index) => {
+                            const Icon = featureIcons[feature.title as keyof typeof featureIcons] || MonitorCheck;
+                            return (
+                                <div key={index} className="flex items-start gap-3">
+                                    <div className="bg-primary/10 text-primary p-2 rounded-full mt-1">
+                                        <Icon className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-foreground">{feature.title}</h4>
+                                        <p className="text-muted-foreground text-sm">{feature.description}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+                 <Button asChild className="mt-8" variant="outline">
                     <Link href={link}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
@@ -117,6 +141,7 @@ export default function Services() {
                         description={service.description}
                         link={`/services/${service.slug}`}
                         chartData={serviceData.chartData}
+                        features={service.slug === 'e-governance' ? serviceData.points : undefined}
                         reverse={index % 2 !== 0}
                     />
                 </div>
