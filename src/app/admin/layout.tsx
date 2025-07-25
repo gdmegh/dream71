@@ -5,62 +5,65 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Briefcase, AppWindow, Rss, Newspaper, GalleryHorizontal, MessageSquareQuote, LayoutGrid, BarChartHorizontal } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 
 const menuItems = [
-  { value: 'portfolio', href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
-  { value: 'services', href: '/admin/services', label: 'Services', icon: AppWindow },
-  { value: 'blog', href: '/admin/blog', label: 'Blog', icon: Rss },
-  { value: 'news', href: '/admin/news', label: 'News', icon: Newspaper },
-  { value: 'events', href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
-  { value: 'testimonials', href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
-  { value: 'tech-stack', href: '/admin/tech-stack', label: 'Tech Stack', icon: LayoutGrid },
-  { value: 'charts', href: '/admin/charts', label: 'Charts', icon: BarChartHorizontal },
+  { href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
+  { href: '/admin/services', label: 'Services', icon: AppWindow },
+  { href: '/admin/blog', label: 'Blog', icon: Rss },
+  { href: '/admin/news', label: 'News', icon: Newspaper },
+  { href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
+  { href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+  { href: '/admin/tech-stack', label: 'Tech Stack', icon: LayoutGrid },
+  { href: '/admin/charts', label: 'Charts', icon: BarChartHorizontal },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const activeTab = menuItems.find(item => pathname.startsWith(item.href))?.value || 'portfolio';
   
   return (
-    <div className="flex flex-col min-h-screen bg-background admin-panel">
-       <header className="sticky top-0 z-40 w-full border-b bg-card">
-          <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-             <div className="flex items-center gap-2">
-                 <Link href="/">
-                    <Image
-                        src="/images/Logo-dark.png"
-                        alt="Dream71 Logo"
-                        width={150}
-                        height={40}
-                        data-ai-hint="logo"
-                        className="h-8 w-auto"
-                        />
-                 </Link>
-            </div>
-          </div>
-        </header>
-       <main className="flex-1">
-            <div className="container mx-auto p-4 md:p-6 lg:p-8">
-                 <Tabs value={activeTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 mb-6">
-                        {menuItems.map((item) => (
-                        <TabsTrigger key={item.value} value={item.value} asChild>
-                           <Link href={item.href}>
-                                <item.icon className="mr-2 h-4 w-4" />
-                                {item.label}
-                           </Link>
-                        </TabsTrigger>
+    <SidebarProvider>
+        <div className="flex flex-col min-h-screen bg-background admin-panel">
+            <header className="sticky top-0 z-40 w-full border-b bg-card">
+              <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+                 <div className="flex items-center gap-2">
+                     <Link href="/">
+                        <Image
+                            src="/images/Logo-dark.png"
+                            alt="Dream71 Logo"
+                            width={150}
+                            height={40}
+                            data-ai-hint="logo"
+                            className="h-8 w-auto"
+                            />
+                     </Link>
+                </div>
+              </div>
+            </header>
+            <div className="flex flex-1">
+                <Sidebar collapsible="none">
+                    <SidebarMenu>
+                         {menuItems.map((item) => (
+                            <SidebarMenuItem key={item.href}>
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={pathname.startsWith(item.href)}
+                                >
+                                    <Link href={item.href}>
+                                        <item.icon />
+                                        <span>{item.label}</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
                         ))}
-                    </TabsList>
-                    <TabsContent value={activeTab}>
-                        {children}
-                    </TabsContent>
-                </Tabs>
+                    </SidebarMenu>
+                </Sidebar>
+                <main className="flex-1 p-4 md:p-6 lg:p-8">
+                    {children}
+                </main>
             </div>
-        </main>
-    </div>
+        </div>
+    </SidebarProvider>
   );
 }
