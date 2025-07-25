@@ -2,7 +2,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +19,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 
 const formSchema = z.object({
@@ -39,13 +40,20 @@ const formSchema = z.object({
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
   imageUrl: z.string().optional(),
+  categoryIds: z.array(z.string()).optional(),
 });
+
+type Category = {
+  value: string;
+  label: string;
+};
 
 export default function NewPortfolioProject() {
   const { toast } = useToast();
   const router = useRouter();
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,8 +71,17 @@ export default function NewPortfolioProject() {
       demoUrl: "",
       isPublic: true,
       imageUrl: "",
+      categoryIds: [],
     },
   });
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const querySnapshot = await getDocs(collection(db, 'Categories'));
+      setCategories(querySnapshot.docs.map(doc => ({ value: doc.id, label: doc.data().name })));
+    };
+    fetchCategories();
+  }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsUploading(true);
@@ -209,6 +226,23 @@ export default function NewPortfolioProject() {
               <FormDescription>Upload the main image for the project.</FormDescription>
               <FormMessage />
             </FormItem>
+            
+            <Controller
+                control={form.control}
+                name="categoryIds"
+                render={({ field: { onChange, value } }) => (
+                    <FormItem>
+                        <FormLabel>Categories</FormLabel>
+                        <MultiSelect
+                            options={categories}
+                            selected={value || []}
+                            onChange={onChange}
+                        />
+                        <FormDescription>Associate this project with one or more categories.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
 
             <div className="grid md:grid-cols-2 gap-8">
                  <FormField

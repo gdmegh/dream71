@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { PlusCircle, MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, query, orderBy, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -25,9 +25,23 @@ import {
 } from "@/components/ui/alert-dialog";
 import Image from 'next/image';
 
+type Category = {
+  id: string;
+  name: string;
+};
+
 export default function PortfolioCMS() {
   const [projects, setProjects] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const { toast } = useToast();
+
+   useEffect(() => {
+    const fetchCategories = async () => {
+      const querySnapshot = await getDocs(collection(db, 'Categories'));
+      setCategories(querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name })));
+    };
+    fetchCategories();
+  }, []);
 
   const fetchProjects = async () => {
     const q = query(collection(db, "Project"), orderBy("createdAt", "desc"));
@@ -50,6 +64,12 @@ export default function PortfolioCMS() {
     }
   };
 
+  const getCategoryNames = (categoryIds: string[]) => {
+    if (!categoryIds || !categories.length) return 'N/A';
+    return categoryIds.map(id => categories.find(c => c.id === id)?.name).filter(Boolean).join(', ') || 'N/A';
+  };
+
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center">
@@ -70,6 +90,7 @@ export default function PortfolioCMS() {
             <TableRow>
               <TableHead>Image</TableHead>
               <TableHead>Title</TableHead>
+              <TableHead>Categories</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -82,6 +103,7 @@ export default function PortfolioCMS() {
                   {project.imageUrl && <Image src={project.imageUrl} alt={project.title} width={40} height={40} className="rounded-md object-cover" />}
                 </TableCell>
                 <TableCell className="font-medium">{project.title}</TableCell>
+                <TableCell>{getCategoryNames(project.categoryIds)}</TableCell>
                 <TableCell>
                     <Badge variant={project.isPublic ? "default" : "secondary"}>{project.isPublic ? "Public" : "Private"}</Badge>
                 </TableCell>

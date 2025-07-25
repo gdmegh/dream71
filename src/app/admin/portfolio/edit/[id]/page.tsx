@@ -2,7 +2,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,12 +19,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp, collection, getDocs } from "firebase/firestore";
 import { useRouter, useParams } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -40,7 +41,13 @@ const formSchema = z.object({
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
   imageUrl: z.string().optional(),
+  categoryIds: z.array(z.string()).optional(),
 });
+
+type Category = {
+  value: string;
+  label: string;
+};
 
 export default function EditPortfolioProject() {
   const { toast } = useToast();
@@ -52,11 +59,22 @@ export default function EditPortfolioProject() {
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      categoryIds: [],
+    },
   });
+
+   useEffect(() => {
+    const fetchCategories = async () => {
+      const querySnapshot = await getDocs(collection(db, 'Categories'));
+      setCategories(querySnapshot.docs.map(doc => ({ value: doc.id, label: doc.data().name })));
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -67,7 +85,10 @@ export default function EditPortfolioProject() {
 
       if (docSnap.exists()) {
         const data = docSnap.data();
-        form.reset(data);
+        form.reset({
+          ...data,
+          categoryIds: data.categoryIds || [],
+        });
         setCurrentImageUrl(data.imageUrl);
       } else {
         toast({ title: "Error", description: "Project not found.", variant: "destructive" });
@@ -240,6 +261,23 @@ export default function EditPortfolioProject() {
               <FormDescription>Upload a new image to replace the current one.</FormDescription>
               <FormMessage />
             </FormItem>
+            
+            <Controller
+                control={form.control}
+                name="categoryIds"
+                render={({ field: { onChange, value } }) => (
+                    <FormItem>
+                        <FormLabel>Categories</FormLabel>
+                        <MultiSelect
+                            options={categories}
+                            selected={value || []}
+                            onChange={onChange}
+                        />
+                        <FormDescription>Associate this project with one or more categories.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
 
             <div className="grid md:grid-cols-2 gap-8">
                  <FormField
