@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Briefcase, AppWindow, Rss, Newspaper, GalleryHorizontal, MessageSquareQuote, LayoutGrid, BarChartHorizontal } from 'lucide-react';
-import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarProvider } from '@/components/ui/sidebar';
 
 const menuItems = [
   { href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
@@ -26,7 +26,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <SidebarProvider>
         <div className="flex flex-col min-h-screen bg-background admin-panel">
             <header className="sticky top-0 z-40 w-full border-b bg-card">
-              <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+              <div className="flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0 px-4 sm:px-6 lg:px-8">
                  <div className="flex items-center gap-2">
                      <Link href="/">
                         <Image
@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
             </header>
             <div className="flex flex-1">
-                <Sidebar collapsible="none">
+                <Sidebar>
                     <SidebarMenu>
                          {menuItems.map((item) => (
                             <SidebarMenuItem key={item.href}>
