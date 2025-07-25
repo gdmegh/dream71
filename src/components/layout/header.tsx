@@ -150,10 +150,10 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex-shrink-0">
             <Image
-              src="/images/Logo.png"
+              src="/images/Dream71_logo 1.png"
               alt="Dream71 Logo"
-              width={150}
-              height={40}
+              width={200}
+              height={60}
               data-ai-hint="logo"
               className="h-10 w-auto"
             />

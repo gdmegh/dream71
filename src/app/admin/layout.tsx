@@ -27,10 +27,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex items-center h-16 border-b px-6">
           <Link href="/">
             <Image
-                src="/images/Logo-dark.png"
+                src="/images/Logo.png"
                 alt="Dream71 Logo"
-                width={150}
-                height={40}
+                width={250}
+                height={80}
                 data-ai-hint="logo"
                 className="h-8 w-auto"
             />
