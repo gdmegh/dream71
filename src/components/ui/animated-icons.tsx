@@ -14,6 +14,14 @@ const ReactIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+const NodeJSIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#8CC84B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+    </svg>
+);
+
 
 export default function AnimatedIcons() {
     return (
@@ -24,6 +32,13 @@ export default function AnimatedIcons() {
                 transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
             >
                 <ReactIcon className="w-16 h-16" />
+            </motion.div>
+             <motion.div
+                className="absolute top-[10%] right-[15%]"
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+            >
+                <NodeJSIcon className="w-16 h-16" />
             </motion.div>
         </div>
     );
