@@ -31,10 +31,10 @@ export default function AnimatedIcons() {
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
             >
-                <ReactIcon className="w-16 h-16 opacity-50" />
+                <ReactIcon className="w-24 h-24 opacity-50" />
             </motion.div>
              <div
-                className="absolute top-[10%] right-[5%]"
+                className="absolute bottom-[10%] right-[5%]"
             >
                 <NodeJSIcon className="w-16 h-16 opacity-50" />
             </div>
