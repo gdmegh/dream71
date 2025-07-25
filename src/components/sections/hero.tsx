@@ -14,9 +14,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const heroImages = [
-    { src: "/images/Slider/1.jpeg", alt: "Hero Image 1", dataAiHint: "software development" },
     { src: "/images/Slider/2.jpg", alt: "Hero Image 2", dataAiHint: "team meeting" },
-    { src: "/images/Slider/3.jpg", alt: "Hero Image 3", dataAiHint: "digital solution" },
 ];
 
 export default function Hero() {
@@ -31,7 +29,7 @@ export default function Hero() {
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center flex-grow">
                 <div className="max-w-4xl mx-auto flex-grow flex flex-col justify-center items-center">
-                    <h1 className="font-headline text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
+                    <h1 className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-tight mb-6">
                         The full <span className="inline-flex items-center gap-2">Stack <Braces className="h-12 w-12 text-primary" /></span> Software{' '}
                         <span className="text-primary">Solutions</span>
                     </h1>
