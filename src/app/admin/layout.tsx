@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Briefcase, MessageSquareQuote, Newspaper, Rss, GalleryHorizontal } from 'lucide-react';
+import { Briefcase, MessageSquareQuote, Newspaper, Rss, GalleryHorizontal, AppWindow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const menuItems = [
@@ -15,6 +15,7 @@ const menuItems = [
   { value: 'news', href: '/admin/news', label: 'News', icon: Newspaper },
   { value: 'blog', href: '/admin/blog', label: 'Blog', icon: Rss },
   { value: 'events', href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
+  { value: 'services', href: '/admin/services', label: 'Services', icon: AppWindow },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -42,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
        <main className="flex-1">
             <div className="container mx-auto p-4 md:p-6 lg:p-8">
                  <Tabs value={activeTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-6">
+                    <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 mb-6">
                         {menuItems.map((item) => (
                         <TabsTrigger key={item.value} value={item.value} asChild>
                            <Link href={item.href}>

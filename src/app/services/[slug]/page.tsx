@@ -1,5 +1,4 @@
 
-
 'use client'
 
 import Image from 'next/image';
@@ -7,12 +6,16 @@ import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight } from 'lucide-react';
+import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight, AppWindow } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const InfoSection = ({ title, description, items, image, imageHint, reverse = false }: { title: string, description?: string, items: {title: string, description: string}[], image: string, imageHint: string, reverse?: boolean }) => (
     <div className="grid md:grid-cols-2 gap-12 items-center py-8">
@@ -236,7 +239,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
 
 const DefaultServicePage = ({ service }: { service: any }) => {
     
-    const chartData = service.chartData.map((d: any) => ({...d, year: d.year.toString()}));
+    const chartData = service.chartData?.map((d: any) => ({...d, year: d.year.toString()}));
     const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
 
     return (
@@ -254,11 +257,11 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                      <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-16">
                         <Image
-                            src={service.image}
+                            src={service.image || service.imageUrl}
                             alt={service.title}
                             fill
                             className="object-cover"
-                            data-ai-hint={service.imageHint}
+                            data-ai-hint={service.imageHint || 'service image'}
                         />
                     </div>
                     
@@ -266,13 +269,21 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                         <div className="lg:col-span-8 space-y-12">
                              <Card>
                                 <CardHeader>
-                                    <CardTitle className='font-headline text-3xl'>About the Service</CardTitle>
+                                    <div className="flex items-center gap-4">
+                                        <div className="p-3 bg-primary/10 rounded-full text-primary">
+                                            <AppWindow className="h-8 w-8" />
+                                        </div>
+                                        <CardTitle className='font-headline text-3xl'>About the Service</CardTitle>
+                                    </div>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="font-body text-muted-foreground">{service.longDescription}</p>
+                                    <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                                        dangerouslySetInnerHTML={{ __html: service.content || service.longDescription }}
+                                    />
                                 </CardContent>
                             </Card>
 
+                           {service.points &&
                             <div className="space-y-4">
                                 <h3 className="font-headline text-2xl font-bold text-center">Key Areas</h3>
                                 <ul className="grid md:grid-cols-2 gap-6">
@@ -286,13 +297,14 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                                     ))}
                                 </ul>
                             </div>
+                           }
                            
                             <MethodologySection />
                         </div>
                         
                         <div className="lg:col-span-4">
                             <div className="sticky top-24 space-y-8">
-                                <Card rounded="20px">
+                               {chartData && <Card rounded="20px">
                                     <CardHeader>
                                         <CardTitle className="font-headline text-2xl">Success Statistics</CardTitle>
                                         <CardDescription>Project growth over the years.</CardDescription>
@@ -322,7 +334,7 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                                             </ResponsiveContainer>
                                         </div>
                                     </CardContent>
-                                </Card>
+                                </Card>}
                                  <Card rounded="20px" className="bg-primary/5">
                                      <CardContent className="p-6 text-center">
                                         <h3 className="font-headline text-xl font-bold mb-2">Have a Project in Mind?</h3>
@@ -348,9 +360,59 @@ const DefaultServicePage = ({ service }: { service: any }) => {
     )
 }
 
-export default async function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const p = await params;
-  const service = services.find(s => s.slug === p.slug);
+export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+  const [service, setService] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchService = async () => {
+      setLoading(true);
+      // First, check the static services
+      const staticService = services.find(s => s.slug === slug);
+      if (staticService) {
+        setService(staticService);
+        setLoading(false);
+        return;
+      }
+
+      // If not found, check Firestore for dynamic services
+      const q = query(
+        collection(db, 'Service'),
+        where('slug', '==', slug),
+        limit(1)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        setService(null);
+      } else {
+        const serviceData = {
+          id: querySnapshot.docs[0].id,
+          ...querySnapshot.docs[0].data(),
+        };
+        setService(serviceData);
+      }
+      setLoading(false);
+    };
+
+    fetchService();
+  }, [slug]);
+
+  if (loading) {
+    return (
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
+            <Skeleton className="h-6 w-1/2 mx-auto mb-8" />
+            <Skeleton className="h-[500px] w-full rounded-lg mb-8" />
+            <div className="space-y-4">
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-5/6" />
+            </div>
+        </div>
+    );
+  }
 
   if (!service) {
     notFound();
@@ -361,5 +423,4 @@ export default async function ServiceDetailPage({ params }: { params: { slug: st
   }
   
   return <DefaultServicePage service={service} />;
-
 }

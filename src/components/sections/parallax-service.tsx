@@ -1,3 +1,4 @@
+
 import { type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -11,9 +12,10 @@ interface ParallaxServiceProps {
   imageUrl: string;
   imageHint: string;
   isHomePage?: boolean;
+  link: string;
 }
 
-export default function ParallaxService({ Icon, title, description, imageUrl, imageHint, isHomePage = false }: ParallaxServiceProps) {
+export default function ParallaxService({ Icon, title, description, imageUrl, imageHint, isHomePage = false, link }: ParallaxServiceProps) {
   return (
     <section 
       className="relative py-20 md:py-32 bg-cover bg-fixed bg-center bg-no-repeat"
@@ -38,8 +40,8 @@ export default function ParallaxService({ Icon, title, description, imageUrl, im
             <div className="md:col-span-2 text-white">
               <p className="font-body text-lg mb-6">{description}</p>
               <Button asChild size="lg" variant={isHomePage ? "outline" : "default"}>
-                  <Link href="/contact">
-                      Get a Quote <ArrowRight className="ml-2 h-5 w-5" />
+                  <Link href={link}>
+                      Learn More <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
               </Button>
             </div>

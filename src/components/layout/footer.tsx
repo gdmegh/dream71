@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Linkedin, Twitter, Youtube } from 'lucide-react';
@@ -21,6 +22,7 @@ const footerLinks = [
   {
     title: 'Services',
     links: [
+      { label: 'Featured Services', href: '/services' },
       { label: 'Web Development', href: '/services/web-development' },
       { label: 'Mobile Apps', href: '/services/mobile-app-development' },
       { label: 'UI/UX Design', href: '/services/ui-ux-design' },
