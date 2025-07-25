@@ -38,8 +38,8 @@ export default function Hero() {
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center flex-grow">
                 <div className="max-w-4xl mx-auto flex-grow flex flex-col justify-center items-center">
-                    <h1 className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-tight mb-6">
-                        The full <span className="inline-flex items-center gap-2">Stack <Braces className="h-12 w-12 text-primary" /></span> <br />
+                    <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
+                        The full <span className="inline-flex items-center gap-2">Stack <Braces className="h-10 w-10 text-primary" /></span> <br />
                         <span className="text-primary">{text}</span>
                         <Cursor cursorStyle='|' />
                     </h1>
