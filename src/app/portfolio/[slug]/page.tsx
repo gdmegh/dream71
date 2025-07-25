@@ -4,13 +4,14 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, GitBranch, Puzzle, Target, BarChart2, Briefcase, Clock } from 'lucide-react';
+import { ExternalLink, GitBranch, Puzzle, Target, BarChart2, Briefcase, Clock, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
 
 const LoadingScreen = () => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
@@ -128,7 +129,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
 
                 {/* Right Sidebar */}
                 <div className="lg:col-span-4">
-                    <div className="sticky top-24">
+                    <div className="sticky top-24 space-y-8">
                         <Card rounded="20px">
                             <CardHeader>
                                 <CardTitle className="font-headline text-2xl">Project Details</CardTitle>
@@ -166,6 +167,20 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                                 )}
                                 </div>
                             </CardContent>
+                        </Card>
+
+                        <Card rounded="20px" className="bg-primary/5">
+                             <CardContent className="p-6 text-center">
+                                <h3 className="font-headline text-xl font-bold mb-2">Have a Project in Mind?</h3>
+                                <p className="text-muted-foreground text-sm mb-4">
+                                  Let's discuss how we can bring your vision to life.
+                                </p>
+                                <Button asChild size="lg" className="w-full">
+                                    <Link href="/contact">
+                                        Get a Free Quote <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Link>
+                                </Button>
+                             </CardContent>
                         </Card>
                     </div>
                 </div>
