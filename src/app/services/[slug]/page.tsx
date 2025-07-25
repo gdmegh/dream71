@@ -10,6 +10,7 @@ import { services } from '@/lib/services';
 import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Separator } from '@/components/ui/separator';
 
 const InfoSection = ({ title, description, items, image, imageHint, reverse = false }: { title: string, description?: string, items: {title: string, description: string}[], image: string, imageHint: string, reverse?: boolean }) => (
     <div className="grid md:grid-cols-2 gap-12 items-center py-8">
@@ -126,7 +127,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
 
     return (
         <>
-             <section className="bg-primary/5 pt-20 pb-12">
+            <section className="bg-primary/5 pt-20 pb-12">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <div className="flex justify-center items-center gap-4 mb-4">
                         <div className="p-3 bg-primary/10 rounded-full text-primary">
@@ -139,23 +140,22 @@ const EGovernancePage = ({ service }: { service: any }) => {
                     </p>
                 </div>
             </section>
-            
-            <section className="py-16 bg-background">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                     <div className="grid lg:grid-cols-12 gap-12">
-                        {/* Main Content */}
-                        <div className="lg:col-span-8 space-y-12">
-                            <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl">
-                                <Image
-                                    src={service.image}
-                                    alt={service.title}
-                                    fill
-                                    className="object-cover"
-                                    data-ai-hint={service.imageHint}
-                                />
-                            </div>
 
-                             <Card>
+             <section className="py-16 bg-background">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-16">
+                        <Image
+                            src={service.image}
+                            alt={service.title}
+                            fill
+                            className="object-cover"
+                            data-ai-hint={service.imageHint}
+                        />
+                    </div>
+
+                    <div className="grid lg:grid-cols-12 gap-12">
+                        <div className="lg:col-span-8 space-y-12">
+                            <Card>
                                 <CardHeader>
                                     <CardTitle className='font-headline text-3xl'>Service Details</CardTitle>
                                 </CardHeader>
@@ -175,11 +175,9 @@ const EGovernancePage = ({ service }: { service: any }) => {
                             />
 
                             <MethodologySection />
-
                         </div>
 
-                        {/* Right Sidebar */}
-                         <div className="lg:col-span-4">
+                        <div className="lg:col-span-4">
                             <div className="sticky top-24 space-y-8">
                                 <Card rounded="20px">
                                     <CardHeader>
@@ -227,18 +225,21 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                 </Card>
                             </div>
                         </div>
-                     </div>
+                    </div>
                 </div>
             </section>
             
             <Portfolio />
-
             <CtaSection />
         </>
     );
 }
 
 const DefaultServicePage = ({ service }: { service: any }) => {
+    
+    const chartData = service.chartData.map((d: any) => ({...d, year: d.year.toString()}));
+    const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
+
     return (
          <>
             <section className="bg-primary/5 py-20 md:py-32">
@@ -250,18 +251,34 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                 </div>
             </section>
             
-            <section className="py-20 md:py-32">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <h2 className="font-headline text-3xl font-bold text-foreground mb-4">About the Service</h2>
-                            <p className="font-body text-muted-foreground mb-6">
-                                {service.longDescription}
-                            </p>
-                            <h3 className="font-headline text-2xl font-bold text-foreground mb-4">Key Areas</h3>
-                                <ul className="space-y-3">
+            <section className="py-16 bg-background">
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                     <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-16">
+                        <Image
+                            src={service.image}
+                            alt={service.title}
+                            fill
+                            className="object-cover"
+                            data-ai-hint={service.imageHint}
+                        />
+                    </div>
+                    
+                    <div className="grid lg:grid-cols-12 gap-12">
+                        <div className="lg:col-span-8 space-y-12">
+                             <Card>
+                                <CardHeader>
+                                    <CardTitle className='font-headline text-3xl'>About the Service</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="font-body text-muted-foreground">{service.longDescription}</p>
+                                </CardContent>
+                            </Card>
+
+                            <div className="space-y-4">
+                                <h3 className="font-headline text-2xl font-bold text-center">Key Areas</h3>
+                                <ul className="grid md:grid-cols-2 gap-6">
                                     {service.points.map((point: any, index: number) => (
-                                        <li key={index} className="flex items-start font-body text-muted-foreground">
+                                        <li key={index} className="flex items-start font-body text-muted-foreground p-4 bg-primary/5 rounded-lg">
                                             <CheckCircle className="h-5 w-5 mr-3 mt-1 text-primary flex-shrink-0" />
                                             <div>
                                                 <span className="font-bold text-foreground">{point.title}:</span> {point.description}
@@ -269,20 +286,49 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                           
+                            <MethodologySection />
                         </div>
-                        <div className="md:order-last">
-                            <Image
-                                src={service.image}
-                                alt={service.title}
-                                width={800}
-                                height={600}
-                                className="rounded-[20px] shadow-xl"
-                                data-ai-hint={service.imageHint}
-                            />
+                        
+                        <div className="lg:col-span-4">
+                            <div className="sticky top-24 space-y-8">
+                                <Card rounded="20px">
+                                    <CardHeader>
+                                        <CardTitle className="font-headline text-2xl">Success Statistics</CardTitle>
+                                        <CardDescription>Project growth over the years.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                         <div className="h-72 mt-4">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                                    <defs>
+                                                        <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
+                                                            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                                                            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                                                        </linearGradient>
+                                                    </defs>
+                                                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                                                    <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                                                    <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={valueFormatter} />
+                                                    <Tooltip
+                                                        contentStyle={{
+                                                            backgroundColor: 'hsl(var(--card))',
+                                                            borderColor: 'hsl(var(--border))',
+                                                            color: 'hsl(var(--card-foreground))'
+                                                        }}
+                                                    />
+                                                    <Area type="monotone" dataKey="Projects" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorProjects)" />
+                                                </AreaChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
                         </div>
+
                     </div>
-                     <MethodologySection />
-                </div>
+                 </div>
             </section>
 
             <Portfolio />
