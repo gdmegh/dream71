@@ -7,10 +7,12 @@ import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { services } from '@/lib/services';
-import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building } from 'lucide-react';
+import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const InfoSection = ({ title, description, items, image, imageHint, reverse = false }: { title: string, description?: string, items: {title: string, description: string}[], image: string, imageHint: string, reverse?: boolean }) => (
     <div className="grid md:grid-cols-2 gap-12 items-center py-8">
@@ -51,31 +53,6 @@ const methodologySteps = [
     { icon: LifeBuoy, title: "Support", description: "Providing ongoing maintenance and support to ensure success." },
 ];
 
-const MethodologyProcess = () => (
-    <div className="relative">
-        {/* The connecting line */}
-        <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary/20 hidden md:block"></div>
-        <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
-            {methodologySteps.map((step, index) => {
-                const isLeft = index % 2 === 0;
-                return (
-                    <div key={index} className={`relative flex items-center gap-6 ${isLeft ? '' : 'md:flex-row-reverse'}`}>
-                        {/* The circle on the line */}
-                        <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background hidden md:block"></div>
-                        <div className="p-4 bg-primary/10 rounded-full text-primary">
-                            <step.icon className="h-8 w-8" />
-                        </div>
-                        <div className={isLeft ? 'text-left' : 'md:text-right'}>
-                            <h4 className="font-headline text-xl font-bold">{step.title}</h4>
-                            <p className="text-muted-foreground">{step.description}</p>
-                        </div>
-                    </div>
-                );
-            })}
-        </div>
-    </div>
-);
-
 const MethodologySection = () => (
     <section className="space-y-12 text-center py-16">
         <div className="space-y-2">
@@ -86,7 +63,17 @@ const MethodologySection = () => (
             </p>
         </div>
         <div className="relative w-full py-8">
-            <MethodologyProcess />
+             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8">
+                {methodologySteps.map((step, index) => (
+                    <div key={index} className="flex flex-col items-center text-center">
+                        <div className="p-4 bg-primary/10 rounded-full text-primary mb-4">
+                            <step.icon className="h-8 w-8" />
+                        </div>
+                        <h4 className="font-headline text-lg font-bold">{step.title}</h4>
+                        <p className="text-muted-foreground text-sm">{step.description}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     </section>
 );
@@ -223,6 +210,19 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                         </div>
                                     </CardContent>
                                 </Card>
+                                 <Card rounded="20px" className="bg-primary/5">
+                                     <CardContent className="p-6 text-center">
+                                        <h3 className="font-headline text-xl font-bold mb-2">Have a Project in Mind?</h3>
+                                        <p className="text-muted-foreground text-sm mb-4">
+                                          Let's discuss how we can bring your vision to life.
+                                        </p>
+                                        <Button asChild size="lg" className="w-full">
+                                            <Link href="/contact">
+                                                Get a Free Quote <ArrowRight className="ml-2 h-4 w-4" />
+                                            </Link>
+                                        </Button>
+                                     </CardContent>
+                                </Card>
                             </div>
                         </div>
                     </div>
@@ -230,7 +230,6 @@ const EGovernancePage = ({ service }: { service: any }) => {
             </section>
             
             <Portfolio />
-            <CtaSection />
         </>
     );
 }
@@ -324,6 +323,19 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                                         </div>
                                     </CardContent>
                                 </Card>
+                                 <Card rounded="20px" className="bg-primary/5">
+                                     <CardContent className="p-6 text-center">
+                                        <h3 className="font-headline text-xl font-bold mb-2">Have a Project in Mind?</h3>
+                                        <p className="text-muted-foreground text-sm mb-4">
+                                          Let's discuss how we can bring your vision to life.
+                                        </p>
+                                        <Button asChild size="lg" className="w-full">
+                                            <Link href="/contact">
+                                                Get a Free Quote <ArrowRight className="ml-2 h-4 w-4" />
+                                            </Link>
+                                        </Button>
+                                     </CardContent>
+                                </Card>
                             </div>
                         </div>
 
@@ -332,8 +344,6 @@ const DefaultServicePage = ({ service }: { service: any }) => {
             </section>
 
             <Portfolio />
-
-            <CtaSection />
         </>
     )
 }
