@@ -33,13 +33,11 @@ export default function AnimatedIcons() {
             >
                 <ReactIcon className="w-16 h-16" />
             </motion.div>
-             <motion.div
+             <div
                 className="absolute top-[10%] right-[15%]"
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
             >
                 <NodeJSIcon className="w-16 h-16" />
-            </motion.div>
+            </div>
         </div>
     );
 }
