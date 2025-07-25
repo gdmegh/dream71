@@ -1,4 +1,4 @@
-import { Code, Smartphone, Palette, ShieldCheck, Rocket, BrainCircuit, Landmark } from 'lucide-react';
+import { Code, Smartphone, Palette, ShieldCheck, Rocket, BrainCircuit, Landmark, SwatchBook, ImageIcon, Gamepad2, Users } from 'lucide-react';
 
 export const services = [
     {
@@ -83,10 +83,10 @@ export const services = [
         imageHint: "game development screen",
         imageUrl: "https://placehold.co/1920x1083.png",
         points: [
-            { title: "Game Design", description: "Creating core mechanics, levels, and stories that are fun and engaging." },
-            { title: "2D & 3D Art", description: "Producing stunning visuals, characters, and environments." },
-            { title: "Unity & Unreal Engine", description: "Using industry-standard game engines to build high-performance games." },
-            { title: "Multiplayer Integration", description: "Building real-time multiplayer functionality for your games." },
+            { title: 'Game Design', description: 'Creating core mechanics, levels, and stories that are fun and engaging.' },
+            { title: '2D & 3D Art', description: 'Producing stunning visuals, characters, and environments.' },
+            { title: 'Unity & Unreal Engine', description: 'Using industry-standard game engines to build high-performance games.' },
+            { title: 'Multiplayer Integration', description: 'Building real-time multiplayer functionality for your games.' },
         ],
         chartData: [
             { year: 2018, 'Projects': 2 },

@@ -2,7 +2,7 @@
 
 'use client';
 import Link from 'next/link';
-import { ArrowRight, MonitorCheck, FileDigit, Award, Building, Workflow, Bot, FileCode, BrainCircuit, Search, Scaling, Puzzle, LifeBuoy } from 'lucide-react';
+import { ArrowRight, MonitorCheck, FileDigit, Award, Building, Workflow, Bot, FileCode, BrainCircuit, Search, Scaling, Puzzle, LifeBuoy, SwatchBook, Image as ImageIcon, Gamepad2, Users } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { services } from '@/lib/services';
@@ -58,6 +58,10 @@ const featureIcons: { [key: string]: React.ElementType } = {
     'Scalable Architecture': Scaling,
     'Third-Party Integrations': Puzzle,
     'Ongoing Support': LifeBuoy,
+    'Game Design': SwatchBook,
+    '2D & 3D Art': ImageIcon,
+    'Unity & Unreal Engine': Gamepad2,
+    'Multiplayer Integration': Users,
 };
 
 const ServiceFeature = ({ title, description, link, chartData, features, reverse = false }: { title: string, description: string, link: string, chartData: any[], features?: any[], reverse?: boolean }) => {
@@ -149,7 +153,7 @@ export default function Services() {
                         description={service.description}
                         link={`/services/${service.slug}`}
                         chartData={serviceData.chartData}
-                        features={service.slug === 'e-governance' || service.slug === 'business-automation' || service.slug === 'custom-software' ? serviceData.points : undefined}
+                        features={service.slug === 'e-governance' || service.slug === 'business-automation' || service.slug === 'custom-software' || service.slug === 'game-development' ? serviceData.points : undefined}
                         reverse={index % 2 !== 0}
                     />
                 </div>
