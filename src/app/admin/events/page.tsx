@@ -51,12 +51,12 @@ export default function EventsCMS() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
+      <CardHeader className="flex flex-row items-center">
+        <div className="grid gap-2 flex-grow">
             <CardTitle>Event Gallery</CardTitle>
             <CardDescription>Manage your event photos here.</CardDescription>
         </div>
-        <Button asChild size="sm" className="gap-1">
+        <Button asChild size="sm" className="ml-auto gap-1">
             <Link href="/admin/events/new">
                 <PlusCircle className="h-4 w-4" />
                 Add New Event

@@ -2,78 +2,62 @@
 'use client';
 
 import * as React from 'react';
-import {
-  SidebarProvider,
-  Sidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarInset,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { Briefcase, MessageSquareQuote, PanelLeft, Newspaper, Rss, GalleryHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Briefcase, MessageSquareQuote, Newspaper, Rss, GalleryHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const menuItems = [
-  { href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
-  { href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
-  { href: '/admin/news', label: 'News', icon: Newspaper },
-  { href: '/admin/blog', label: 'Blog', icon: Rss },
-  { href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
+  { value: 'portfolio', href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
+  { value: 'testimonials', href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+  { value: 'news', href: '/admin/news', label: 'News', icon: Newspaper },
+  { value: 'blog', href: '/admin/blog', label: 'Blog', icon: Rss },
+  { value: 'events', href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-
+  const activeTab = menuItems.find(item => pathname.startsWith(item.href))?.value || 'portfolio';
+  
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen bg-background">
-        <Sidebar>
-          <SidebarHeader>
-             <div className="flex items-center gap-2 p-2">
-                 <Image
-                  src="/images/Logo.png"
-                  alt="Dream71 Logo"
-                  width={150}
-                  height={40}
-                  data-ai-hint="logo"
-                  className="h-8 w-auto"
-                />
+    <div className="flex flex-col min-h-screen bg-background">
+       <header className="sticky top-0 z-40 w-full border-b bg-background">
+          <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+             <div className="flex items-center gap-2">
+                 <Link href="/">
+                    <Image
+                        src="/images/Logo.png"
+                        alt="Dream71 Logo"
+                        width={150}
+                        height={40}
+                        data-ai-hint="logo"
+                        className="h-8 w-auto"
+                        />
+                 </Link>
             </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                    tooltip={{ children: item.label }}
-                  >
-                    <Link href={item.href}>
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarContent>
-        </Sidebar>
-        <SidebarInset>
-            <header className="flex items-center gap-4 p-4 border-b">
-                 <SidebarTrigger className="md:hidden" />
-                 <h1 className="text-xl font-semibold">Admin Panel</h1>
-            </header>
-            <main className="p-4 md:p-6 lg:p-8">
-                 {children}
-            </main>
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+          </div>
+        </header>
+       <main className="flex-1">
+            <div className="container mx-auto p-4 md:p-6 lg:p-8">
+                 <Tabs value={activeTab} className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-6">
+                        {menuItems.map((item) => (
+                        <TabsTrigger key={item.value} value={item.value} asChild>
+                           <Link href={item.href}>
+                                <item.icon className="mr-2 h-4 w-4" />
+                                {item.label}
+                           </Link>
+                        </TabsTrigger>
+                        ))}
+                    </TabsList>
+                    <TabsContent value={activeTab}>
+                        {children}
+                    </TabsContent>
+                </Tabs>
+            </div>
+        </main>
+    </div>
   );
 }

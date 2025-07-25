@@ -51,12 +51,12 @@ export default function TestimonialsCMS() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
+      <CardHeader className="flex flex-row items-center">
+        <div className="grid gap-2 flex-grow">
             <CardTitle>Client Testimonials</CardTitle>
             <CardDescription>Manage your client testimonials here.</CardDescription>
         </div>
-        <Button asChild size="sm" className="gap-1">
+        <Button asChild size="sm" className="ml-auto gap-1">
             <Link href="/admin/testimonials/new">
                 <PlusCircle className="h-4 w-4" />
                 Add New Testimonial
