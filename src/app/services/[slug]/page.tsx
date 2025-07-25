@@ -61,7 +61,7 @@ const MethodologyProcess = () => (
                 return (
                     <div key={index} className={`relative flex items-center gap-6 ${isLeft ? '' : 'md:flex-row-reverse'}`}>
                         {/* The circle on the line */}
-                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background hidden md:block"></div>
+                        <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-background hidden md:block"></div>
                         <div className="p-4 bg-primary/10 rounded-full text-primary">
                             <step.icon className="h-8 w-8" />
                         </div>
