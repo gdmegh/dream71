@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
+import AnimatedIcons from '../ui/animated-icons';
 
 const heroImages = [
     { src: "/images/Slider/2.jpg", alt: "Hero Image 2", dataAiHint: "team meeting" },
@@ -36,6 +37,7 @@ export default function Hero() {
             id="home"
             className="relative flex flex-col items-center justify-center text-center overflow-hidden bg-background min-h-screen py-20"
         >
+            <AnimatedIcons />
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center flex-grow">
                 <div className="max-w-4xl mx-auto flex-grow flex flex-col justify-center items-center">
                     <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
@@ -45,7 +47,7 @@ export default function Hero() {
                     </h1>
                 </div>
             </div>
-            <div className="w-full max-w-7xl mx-auto mt-16 group">
+            <div className="w-full max-w-7xl mx-auto mt-16 group z-10">
                <Carousel
                     plugins={[plugin.current]}
                     className="w-full"
