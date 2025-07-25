@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, Briefcase, BookOpen, BarChart2, Sparkles, Building2, PencilRuler, AppWindow, Rss, Newspaper, GalleryHorizontal, Code, ShieldCheck, Gamepad2, Info, MessageSquare, Phone } from 'lucide-react';
+import { Menu, X, ChevronDown, Briefcase, BookOpen, BarChart2, Sparkles, Building2, PencilRuler, AppWindow, Rss, Newspaper, GalleryHorizontal, Code, ShieldCheck, Gamepad2, Info, MessageSquare, Phone, BrainCircuit, Rocket, ArrowRight } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
@@ -67,6 +67,18 @@ const servicesComponents: { title: string; href: string; description: string, ic
     href: "/services/game-development",
     description: "Creating immersive and engaging gaming experiences.",
     icon: Gamepad2
+  },
+  {
+    title: "AI & ML Solutions",
+    href: "/services/ai-ml-solutions",
+    description: "Integrating artificial intelligence to build intelligent applications.",
+    icon: BrainCircuit
+  },
+  {
+    title: "DevOps",
+    href: "/services/devops",
+    description: "Streamlining development and operations for faster delivery.",
+    icon: Rocket
   },
 ];
 
@@ -152,41 +164,27 @@ export default function Header() {
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                         <NavigationMenuContent>
-                             <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] lg:w-[700px] lg:grid-cols-[.75fr_1fr_1fr]">
-                                <li className="row-span-3">
-                                    <NavigationMenuLink asChild>
-                                        <a
-                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                                        href="/services"
-                                        >
-                                            <div className="mb-2 mt-4 text-lg font-medium">
-                                                Our Services
-                                            </div>
-                                            <p className="text-sm leading-tight text-muted-foreground">
-                                               Explore our comprehensive suite of services designed to transform your visionary ideas into robust digital realities.
-                                            </p>
-                                        </a>
-                                    </NavigationMenuLink>
-                                </li>
-                                <ListItem href="/services/web-development" title="Web Development" icon={AppWindow}>
-                                  Modern, responsive, and scalable web applications.
-                                </ListItem>
-                                <ListItem href="/services/mobile-app-development" title="Mobile Apps" icon={Sparkles}>
-                                    Native and cross-platform apps for iOS and Android.
-                                </ListItem>
-                                <ListItem href="/services/ui-ux-design" title="UI/UX Design" icon={PencilRuler}>
-                                  Intuitive and beautiful user interfaces that delight users.
-                                </ListItem>
-                                 <ListItem href="/services/custom-software" title="Custom Software" icon={Code}>
-                                  Bespoke solutions tailored to your unique business needs.
-                                </ListItem>
-                                <ListItem href="/services/qa-testing" title="QA & Testing" icon={ShieldCheck}>
-                                    Ensuring your software is reliable and bug-free.
-                                </ListItem>
-                                <ListItem href="/services/game-development" title="Game Development" icon={Gamepad2}>
-                                    Creating immersive and engaging gaming experiences.
-                                </ListItem>
-                            </ul>
+                             <div className="p-4 w-[600px] lg:w-[800px]">
+                                <ul className="grid grid-cols-3 gap-3">
+                                {servicesComponents.map((component) => (
+                                    <ListItem
+                                        key={component.title}
+                                        title={component.title}
+                                        href={component.href}
+                                        icon={component.icon}
+                                    >
+                                        {component.description}
+                                    </ListItem>
+                                ))}
+                                </ul>
+                                <div className="mt-4 text-center">
+                                    <Button asChild variant="ghost" className="w-full">
+                                        <Link href="/services">
+                                            View All Services <ArrowRight className="ml-2 h-4 w-4" />
+                                        </Link>
+                                    </Button>
+                                </div>
+                            </div>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
