@@ -12,9 +12,10 @@ const navLinks = [
   { href: '/services', label: 'Services' },
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/about', label: 'About Us' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/news', label: 'News' },
+  { href: '/events', label: 'Events' },
   { href: '/testimonials', label: 'Testimonials' },
-  { href: '/admin/portfolio', label: 'Portfolio CMS' },
-  { href: '/admin/testimonials', label: 'Testimonials CMS' },
 ];
 
 export default function Header() {
@@ -31,6 +32,9 @@ export default function Header() {
   }, []);
 
   const NavLink = ({ href, label }: { href: string; label: string }) => {
+    const isAdmin = pathname.startsWith('/admin');
+    if (isAdmin) return null;
+
     return (
       <Link href={href} onClick={() => setIsOpen(false)}>
         <span className={cn(
@@ -64,14 +68,14 @@ export default function Header() {
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
             ))}
-            <Button asChild>
+            {!pathname.startsWith('/admin') && <Button asChild>
               <Link href="/contact">Contact Us</Link>
-            </Button>
+            </Button>}
           </nav>
           <div className="md:hidden">
-            <Button onClick={() => setIsOpen(!isOpen)} variant="ghost" size="icon">
+             {!pathname.startsWith('/admin') && <Button onClick={() => setIsOpen(!isOpen)} variant="ghost" size="icon">
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+            </Button>}
           </div>
         </div>
       </div>

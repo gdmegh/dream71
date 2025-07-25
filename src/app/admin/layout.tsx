@@ -13,7 +13,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Briefcase, MessageSquareQuote, PanelLeft } from 'lucide-react';
+import { Briefcase, MessageSquareQuote, PanelLeft, Newspaper, Rss, GalleryHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
@@ -21,6 +21,9 @@ import Image from 'next/image';
 const menuItems = [
   { href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
   { href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+  { href: '/admin/news', label: 'News', icon: Newspaper },
+  { href: '/admin/blog', label: 'Blog', icon: Rss },
+  { href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

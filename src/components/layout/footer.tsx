@@ -15,19 +15,27 @@ const footerLinks = [
     links: [
       { label: 'About Us', href: '/about' },
       { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Careers', href: '#' },
-      { label: 'Blog', href: '#' },
+      { label: 'News', href: '/news' },
+      { label: 'Events', href: '/events' },
     ],
   },
   {
     title: 'Services',
     links: [
-      { label: 'Web Development', href: '/services' },
-      { label: 'Mobile Apps', href: '/services' },
-      { label: 'UI/UX Design', href: '/services' },
-      { label: 'QA & Testing', href: '/services' },
+      { label: 'Web Development', href: '/services/web-development' },
+      { label: 'Mobile Apps', href: '/services/mobile-app-development' },
+      { label: 'UI/UX Design', href: '/services/ui-ux-design' },
+      { label: 'QA & Testing', href: '/services/qa-testing' },
     ],
   },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Blog', href: '/blog' },
+      { label: 'Testimonials', href: '/testimonials' },
+      { label: 'Admin', href: '/admin/portfolio' },
+    ],
+  }
 ];
 
 export default function Footer() {
@@ -38,7 +46,7 @@ export default function Footer() {
           <div className="md:col-span-4 lg:col-span-2">
             <Link href="/" className="mb-4 inline-block">
                <Image
-                  src="https://placehold.co/150x40/FFFFFF/000000?text=Dream71"
+                  src="/images/Logo.png"
                   alt="Dream71 Logo"
                   width={150}
                   height={40}
