@@ -5,15 +5,18 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Briefcase, BookOpen, BarChart2, Sparkles, Building2, PencilRuler, AppWindow, Rss, Newspaper, GalleryHorizontal } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import {
   Accordion,
   AccordionContent,
@@ -22,16 +25,59 @@ import {
 } from "@/components/ui/accordion"
 
 
-const navLinks = [
-  { href: '/services', label: 'Services' },
-  { href: '/portfolio', label: 'Portfolio' },
-  { href: '/about', label: 'About Us' },
+const servicesComponents: { title: string; href: string; description: string, icon: React.ElementType }[] = [
+  {
+    title: "Web Development",
+    href: "/services/web-development",
+    description: "Modern, responsive, and scalable web applications.",
+    icon: AppWindow
+  },
+  {
+    title: "Mobile Apps",
+    href: "/services/mobile-app-development",
+    description: "Native and cross-platform apps for iOS and Android.",
+    icon: Sparkles
+  },
+   {
+    title: "UI/UX Design",
+    href: "/services/ui-ux-design",
+    description: "Intuitive and beautiful user interfaces that delight users.",
+    icon: PencilRuler
+  },
+  {
+    title: "e-Governance",
+    href: "/services/e-governance",
+    description: "Digital solutions to streamline public services.",
+    icon: Building2
+  },
 ];
 
+const portfolioComponents: { title: string; href: string; description: string, icon: React.ElementType }[] = [
+  {
+    title: "View All Projects",
+    href: "/portfolio",
+    description: "Browse our full collection of innovative projects.",
+    icon: Briefcase
+  },
+  {
+    title: "Case Studies",
+    href: "/portfolio",
+    description: "In-depth looks at how we solve client challenges.",
+    icon: BookOpen
+  },
+  {
+    title: "Success Metrics",
+    href: "/portfolio",
+    description: "See the measurable impact our solutions have delivered.",
+    icon: BarChart2
+  },
+];
+
+
 const insightsLinks = [
-    { href: '/blog', label: 'Blog' },
-    { href: '/news', label: 'News' },
-    { href: '/events', label: 'Events' },
+    { href: '/blog', label: 'Blog', description: 'Our latest thoughts and articles.', icon: Rss },
+    { href: '/news', label: 'News', description: 'Stay updated with company news.', icon: Newspaper },
+    { href: '/events', label: 'Events', description: 'Join us at our upcoming events.', icon: GalleryHorizontal },
 ]
 
 export default function Header() {
@@ -47,15 +93,12 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const NavLink = ({ href, label }: { href: string; label: string }) => {
-    const isAdmin = pathname.startsWith('/admin');
-    if (isAdmin) return null;
-
+  const MobileNavLink = ({ href, label, onClick }: { href: string; label: string; onClick: () => void }) => {
     return (
-      <Link href={href} onClick={() => setIsOpen(false)}>
+      <Link href={href} onClick={onClick}>
         <span className={cn(
-          "relative py-1 transition-colors duration-300 hover:text-primary after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full font-headline",
-          pathname === href ? "text-primary after:w-full" : ""
+          "block py-2 font-headline transition-colors duration-300 hover:text-primary",
+          pathname === href ? "text-primary" : "text-foreground"
         )}>
           {label}
         </span>
@@ -63,32 +106,30 @@ export default function Header() {
     );
   };
 
-  const InsightsDropdown = () => {
-     const isAdmin = pathname.startsWith('/admin');
-     if (isAdmin) return null;
-     const isActive = insightsLinks.some(link => pathname.startsWith(link.href));
-
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <button className={cn(
-                    "relative flex items-center gap-1 py-1 transition-colors duration-300 hover:text-primary after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full font-headline outline-none",
-                    isActive ? "text-primary after:w-full" : ""
-                )}>
-                    <span>Insights</span>
-                    <ChevronDown className="h-4 w-4 transition-transform duration-200" />
-                </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-                {insightsLinks.map((link) => (
-                    <DropdownMenuItem key={link.href} asChild>
-                        <Link href={link.href}>{link.label}</Link>
-                    </DropdownMenuItem>
-                ))}
-            </DropdownMenuContent>
-        </DropdownMenu>
-    )
+  if (pathname.startsWith('/admin')) {
+      return (
+         <header className={cn(
+            "sticky top-0 z-50 transition-all duration-300",
+            isScrolled ? 'bg-background/80 backdrop-blur-sm shadow-md' : 'bg-transparent'
+        )}>
+             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-20">
+                     <Link href="/" className="flex-shrink-0">
+                        <Image
+                        src="/images/Logo.png"
+                        alt="Dream71 Logo"
+                        width={150}
+                        height={40}
+                        data-ai-hint="logo"
+                        className="h-10 w-auto"
+                        />
+                    </Link>
+                </div>
+            </div>
+        </header>
+      )
   }
+
 
   return (
     <header className={cn(
@@ -107,30 +148,125 @@ export default function Header() {
               className="h-10 w-auto"
             />
           </Link>
-          <nav className="hidden md:flex md:items-center md:space-x-8">
-            {navLinks.map((link) => (
-              <NavLink key={link.href} {...link} />
-            ))}
-            <InsightsDropdown />
-            {!pathname.startsWith('/admin') && <Button asChild>
-              <Link href="/contact">Contact Us</Link>
-            </Button>}
+          <nav className="hidden md:flex md:items-center">
+            <NavigationMenu>
+                <NavigationMenuList>
+                    <NavigationMenuItem>
+                        <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                                {servicesComponents.map((component) => (
+                                    <ListItem
+                                        key={component.title}
+                                        title={component.title}
+                                        href={component.href}
+                                        icon={component.icon}
+                                    >
+                                        {component.description}
+                                    </ListItem>
+                                ))}
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                     <NavigationMenuItem>
+                        <NavigationMenuTrigger>Portfolio</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
+                                <li className="row-span-3">
+                                    <NavigationMenuLink asChild>
+                                        <a
+                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                                        href="/portfolio"
+                                        >
+                                            <div className="mb-2 mt-4 text-lg font-medium">
+                                                Our Work
+                                            </div>
+                                            <p className="text-sm leading-tight text-muted-foreground">
+                                               Explore our portfolio of successful projects and client collaborations.
+                                            </p>
+                                        </a>
+                                    </NavigationMenuLink>
+                                </li>
+                                {portfolioComponents.map((component) => (
+                                     <ListItem
+                                        key={component.title}
+                                        title={component.title}
+                                        href={component.href}
+                                        icon={component.icon}
+                                    >
+                                        {component.description}
+                                    </ListItem>
+                                ))}
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <Link href="/about" legacyBehavior passHref>
+                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            About Us
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+                     <NavigationMenuItem>
+                        <NavigationMenuTrigger>Insights</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                                {insightsLinks.map((component) => (
+                                    <ListItem
+                                        key={component.label}
+                                        title={component.label}
+                                        href={component.href}
+                                        icon={component.icon}
+                                    >
+                                        {component.description}
+                                    </ListItem>
+                                ))}
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                </NavigationMenuList>
+            </NavigationMenu>
+            <div className="ml-4">
+              <Button asChild>
+                <Link href="/contact">Contact Us</Link>
+              </Button>
+            </div>
           </nav>
           <div className="md:hidden">
-             {!pathname.startsWith('/admin') && <Button onClick={() => setIsOpen(!isOpen)} variant="ghost" size="icon">
+            <Button onClick={() => setIsOpen(!isOpen)} variant="ghost" size="icon">
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>}
+            </Button>
           </div>
         </div>
       </div>
       {isOpen && (
         <div className="md:hidden bg-background shadow-lg">
           <nav className="flex flex-col space-y-2 p-4">
-            {navLinks.map((link) => (
-              <NavLink key={link.href} {...link} />
-            ))}
-            <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1" className="border-b-0">
+             <Accordion type="multiple" className="w-full">
+                <AccordionItem value="services">
+                    <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Services</AccordionTrigger>
+                    <AccordionContent className="pl-4">
+                        <div className="flex flex-col space-y-2">
+                           {servicesComponents.map((link) => (
+                              <Link key={link.href} href={link.href} className="font-headline py-1 text-muted-foreground hover:text-primary" onClick={() => setIsOpen(false)}>{link.title}</Link>
+                           ))}
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
+                 <AccordionItem value="portfolio">
+                    <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Portfolio</AccordionTrigger>
+                    <AccordionContent className="pl-4">
+                        <div className="flex flex-col space-y-2">
+                           {portfolioComponents.map((link) => (
+                              <Link key={link.href} href={link.href} className="font-headline py-1 text-muted-foreground hover:text-primary" onClick={() => setIsOpen(false)}>{link.title}</Link>
+                           ))}
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
+             </Accordion>
+            <MobileNavLink href="/about" label="About Us" onClick={() => setIsOpen(false)} />
+             <Accordion type="multiple" className="w-full">
+                <AccordionItem value="insights">
                     <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Insights</AccordionTrigger>
                     <AccordionContent className="pl-4">
                         <div className="flex flex-col space-y-2">
@@ -150,3 +286,33 @@ export default function Header() {
     </header>
   );
 }
+
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a"> & { icon?: React.ElementType }
+>(({ className, title, children, icon: Icon, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="flex items-center gap-2">
+            {Icon && <Icon className="h-5 w-5 text-primary" />}
+            <div className="text-sm font-medium leading-none">{title}</div>
+          </div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
