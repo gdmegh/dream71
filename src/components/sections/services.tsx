@@ -2,7 +2,7 @@
 
 'use client';
 import Link from 'next/link';
-import { ArrowRight, MonitorCheck, FileDigit, Award, Building } from 'lucide-react';
+import { ArrowRight, MonitorCheck, FileDigit, Award, Building, Workflow, Bot, FileCode, BrainCircuit } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { services } from '@/lib/services';
@@ -45,11 +45,15 @@ const ServiceChart = ({ data }: { data: any[] }) => {
     );
 };
 
-const featureIcons = {
+const featureIcons: { [key: string]: React.ElementType } = {
     'Public Service Portals': MonitorCheck,
     'Digital Document Management': FileDigit,
     'Online Licensing & Permits': Award,
-    'Smart City Solutions': Building
+    'Smart City Solutions': Building,
+    'Workflow Analysis': Workflow,
+    'RPA': Bot,
+    'Custom Scripts': FileCode,
+    'AI-Powered Automation': BrainCircuit
 };
 
 const ServiceFeature = ({ title, description, link, chartData, features, reverse = false }: { title: string, description: string, link: string, chartData: any[], features?: any[], reverse?: boolean }) => {
@@ -62,7 +66,7 @@ const ServiceFeature = ({ title, description, link, chartData, features, reverse
                  {features && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mt-6">
                         {features.map((feature, index) => {
-                            const Icon = featureIcons[feature.title as keyof typeof featureIcons] || MonitorCheck;
+                            const Icon = featureIcons[feature.title] || MonitorCheck;
                             return (
                                 <div key={index} className="flex items-start gap-3">
                                     <div className="bg-primary/10 text-primary p-2 rounded-full mt-1">
@@ -141,7 +145,7 @@ export default function Services() {
                         description={service.description}
                         link={`/services/${service.slug}`}
                         chartData={serviceData.chartData}
-                        features={service.slug === 'e-governance' ? serviceData.points : undefined}
+                        features={service.slug === 'e-governance' || service.slug === 'business-automation' ? serviceData.points : undefined}
                         reverse={index % 2 !== 0}
                     />
                 </div>
