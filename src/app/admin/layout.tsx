@@ -26,7 +26,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <SidebarProvider>
         <div className="flex flex-col min-h-screen bg-background admin-panel">
             <header className="sticky top-0 z-40 w-full border-b bg-card">
-              <div className="flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0 px-4 sm:px-6 lg:px-8">
+              <div className="container mx-auto flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0 px-4 sm:px-6 lg:px-8">
                  <div className="flex items-center gap-2">
                      <Link href="/">
                         <Image
@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
               </div>
             </header>
-            <div className="flex flex-1">
+            <div className="container mx-auto flex flex-1">
                 <Sidebar>
                     <SidebarMenu>
                          {menuItems.map((item) => (
