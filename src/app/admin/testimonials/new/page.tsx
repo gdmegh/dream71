@@ -12,7 +12,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,24 +20,17 @@ import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { generateImage } from "@/ai/flows/generate-image-flow";
-import { useState } from "react";
-import Image from "next/image";
-import { Wand2 } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   title: z.string().min(2, "Title must be at least 2 characters."),
   testimonial: z.string().min(10, "Testimonial must be at least 10 characters."),
-  imagePrompt: z.string().optional(),
-  avatar: z.string().optional(),
+  avatar: z.string().url("Please enter a valid URL for the avatar.").optional().or(z.literal('')),
 });
 
 export default function NewTestimonial() {
   const { toast } = useToast();
   const router = useRouter();
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,38 +38,14 @@ export default function NewTestimonial() {
       name: "",
       title: "",
       testimonial: "",
-      imagePrompt: "",
       avatar: "",
     },
   });
 
-  const handleGenerateImage = async () => {
-    const prompt = form.getValues("imagePrompt");
-    if (!prompt) {
-        toast({ title: "Error", description: "Please enter a prompt for the avatar.", variant: "destructive" });
-        return;
-    }
-    setIsGenerating(true);
-    try {
-        const result = await generateImage({ prompt });
-        if (result.dataUri) {
-            setGeneratedImageUrl(result.dataUri);
-            form.setValue("avatar", result.dataUri);
-            toast({ title: "Avatar Generated!", description: "The avatar image has been successfully generated." });
-        }
-    } catch (error) {
-        console.error("Image generation failed:", error);
-        toast({ title: "Error", description: "Failed to generate avatar.", variant: "destructive" });
-    } finally {
-        setIsGenerating(false);
-    }
-  };
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        const { imagePrompt, ...testimonialData } = values;
         await addDoc(collection(db, "Testimonial"), {
-            ...testimonialData,
+            ...values,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         });
@@ -86,7 +54,6 @@ export default function NewTestimonial() {
             description: "The new testimonial has been added.",
         });
         form.reset();
-        setGeneratedImageUrl(null);
         router.push('/admin/testimonials');
     } catch (e) {
         console.error("Error adding document: ", e);
@@ -139,30 +106,17 @@ export default function NewTestimonial() {
 
             <FormField
               control={form.control}
-              name="imagePrompt"
+              name="avatar"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Avatar Prompt</FormLabel>
-                   <FormDescription>Describe the person whose avatar you want to generate.</FormDescription>
-                  <div className="flex gap-2">
-                    <FormControl>
-                        <Input placeholder="e.g., A friendly-looking CEO in a suit" {...field} />
-                    </FormControl>
-                    <Button type="button" onClick={handleGenerateImage} disabled={isGenerating}>
-                        <Wand2 className="mr-2 h-4 w-4" />
-                        {isGenerating ? "Generating..." : "Generate"}
-                    </Button>
-                  </div>
+                  <FormLabel>Avatar URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://placehold.co/100x100.png" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {generatedImageUrl && (
-                <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-primary/20 mx-auto">
-                    <Image src={generatedImageUrl} alt="Generated avatar preview" fill className="object-cover" />
-                </div>
-            )}
 
             <FormField
               control={form.control}

@@ -21,25 +21,18 @@ import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { generateImage } from "@/ai/flows/generate-image-flow";
-import { useState } from "react";
-import Image from "next/image";
-import { Wand2 } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
   slug: z.string().min(2, "Slug must be at least 2 characters.").refine(s => !s.includes(' '), "Slug cannot contain spaces."),
   summary: z.string().min(10, "Summary must be at least 10 characters.").max(200, "Summary must be less than 200 characters."),
   content: z.string().min(20, "Content must be at least 20 characters."),
-  imagePrompt: z.string().optional(),
-  imageUrl: z.string().optional(),
+  imageUrl: z.string().url("Please enter a valid URL for the image.").optional().or(z.literal('')),
 });
 
 export default function NewNewsArticle() {
   const { toast } = useToast();
   const router = useRouter();
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,38 +41,14 @@ export default function NewNewsArticle() {
       slug: "",
       summary: "",
       content: "",
-      imagePrompt: "",
       imageUrl: "",
     },
   });
-  
-  const handleGenerateImage = async () => {
-    const prompt = form.getValues("imagePrompt");
-    if (!prompt) {
-        toast({ title: "Error", description: "Please enter a prompt for the image.", variant: "destructive" });
-        return;
-    }
-    setIsGenerating(true);
-    try {
-        const result = await generateImage({ prompt });
-        if (result.dataUri) {
-            setGeneratedImageUrl(result.dataUri);
-            form.setValue("imageUrl", result.dataUri);
-            toast({ title: "Image Generated!", description: "The image has been successfully generated." });
-        }
-    } catch (error) {
-        console.error("Image generation failed:", error);
-        toast({ title: "Error", description: "Failed to generate image.", variant: "destructive" });
-    } finally {
-        setIsGenerating(false);
-    }
-  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        const { imagePrompt, ...articleData } = values;
         await addDoc(collection(db, "News"), {
-            ...articleData,
+            ...values,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         });
@@ -88,7 +57,6 @@ export default function NewNewsArticle() {
             description: "The new news article has been added.",
         });
         form.reset();
-        setGeneratedImageUrl(null);
         router.push('/admin/news');
     } catch (e) {
         console.error("Error adding document: ", e);
@@ -139,30 +107,18 @@ export default function NewNewsArticle() {
 
             <FormField
               control={form.control}
-              name="imagePrompt"
+              name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Featured Image Prompt</FormLabel>
-                   <FormDescription>Describe the image you want to generate for the article.</FormDescription>
-                  <div className="flex gap-2">
-                    <FormControl>
-                        <Input placeholder="e.g., A modern office building with a logo" {...field} />
-                    </FormControl>
-                    <Button type="button" onClick={handleGenerateImage} disabled={isGenerating}>
-                        <Wand2 className="mr-2 h-4 w-4" />
-                        {isGenerating ? "Generating..." : "Generate"}
-                    </Button>
-                  </div>
+                  <FormLabel>Featured Image URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://placehold.co/1200x600.png" {...field} />
+                  </FormControl>
+                  <FormDescription>The URL for the main image of the article.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {generatedImageUrl && (
-                <div className="relative w-full h-64 rounded-lg overflow-hidden border">
-                    <Image src={generatedImageUrl} alt="Generated preview" fill className="object-cover" />
-                </div>
-            )}
 
             <FormField
               control={form.control}

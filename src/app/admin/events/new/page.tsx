@@ -22,17 +22,13 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon, Wand2 } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { useState } from "react";
-import { generateImage } from "@/ai/flows/generate-image-flow";
-import Image from "next/image";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
-  imagePrompt: z.string().min(2, "Image prompt is required."),
-  imageUrl: z.string().optional(),
+  imageUrl: z.string().url("Please enter a valid URL for the image."),
   date: z.date({
     required_error: "An event date is required.",
   }),
@@ -41,50 +37,19 @@ const formSchema = z.object({
 export default function NewEvent() {
   const { toast } = useToast();
   const router = useRouter();
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      imagePrompt: "",
       imageUrl: "",
     },
   });
 
-  const handleGenerateImage = async () => {
-    const prompt = form.getValues("imagePrompt");
-    if (!prompt) {
-        toast({ title: "Error", description: "Please enter a prompt for the image.", variant: "destructive" });
-        return;
-    }
-    setIsGenerating(true);
-    try {
-        const result = await generateImage({ prompt });
-        if (result.dataUri) {
-            setGeneratedImageUrl(result.dataUri);
-            form.setValue("imageUrl", result.dataUri);
-            toast({ title: "Image Generated!", description: "The image has been successfully generated." });
-        }
-    } catch (error) {
-        console.error("Image generation failed:", error);
-        toast({ title: "Error", description: "Failed to generate image.", variant: "destructive" });
-    } finally {
-        setIsGenerating(false);
-    }
-  };
-
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        const { imagePrompt, ...eventData } = values;
-        if (!eventData.imageUrl) {
-          toast({ title: "Error", description: "Please generate an image before submitting.", variant: "destructive" });
-          return;
-        }
         await addDoc(collection(db, "Event"), {
-            ...eventData,
+            ...values,
             date: Timestamp.fromDate(values.date),
         });
         toast({
@@ -92,7 +57,6 @@ export default function NewEvent() {
             description: "The new event photo has been added to the gallery.",
         });
         form.reset();
-        setGeneratedImageUrl(null);
         router.push('/admin/events');
     } catch (e) {
         console.error("Error adding document: ", e);
@@ -108,7 +72,7 @@ export default function NewEvent() {
     <Card>
       <CardHeader>
         <CardTitle>Add New Event Photo</CardTitle>
-        <CardDescription>Generate a new photo for the event gallery using AI.</CardDescription>
+        <CardDescription>Add a new photo to the event gallery.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -129,30 +93,18 @@ export default function NewEvent() {
             
             <FormField
               control={form.control}
-              name="imagePrompt"
+              name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Event Photo Prompt</FormLabel>
-                  <FormDescription>Describe the photo you want to generate for the event.</FormDescription>
-                  <div className="flex gap-2">
-                    <FormControl>
-                        <Input placeholder="e.g., A large audience at a tech conference" {...field} />
-                    </FormControl>
-                    <Button type="button" onClick={handleGenerateImage} disabled={isGenerating}>
-                        <Wand2 className="mr-2 h-4 w-4" />
-                        {isGenerating ? "Generating..." : "Generate"}
-                    </Button>
-                  </div>
+                  <FormLabel>Photo URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://placehold.co/800x600.png" {...field} />
+                  </FormControl>
+                  <FormDescription>The URL of the photo for the event.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {generatedImageUrl && (
-                <div className="relative w-full h-64 rounded-lg overflow-hidden border">
-                    <Image src={generatedImageUrl} alt="Generated preview" fill className="object-cover" />
-                </div>
-            )}
 
             <FormField
               control={form.control}
