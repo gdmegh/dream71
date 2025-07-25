@@ -6,16 +6,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Briefcase, MessageSquareQuote, Newspaper, Rss, GalleryHorizontal, AppWindow } from 'lucide-react';
+import { Briefcase, AppWindow, Rss, Newspaper, GalleryHorizontal, MessageSquareQuote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const menuItems = [
   { value: 'portfolio', href: '/admin/portfolio', label: 'Portfolio', icon: Briefcase },
-  { value: 'testimonials', href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
-  { value: 'news', href: '/admin/news', label: 'News', icon: Newspaper },
-  { value: 'blog', href: '/admin/blog', label: 'Blog', icon: Rss },
-  { value: 'events', href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
   { value: 'services', href: '/admin/services', label: 'Services', icon: AppWindow },
+  { value: 'blog', href: '/admin/blog', label: 'Blog', icon: Rss },
+  { value: 'news', href: '/admin/news', label: 'News', icon: Newspaper },
+  { value: 'events', href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
+  { value: 'testimonials', href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
