@@ -22,7 +22,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import Image from 'next/image';
 
 export default function BlogCMS() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -92,7 +91,9 @@ export default function BlogCMS() {
                             <DropdownMenuItem asChild>
                                <Link href={`/blog/${post.slug}`} target='_blank'>View</Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link href={`/admin/blog/edit/${post.id}`}>Edit</Link>
+                            </DropdownMenuItem>
                             <AlertDialog>
                                <AlertDialogTrigger asChild>
                                     <button className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full text-destructive">

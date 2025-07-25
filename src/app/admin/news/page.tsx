@@ -94,7 +94,9 @@ export default function NewsCMS() {
                             <DropdownMenuItem asChild>
                                <Link href={`/news/${article.slug}`} target='_blank'>View</Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                               <Link href={`/admin/news/edit/${article.id}`}>Edit</Link>
+                            </DropdownMenuItem>
                             <AlertDialog>
                                <AlertDialogTrigger asChild>
                                     <button className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full text-destructive">

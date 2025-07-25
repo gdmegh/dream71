@@ -30,7 +30,6 @@ export default function PortfolioCMS() {
   const { toast } = useToast();
 
   const fetchProjects = async () => {
-    // Note: In a real app, you might want to filter by owner
     const q = query(collection(db, "Project"), orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
     const projectsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -100,7 +99,9 @@ export default function PortfolioCMS() {
                             <DropdownMenuItem asChild>
                                <Link href={`/portfolio/${project.slug}`} target="_blank">View</Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link href={`/admin/portfolio/edit/${project.id}`}>Edit</Link>
+                            </DropdownMenuItem>
                             <AlertDialog>
                                <AlertDialogTrigger asChild>
                                     <button className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full text-destructive">
