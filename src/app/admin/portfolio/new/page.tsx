@@ -22,6 +22,7 @@ import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
 
 
 const formSchema = z.object({
@@ -37,12 +38,14 @@ const formSchema = z.object({
   repositoryUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
-  // For simplicity, we'll handle images and categories separately after creation for now.
+  imageUrl: z.string().optional(),
 });
 
 export default function NewPortfolioProject() {
   const { toast } = useToast();
   const router = useRouter();
+  const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,17 +62,45 @@ export default function NewPortfolioProject() {
       repositoryUrl: "",
       demoUrl: "",
       isPublic: true,
+      imageUrl: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsUploading(true);
+    let imageUrl = values.imageUrl;
+
+    if (featuredImageFile) {
+        const formData = new FormData();
+        formData.append('file', featuredImageFile);
+
+        try {
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Image upload failed');
+            }
+
+            const { path } = await response.json();
+            imageUrl = path;
+        } catch (error) {
+            console.error("Image upload error: ", error);
+            toast({ title: "Error", description: "Could not upload image.", variant: "destructive" });
+            setIsUploading(false);
+            return;
+        }
+    }
+
+
     try {
         const docRef = await addDoc(collection(db, "Project"), {
             ...values,
+            imageUrl,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
-            // In a real app, you would associate this with the logged-in user.
-            // owner: "some-user-id" 
         });
         console.log("Document written with ID: ", docRef.id);
         toast({
@@ -85,6 +116,8 @@ export default function NewPortfolioProject() {
             description: "There was an error submitting the project.",
             variant: "destructive",
         });
+    } finally {
+        setIsUploading(false);
     }
   }
 
@@ -164,6 +197,19 @@ export default function NewPortfolioProject() {
                 )}
             />
             
+            <FormItem>
+              <FormLabel>Featured Image</FormLabel>
+              <FormControl>
+                <Input 
+                  type="file" 
+                  onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
+                  accept="image/*"
+                />
+              </FormControl>
+              <FormDescription>Upload the main image for the project.</FormDescription>
+              <FormMessage />
+            </FormItem>
+
             <div className="grid md:grid-cols-2 gap-8">
                  <FormField
                     control={form.control}
@@ -280,8 +326,8 @@ export default function NewPortfolioProject() {
             <p className="text-sm text-muted-foreground">Note: Project images, categories, and skills will be managed on the project's edit page after creation.</p>
 
 
-            <Button type="submit" size="lg" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Creating..." : "Create Project"}
+            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+                {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Creating..." : "Create Project"}
             </Button>
           </form>
         </Form>

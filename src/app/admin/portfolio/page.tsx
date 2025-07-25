@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { PlusCircle, MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, deleteDoc, doc, query } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -22,7 +22,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
+import Image from 'next/image';
 
 export default function PortfolioCMS() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -30,7 +31,7 @@ export default function PortfolioCMS() {
 
   const fetchProjects = async () => {
     // Note: In a real app, you might want to filter by owner
-    const q = query(collection(db, "Project"));
+    const q = query(collection(db, "Project"), orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
     const projectsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setProjects(projectsData);
@@ -68,6 +69,7 @@ export default function PortfolioCMS() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Image</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created At</TableHead>
@@ -77,6 +79,9 @@ export default function PortfolioCMS() {
           <TableBody>
             {projects.map((project) => (
               <TableRow key={project.id}>
+                <TableCell>
+                  {project.imageUrl && <Image src={project.imageUrl} alt={project.title} width={40} height={40} className="rounded-md object-cover" />}
+                </TableCell>
                 <TableCell className="font-medium">{project.title}</TableCell>
                 <TableCell>
                     <Badge variant={project.isPublic ? "default" : "secondary"}>{project.isPublic ? "Public" : "Private"}</Badge>
@@ -93,7 +98,7 @@ export default function PortfolioCMS() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem asChild>
-                               <Link href={`/portfolio/${project.slug}`}>View</Link>
+                               <Link href={`/portfolio/${project.slug}`} target="_blank">View</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem disabled>Edit</DropdownMenuItem>
                             <AlertDialog>
