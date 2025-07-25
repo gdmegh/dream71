@@ -24,13 +24,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const activeTab = menuItems.find(item => pathname.startsWith(item.href))?.value || 'portfolio';
   
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-       <header className="sticky top-0 z-40 w-full border-b bg-background">
+    <div className="flex flex-col min-h-screen bg-background admin-panel">
+       <header className="sticky top-0 z-40 w-full border-b bg-card">
           <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
              <div className="flex items-center gap-2">
                  <Link href="/">
                     <Image
-                        src="/images/Logo.png"
+                        src="/images/Logo-dark.png"
                         alt="Dream71 Logo"
                         width={150}
                         height={40}
