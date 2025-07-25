@@ -1,14 +1,12 @@
 
-
 'use client';
 
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
-import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '../ui/skeleton';
 import {
@@ -21,26 +19,27 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from '../ui/button';
 
-const ProjectCard = ({ project }: { project: any }) => (
-    <Link href={`/portfolio/${project.slug}`} className="group block h-full">
+const NewsCard = ({ article }: { article: any }) => (
+    <Link href={`/news/${article.slug}`} className="group block h-full">
         <Card rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground">
           <CardContent className="p-0 flex flex-col h-full">
             <div className="relative h-56">
               <Image
-                src={project.imageUrl || 'https://placehold.co/600x400.png'}
-                alt={project.title}
+                src={article.imageUrl || 'https://placehold.co/600x400.png'}
+                alt={article.title}
                 fill
                 style={{ objectFit: 'cover' }}
-                data-ai-hint={'project image'}
+                data-ai-hint={'news article image'}
                 className="transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
             </div>
             <div className="p-6 flex flex-col flex-grow">
-              <h3 className="font-headline text-xl font-bold mb-2 text-foreground">{project.title}</h3>
-              <p className="text-muted-foreground mb-4 font-body text-sm flex-grow">{project.subtitle}</p>
-               <span className="inline-flex items-center font-semibold text-primary group-hover:underline font-body text-sm mt-auto">
-                View Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
+              <p className="text-muted-foreground text-sm mb-2">
+                {new Date(article.createdAt?.toDate()).toLocaleDateString()}
+              </p>
+              <h3 className="font-headline text-xl font-bold mb-2 text-foreground flex-grow">{article.title}</h3>
+              <span className="inline-flex items-center font-semibold text-primary group-hover:underline font-body text-sm mt-auto">
+                Read More <ArrowRight className="ml-1 h-4 w-4" />
               </span>
             </div>
           </CardContent>
@@ -56,8 +55,8 @@ const LoadingSkeleton = () => (
           <CardContent className="p-0 flex flex-col h-full">
             <Skeleton className="h-56 w-full" />
             <div className="p-6 space-y-4">
-               <Skeleton className="h-6 w-3/4" />
-               <Skeleton className="h-4 w-full" />
+               <Skeleton className="h-4 w-24" />
+               <Skeleton className="h-6 w-full" />
                <Skeleton className="h-4 w-1/2" />
             </div>
             </CardContent>
@@ -66,58 +65,57 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export default function Portfolio() {
-  const [projects, setProjects] = useState<any[]>([]);
+export default function HomeNews() {
+  const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
    const plugin = useRef(
-      Autoplay({ delay: 3000, stopOnInteraction: true })
+      Autoplay({ delay: 3500, stopOnInteraction: true })
     );
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchArticles = async () => {
       setLoading(true);
       const q = query(
-        collection(db, "Project"), 
-        where("isPublic", "==", true),
+        collection(db, "News"), 
         orderBy("createdAt", "desc"),
         limit(9)
       );
       const querySnapshot = await getDocs(q);
-      const projectsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProjects(projectsData);
+      const articlesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setArticles(articlesData);
       setLoading(false);
     };
 
-    fetchProjects();
+    fetchArticles();
   }, []);
 
 
   return (
-    <section id="portfolio" className="py-20 bg-background">
+    <section id="news" className="py-20 bg-primary/5">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Our Portfolio</h2>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Latest News</h2>
           <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Take a closer look at the innovative solutions and successful partnerships that define our legacy. Here’s a brief insight into some of our most impactful projects.
+            Stay updated with the latest happenings, announcements, and stories from Dream71.
           </p>
         </div>
 
-        {loading ? <LoadingSkeleton /> : projects.length > 0 ? (
+        {loading ? <LoadingSkeleton /> : articles.length > 0 ? (
             <Carousel
                 plugins={[plugin.current]}
                 opts={{
                     align: "start",
                     loop: true,
                 }}
-                 onMouseEnter={plugin.current.stop}
+                onMouseEnter={plugin.current.stop}
                 onMouseLeave={plugin.current.reset}
                 className="w-full"
             >
                 <CarouselContent className="-ml-8">
-                    {projects.map((project) => (
-                      <CarouselItem key={project.id} className="pl-8 md:basis-1/2 lg:basis-1/3">
+                    {articles.map((article) => (
+                      <CarouselItem key={article.id} className="pl-8 md:basis-1/2 lg:basis-1/3">
                           <div className="h-full">
-                           <ProjectCard project={project} />
+                           <NewsCard article={article} />
                           </div>
                       </CarouselItem>
                     ))}
@@ -126,13 +124,13 @@ export default function Portfolio() {
                 <CarouselNext className="right-4" />
             </Carousel>
         ) : (
-            <p className="text-center text-muted-foreground">No projects found.</p>
+            <p className="text-center text-muted-foreground">No news articles found.</p>
         )}
 
         <div className="mt-12 text-center">
             <Button asChild variant="outline" size="lg">
-                <Link href="/portfolio">
-                    View All Projects <ArrowRight className="ml-2 h-5 w-5" />
+                <Link href="/news">
+                    View All News <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
             </Button>
         </div>
