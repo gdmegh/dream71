@@ -22,6 +22,7 @@ import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -29,6 +30,7 @@ const formSchema = z.object({
   description: z.string().min(10, "Description must be at least 10 characters.").max(200, "Description must be less than 200 characters."),
   content: z.string().min(20, "Content must be at least 20 characters."),
   imageUrl: z.string().url("Please enter a valid URL for the image.").optional().or(z.literal('')),
+  template: z.string().min(2, "Please select a template."),
 });
 
 export default function NewService() {
@@ -45,6 +47,7 @@ export default function NewService() {
       description: "",
       content: "",
       imageUrl: "",
+      template: "default",
     },
   });
 
@@ -133,6 +136,31 @@ export default function NewService() {
                     <Input placeholder="e.g., cloud-solutions" {...field} />
                   </FormControl>
                   <FormDescription>A unique, URL-friendly identifier. No spaces.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="template"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Template</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a template for the detail page" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="default">Default</SelectItem>
+                      <SelectItem value="egovernance">E-Governance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Choose the layout for the service detail page.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

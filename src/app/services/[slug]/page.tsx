@@ -135,7 +135,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-16">
                         <Image
-                            src={service.image}
+                            src={service.image || service.imageUrl}
                             alt={service.title}
                             fill
                             className="object-cover"
@@ -150,7 +150,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                     <CardTitle className='font-headline text-3xl'>Service Details</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="font-body text-muted-foreground">{service.longDescription}</p>
+                                    <p className="font-body text-muted-foreground">{service.longDescription || service.content}</p>
                                 </CardContent>
                             </Card>
 
@@ -418,7 +418,7 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
     notFound();
   }
   
-  if (service.slug === 'e-governance') {
+  if (service.template === 'egovernance') {
     return <EGovernancePage service={service} />;
   }
   

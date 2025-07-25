@@ -24,6 +24,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -31,6 +32,7 @@ const formSchema = z.object({
   description: z.string().min(10, "Description must be at least 10 characters.").max(200, "Description must be less than 200 characters."),
   content: z.string().min(20, "Content must be at least 20 characters."),
   imageUrl: z.string().optional(),
+  template: z.string().min(2, "Please select a template."),
 });
 
 export default function EditService() {
@@ -170,6 +172,31 @@ export default function EditService() {
                     <Input placeholder="e.g., cloud-solutions" {...field} />
                   </FormControl>
                   <FormDescription>A unique, URL-friendly identifier. No spaces.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="template"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Template</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a template for the detail page" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="default">Default</SelectItem>
+                      <SelectItem value="egovernance">E-Governance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Choose the layout for the service detail page.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

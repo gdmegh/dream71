@@ -1,8 +1,10 @@
+
 import { Code, Smartphone, Palette, ShieldCheck, Rocket, BrainCircuit, Landmark, SwatchBook, ImageIcon, Gamepad2, Users } from 'lucide-react';
 
 export const services = [
     {
         slug: "web-development",
+        template: "default",
         icon: Code,
         title: "Web Development",
         description: "Building modern, responsive, and scalable web applications.",
@@ -31,6 +33,7 @@ export const services = [
     },
     {
         slug: "mobile-app-development",
+        template: "default",
         icon: Smartphone,
         title: "Mobile App Development",
         description: "Native and cross-platform mobile apps that deliver seamless user experiences on iOS and Android.",
@@ -59,6 +62,7 @@ export const services = [
     },
      {
         slug: "custom-software",
+        template: "default",
         icon: Code,
         title: "Custom Software Development",
         description: "Bespoke software solutions tailored to your unique business needs.",
@@ -87,6 +91,7 @@ export const services = [
     },
     {
         slug: "game-development",
+        template: "default",
         icon: Code,
         title: "Game Development",
         description: "Creating immersive and engaging games for various platforms.",
@@ -115,6 +120,7 @@ export const services = [
     },
     {
         slug: "business-automation",
+        template: "default",
         icon: Rocket,
         title: "Business Automation",
         description: "Streamlining your business processes with intelligent automation.",
@@ -143,6 +149,7 @@ export const services = [
     },
     {
         slug: "ui-ux-design",
+        template: "default",
         icon: Palette,
         title: "UI/UX Design",
         description: "Intuitive and beautiful user interfaces that are a joy to use, enhancing user engagement and satisfaction.",
@@ -171,6 +178,7 @@ export const services = [
     },
     {
         slug: "qa-testing",
+        template: "default",
         icon: ShieldCheck,
         title: "QA & Testing",
         description: "Rigorous quality assurance processes to ensure your software is reliable, secure, and bug-free.",
@@ -199,6 +207,7 @@ export const services = [
     },
     {
         slug: "devops",
+        template: "default",
         icon: Rocket,
         title: "DevOps",
         description: "Streamlining development and operations to deliver high-quality software faster and more reliably.",
@@ -227,6 +236,7 @@ export const services = [
     },
     {
         slug: "ai-ml-solutions",
+        template: "default",
         icon: BrainCircuit,
         title: "AI & ML Solutions",
         description: "Integrating artificial intelligence and machine learning to build intelligent, data-driven applications.",
@@ -255,6 +265,7 @@ export const services = [
     },
     {
         slug: 'e-governance',
+        template: 'egovernance',
         icon: Landmark,
         title: 'e-Governance Solutions',
         description: 'Pioneering Digital Transformation in Public Services Through Advanced e-Governance Solutions.',
