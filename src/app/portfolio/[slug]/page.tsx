@@ -16,10 +16,10 @@ const LoadingScreen = () => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         <Skeleton className="h-12 w-1/2 mx-auto" />
         <Skeleton className="h-8 w-3/4 mx-auto" />
+        <Skeleton className="h-[500px] w-full rounded-[20px]" />
         
         <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-8 space-y-8">
-                <Skeleton className="h-[500px] w-full rounded-[20px]" />
                 <Skeleton className="h-64 w-full" />
                 <Skeleton className="h-64 w-full" />
             </div>
@@ -77,20 +77,20 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
 
       <section className="py-16 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+             <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-16">
+                <Image
+                    src={project.imageUrl || 'https://placehold.co/1200x600.png'}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    data-ai-hint={'project image'}
+                />
+            </div>
+
               <div className="grid lg:grid-cols-12 gap-12">
                 
                 {/* Main Content */}
                 <div className="lg:col-span-8 space-y-12">
-                    <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl">
-                        <Image
-                            src={project.imageUrl || 'https://placehold.co/1200x600.png'}
-                            alt={project.title}
-                            fill
-                            className="object-cover"
-                            data-ai-hint={'project image'}
-                        />
-                    </div>
-
                     <div className="space-y-4">
                         <GitBranch className="h-10 w-10 text-primary mx-auto" />
                         <h2 className="font-headline text-3xl font-bold text-center">Project Overview</h2>
