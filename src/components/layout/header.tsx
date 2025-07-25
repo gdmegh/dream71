@@ -152,7 +152,7 @@ export default function Header() {
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                         <NavigationMenuContent>
-                             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
+                             <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] lg:w-[700px] lg:grid-cols-[.75fr_1fr_1fr]">
                                 <li className="row-span-3">
                                     <NavigationMenuLink asChild>
                                         <a
@@ -176,6 +176,15 @@ export default function Header() {
                                 </ListItem>
                                 <ListItem href="/services/ui-ux-design" title="UI/UX Design" icon={PencilRuler}>
                                   Intuitive and beautiful user interfaces that delight users.
+                                </ListItem>
+                                 <ListItem href="/services/custom-software" title="Custom Software" icon={Code}>
+                                  Bespoke solutions tailored to your unique business needs.
+                                </ListItem>
+                                <ListItem href="/services/qa-testing" title="QA & Testing" icon={ShieldCheck}>
+                                    Ensuring your software is reliable and bug-free.
+                                </ListItem>
+                                <ListItem href="/services/game-development" title="Game Development" icon={Gamepad2}>
+                                    Creating immersive and engaging gaming experiences.
                                 </ListItem>
                             </ul>
                         </NavigationMenuContent>
@@ -346,5 +355,7 @@ const ListItem = React.forwardRef<
   );
 });
 ListItem.displayName = "ListItem";
+
+    
 
     
