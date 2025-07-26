@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
-import { services } from '@/lib/services';
 import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight, AppWindow } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -13,8 +12,6 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { collection, query, where, getDocs, limit, doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const InfoSection = ({ title, description, items, image, imageHint, reverse = false }: { title: string, description?: string, items: {title: string, description: string}[], image: string, imageHint: string, reverse?: boolean }) => (
@@ -350,11 +347,10 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                                  </Card>
                             </div>
                         </div>
-
                     </div>
-                 </div>
+                </div>
             </section>
-
+            
             <Portfolio />
         </>
     )
@@ -365,43 +361,22 @@ export default function ServiceDetailPage({ params: { slug } }: { params: { slug
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!slug) return;
+    
     const fetchService = async () => {
       setLoading(true);
-      let serviceData: any = null;
-      let isStatic = false;
-
-      // First, check the static services
-      const staticService = services.find(s => s.slug === slug);
-      if (staticService) {
-        serviceData = staticService;
-        isStatic = true;
-      } else {
-        // If not found, check Firestore for dynamic services
-        const q = query(
-          collection(db, 'Service'),
-          where('slug', '==', slug),
-          limit(1)
-        );
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          serviceData = {
-            id: querySnapshot.docs[0].id,
-            ...querySnapshot.docs[0].data(),
-          };
-        }
+      try {
+          const res = await fetch(`/api/services/${slug}`);
+          if (!res.ok) {
+              throw new Error('Service not found');
+          }
+          const data = await res.json();
+          setService(data);
+      } catch (error) {
+          setService(null);
+      } finally {
+          setLoading(false);
       }
-
-      if (serviceData && serviceData.chartId) {
-        const chartDocRef = doc(db, 'ChartData', serviceData.chartId);
-        const chartDocSnap = await getDoc(chartDocRef);
-        if (chartDocSnap.exists()) {
-          serviceData.chartData = chartDocSnap.data().dataPoints;
-        }
-      }
-      
-      setService(serviceData);
-      setLoading(false);
     };
 
     fetchService();
