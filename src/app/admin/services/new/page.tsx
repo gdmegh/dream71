@@ -95,12 +95,18 @@ export default function NewService() {
     }
 
     try {
-        await addDoc(collection(db, "Service"), {
+        const dataToSave: any = {
             ...values,
             imageUrl,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
-        });
+        };
+
+        if (!dataToSave.chartId) {
+            dataToSave.chartId = null;
+        }
+        
+        await addDoc(collection(db, "Service"), dataToSave);
         toast({
             title: "Service Submitted!",
             description: "The new service has been added.",
@@ -255,3 +261,5 @@ export default function NewService() {
     </Card>
   );
 }
+
+    

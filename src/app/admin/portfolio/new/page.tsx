@@ -126,12 +126,18 @@ export default function NewPortfolioProject() {
 
 
     try {
-        const docRef = await addDoc(collection(db, "Project"), {
+        const dataToSave: any = {
             ...values,
             imageUrl,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
-        });
+        };
+
+        if (!dataToSave.serviceId) {
+            dataToSave.serviceId = null;
+        }
+
+        const docRef = await addDoc(collection(db, "Project"), dataToSave);
         console.log("Document written with ID: ", docRef.id);
         toast({
             title: "Project Submitted!",
@@ -406,3 +412,5 @@ export default function NewPortfolioProject() {
     </Card>
   );
 }
+
+    
