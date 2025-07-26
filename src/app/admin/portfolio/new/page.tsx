@@ -26,7 +26,6 @@ import { useState, useEffect } from "react";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
   subtitle: z.string().optional(),
@@ -127,17 +126,14 @@ export default function NewPortfolioProject() {
 
 
     try {
-        const dataToSave: any = {
+        await addDoc(collection(db, "Project"), {
             ...values,
-            techStackIds: values.techStackIds || [],
-            serviceId: values.serviceId || null,
             imageUrl,
+            serviceId: values.serviceId || null,
+            techStackIds: values.techStackIds || [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
-        };
-
-        const docRef = await addDoc(collection(db, "Project"), dataToSave);
-        console.log("Document written with ID: ", docRef.id);
+        });
         toast({
             title: "Project Submitted!",
             description: "The new project has been added to the database.",
@@ -157,258 +153,275 @@ export default function NewPortfolioProject() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Add New Portfolio Project</CardTitle>
-        <CardDescription>Fill out the details for the new project based on the defined schema.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            
-            <FormField
-              control={form.control}
-              name="isPublic"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Public</FormLabel>
-                    <FormDescription>
-                     Make this project visible to everyone.
-                    </FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <div className="grid md:grid-cols-2 gap-8">
-                <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Project Title</FormLabel>
-                        <FormControl>
-                            <Input placeholder="e.g., Megh Gallery" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="subtitle"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Subtitle</FormLabel>
-                        <FormControl>
-                            <Input placeholder="A short, catchy subtitle" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </div>
-             <FormField
-                control={form.control}
-                name="slug"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>URL Slug</FormLabel>
-                    <FormControl>
-                        <Input placeholder="e.g., megh-gallery" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                        A unique, URL-friendly identifier. No spaces allowed.
-                    </FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-            
-            <FormItem>
-              <FormLabel>Featured Image</FormLabel>
-              <FormControl>
-                <Input 
-                  type="file" 
-                  onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
-                  accept="image/*"
-                />
-              </FormControl>
-              <FormDescription>Upload the main image for the project.</FormDescription>
-              <FormMessage />
-            </FormItem>
-            
-            <FormField
-                control={form.control}
-                name="serviceId"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Related Service</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a related service" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        {services.map(service => (
-                            <SelectItem key={service.id} value={service.id}>{service.title}</SelectItem>
-                        ))}
-                        </SelectContent>
-                    </Select>
-                    <FormDescription>Link this project to a service.</FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-
-            <Controller
-                control={form.control}
-                name="techStackIds"
-                render={({ field: { onChange, value } }) => (
-                    <FormItem>
-                        <FormLabel>Tech Stack</FormLabel>
-                        <MultiSelect
-                            options={techStack}
-                            selected={value || []}
-                            onChange={onChange}
+    <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Add New Portfolio Project</CardTitle>
+                    <CardDescription>Fill out the details for the new project.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                     <div className="grid md:grid-cols-2 gap-8">
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Project Title</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g., Megh Gallery" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                        <FormDescription>Associate this project with one or more technologies.</FormDescription>
-                        <FormMessage />
+                         <FormField
+                            control={form.control}
+                            name="subtitle"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Subtitle</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="A short, catchy subtitle" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                     <FormField
+                        control={form.control}
+                        name="slug"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>URL Slug</FormLabel>
+                            <FormControl>
+                                <Input placeholder="e.g., megh-gallery" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                A unique, URL-friendly identifier. No spaces allowed.
+                            </FormDescription>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Categorization</CardTitle>
+                    <CardDescription>Organize your project for better visibility.</CardDescription>
+                </CardHeader>
+                 <CardContent className="space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="isPublic"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                          <div className="space-y-0.5">
+                            <FormLabel className="text-base">Public</FormLabel>
+                            <FormDescription>
+                             Make this project visible to everyone.
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                        control={form.control}
+                        name="serviceId"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Related Service</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a related service" />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                {services.map(service => (
+                                    <SelectItem key={service.id} value={service.id}>{service.title}</SelectItem>
+                                ))}
+                                </SelectContent>
+                            </Select>
+                            <FormDescription>Link this project to a service (optional).</FormDescription>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                     <Controller
+                        control={form.control}
+                        name="techStackIds"
+                        render={({ field: { onChange, value } }) => (
+                            <FormItem>
+                                <FormLabel>Tech Stack</FormLabel>
+                                <MultiSelect
+                                    options={techStack}
+                                    selected={value || []}
+                                    onChange={onChange}
+                                />
+                                <FormDescription>Associate this project with technologies (optional).</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Project Assets</CardTitle>
+                    <CardDescription>Provide images and links for your project.</CardDescription>
+                </CardHeader>
+                 <CardContent className="space-y-6">
+                    <FormItem>
+                      <FormLabel>Featured Image</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="file" 
+                          onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
+                          accept="image/*"
+                        />
+                      </FormControl>
+                      <FormDescription>Upload the main image for the project.</FormDescription>
+                      <FormMessage />
                     </FormItem>
-                )}
-            />
+                     <div className="grid md:grid-cols-2 gap-8">
+                        <FormField
+                            control={form.control}
+                            name="repositoryUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Repository URL</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="https://github.com/user/repo" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name="demoUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Demo URL</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="https://your-demo.com" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                </CardContent>
+            </Card>
 
-            <div className="grid md:grid-cols-2 gap-8">
-                 <FormField
-                    control={form.control}
-                    name="clientInfo"
-                    render={({ field }) => (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Detailed Information</CardTitle>
+                    <CardDescription>Provide the case study details for the project.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-8">
+                         <FormField
+                            control={form.control}
+                            name="clientInfo"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Client Information</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g., A client from the arts industry" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="projectTimeline"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Project Timeline</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g., 3 Months" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="overview"
+                      render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Client Information</FormLabel>
-                        <FormControl>
-                            <Input placeholder="e.g., A client from the arts industry" {...field} />
-                        </FormControl>
-                        <FormMessage />
+                          <FormLabel>Project Overview</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="A detailed overview of the project." rows={5} {...field} />
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="projectTimeline"
-                    render={({ field }) => (
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="problemStatement"
+                      render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Project Timeline</FormLabel>
-                        <FormControl>
-                            <Input placeholder="e.g., 3 Months" {...field} />
-                        </FormControl>
-                        <FormMessage />
+                          <FormLabel>Problem Statement</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="What was the core problem the client was facing?" {...field} />
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}
-                />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-                <FormField
-                    control={form.control}
-                    name="repositoryUrl"
-                    render={({ field }) => (
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="solutionMethodology"
+                      render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Repository URL</FormLabel>
-                        <FormControl>
-                            <Input placeholder="https://github.com/user/repo" {...field} />
-                        </FormControl>
-                        <FormMessage />
+                          <FormLabel>Solution Methodology</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="How did you approach solving the problem?" {...field} />
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="demoUrl"
-                    render={({ field }) => (
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="impact"
+                      render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Demo URL</FormLabel>
-                        <FormControl>
-                            <Input placeholder="https://your-demo.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
+                          <FormLabel>Impact</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="Summarize the positive impact of the project." {...field} />
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
-                    )}
-                />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="overview"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Project Overview</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="A detailed overview of the project." rows={5} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="problemStatement"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Problem Statement</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="What was the core problem the client was facing?" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="solutionMethodology"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Solution Methodology</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="How did you approach solving the problem?" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="impact"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Impact</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Summarize the positive impact of the project." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      )}
+                    />
+                </CardContent>
+            </Card>
             
-            <p className="text-sm text-muted-foreground">Note: Project images and other details can be managed on the project's edit page after creation.</p>
-
-
-            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading} className="w-full md:w-auto">
                 {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Creating..." : "Create Project"}
             </Button>
           </form>
         </Form>
-      </CardContent>
-    </Card>
   );
 }
 
