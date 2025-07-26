@@ -80,6 +80,7 @@ export default function NewPortfolioProject() {
       isPublic: true,
       imageUrl: "",
       techStackIds: [],
+      serviceId: "",
     },
   });
 
@@ -412,5 +413,7 @@ export default function NewPortfolioProject() {
     </Card>
   );
 }
+
+    
 
     
