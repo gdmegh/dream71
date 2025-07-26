@@ -129,14 +129,12 @@ export default function NewPortfolioProject() {
     try {
         const dataToSave: any = {
             ...values,
+            techStackIds: values.techStackIds || [],
+            serviceId: values.serviceId || null,
             imageUrl,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         };
-
-        if (!dataToSave.serviceId) {
-            dataToSave.serviceId = null;
-        }
 
         const docRef = await addDoc(collection(db, "Project"), dataToSave);
         console.log("Document written with ID: ", docRef.id);
@@ -413,7 +411,3 @@ export default function NewPortfolioProject() {
     </Card>
   );
 }
-
-    
-
-    

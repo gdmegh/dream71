@@ -73,6 +73,7 @@ export default function EditPortfolioProject() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       techStackIds: [],
+      serviceId: "",
     },
   });
 
@@ -101,6 +102,7 @@ export default function EditPortfolioProject() {
         form.reset({
           ...data,
           techStackIds: data.techStackIds || [],
+          serviceId: data.serviceId || "",
         });
         setCurrentImageUrl(data.imageUrl);
       } else {
@@ -146,12 +148,10 @@ export default function EditPortfolioProject() {
       const dataToUpdate: any = {
         ...values,
         imageUrl,
+        serviceId: values.serviceId || null,
+        techStackIds: values.techStackIds || [],
         updatedAt: serverTimestamp(),
       };
-
-      if (!dataToUpdate.serviceId) {
-        dataToUpdate.serviceId = null;
-      }
 
       await updateDoc(docRef, dataToUpdate);
       toast({
@@ -287,7 +287,7 @@ export default function EditPortfolioProject() {
                 render={({ field }) => (
                     <FormItem>
                     <FormLabel>Related Service</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                         <SelectTrigger>
                             <SelectValue placeholder="Select a related service" />
