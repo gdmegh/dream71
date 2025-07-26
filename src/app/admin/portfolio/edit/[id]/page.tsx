@@ -143,11 +143,17 @@ export default function EditPortfolioProject() {
 
     try {
       const docRef = doc(db, "Project", id as string);
-      await updateDoc(docRef, {
+      const dataToUpdate: any = {
         ...values,
         imageUrl,
         updatedAt: serverTimestamp(),
-      });
+      };
+
+      if (!dataToUpdate.serviceId) {
+        dataToUpdate.serviceId = null;
+      }
+
+      await updateDoc(docRef, dataToUpdate);
       toast({
         title: "Project Updated!",
         description: "The project has been successfully updated.",
