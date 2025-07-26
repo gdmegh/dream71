@@ -32,13 +32,17 @@ const LoadingScreen = () => (
 );
 
 
-export default function PortfolioDetailPage({ params: { slug } }: { params: { slug: string } }) {
+export default function PortfolioDetailPage({ params = { slug: '' } }: { params?: { slug: string } }) {
+  const { slug } = params;
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProject = async () => {
-      if (!slug) return;
+      if (!slug) {
+        setLoading(false);
+        return;
+      };
       setLoading(true);
       const q = query(collection(db, "Project"), where("slug", "==", slug), where("isPublic", "==", true), limit(1));
       const querySnapshot = await getDocs(q);
@@ -61,6 +65,9 @@ export default function PortfolioDetailPage({ params: { slug } }: { params: { sl
   }
 
   if (!project) {
+    if (!slug) {
+        return <div className="container mx-auto py-20 text-center">Error: No project slug provided.</div>;
+    }
     return notFound();
   }
 
