@@ -126,14 +126,16 @@ export default function NewPortfolioProject() {
 
 
     try {
-        await addDoc(collection(db, "Project"), {
+        const dataToSave = {
             ...values,
             imageUrl,
             serviceId: values.serviceId || null,
             techStackIds: values.techStackIds || [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
-        });
+        };
+
+        await addDoc(collection(db, "Project"), dataToSave);
         toast({
             title: "Project Submitted!",
             description: "The new project has been added to the database.",
@@ -424,5 +426,7 @@ export default function NewPortfolioProject() {
         </Form>
   );
 }
+
+    
 
     
