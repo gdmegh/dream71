@@ -356,7 +356,8 @@ const DefaultServicePage = ({ service }: { service: any }) => {
     )
 }
 
-export default function ServiceDetailPage({ params: { slug } }: { params: { slug: string } }) {
+export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const [service, setService] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
