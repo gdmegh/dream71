@@ -36,7 +36,6 @@ const formSchema = z.object({
   impact: z.string().min(20, "Impact summary is required."),
   clientInfo: z.string().min(2, "Client info is required."),
   projectTimeline: z.string().min(2, "Timeline is required."),
-  repositoryUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
   techStackIds: z.array(z.string()).optional(),
@@ -73,7 +72,6 @@ export default function NewPortfolioProject() {
       impact: "",
       clientInfo: "",
       projectTimeline: "",
-      repositoryUrl: "",
       demoUrl: "",
       isPublic: true,
       techStackIds: [],
@@ -293,19 +291,6 @@ export default function NewPortfolioProject() {
                       <FormMessage />
                     </FormItem>
                      <div className="grid md:grid-cols-2 gap-8">
-                        <FormField
-                            control={form.control}
-                            name="repositoryUrl"
-                            render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>Repository URL</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="https://github.com/user/repo" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                          <FormField
                             control={form.control}
                             name="demoUrl"
@@ -422,4 +407,3 @@ export default function NewPortfolioProject() {
         </Form>
   );
 }
-

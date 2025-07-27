@@ -4,7 +4,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, GitBranch, Puzzle, Target, BarChart2, Briefcase, Clock, ArrowRight } from 'lucide-react';
+import { ExternalLink, Puzzle, Target, BarChart2, Briefcase, Clock, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
@@ -115,7 +115,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                                                 src={url}
                                                 alt={`${project.title} - image ${index + 1}`}
                                                 layout="fill"
-                                                objectFit="cover"
+                                                objectFit="contain"
                                                 data-ai-hint={'project image'}
                                             />
                                         </div>
@@ -136,7 +136,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                     )}
                     
                     <div className="space-y-4">
-                        <GitBranch className="h-10 w-10 text-primary mx-auto" />
+                        
                         <h2 className="font-headline text-3xl font-bold text-center">Project Overview</h2>
                         <p className="font-body text-lg text-muted-foreground max-w-4xl mx-auto">{project.overview}</p>
                     </div>
@@ -198,13 +198,6 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                                     <Button asChild size="lg" className="w-full">
                                         <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
                                             Visit Demo <ExternalLink className="ml-2 h-4 w-4" />
-                                        </a>
-                                    </Button>
-                                )}
-                                {project.repositoryUrl && (
-                                    <Button asChild size="lg" className="w-full" variant="secondary">
-                                        <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
-                                            View Repository <ExternalLink className="ml-2 h-4 w-4" />
                                         </a>
                                     </Button>
                                 )}
