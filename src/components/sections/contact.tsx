@@ -137,7 +137,7 @@ export default function Contact() {
                             </FormItem>
                         )}
                         />
-                        <Button type="submit" className="w-full">Send Message</Button>
+                        <Button type="submit" width="full">Send Message</Button>
                     </form>
                     </Form>
                 </CardContent>

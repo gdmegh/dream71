@@ -369,7 +369,7 @@ export default function NewService() {
             </CardContent>
         </Card>
 
-        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading} width="auto">
           {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Publishing..." : "Publish Service"}
         </Button>
       </form>

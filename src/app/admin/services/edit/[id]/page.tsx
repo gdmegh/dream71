@@ -372,7 +372,7 @@ export default function EditService() {
             </CardContent>
         </Card>
         
-        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading} width="auto">
             {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Updating..." : "Update Service"}
         </Button>
         </form>

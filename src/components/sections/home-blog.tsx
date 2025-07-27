@@ -144,7 +144,7 @@ export default function HomeBlog() {
         )}
 
         <div className="mt-12 text-center">
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="outline" size="lg" width="auto">
                 <Link href="/blog">
                     View All Posts <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

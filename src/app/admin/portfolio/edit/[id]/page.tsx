@@ -452,7 +452,7 @@ export default function EditPortfolioProject() {
                 </CardContent>
             </Card>
             
-            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading} className="w-full md:w-auto">
+            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading} width="auto">
                 {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Updating..." : "Update Project"}
             </Button>
           </form>
