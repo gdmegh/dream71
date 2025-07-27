@@ -6,7 +6,7 @@ import Footer from '@/components/layout/footer';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Dream71 Digital Hub',
+  title: 'Dream71 Bangladesh Ltd.',
   description: 'Leading Software Development Company in Bangladesh',
 };
 

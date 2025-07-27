@@ -16,7 +16,7 @@ import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import AnimatedIcons from '../ui/animated-icons';
 
 const heroImages = [
-    { src: "https://placehold.co/1200x600.png", alt: "Hero Image", dataAiHint: "team meeting" },
+    { src: "/images/heroimage.png", alt: "Hero Image", dataAiHint: "team meeting" },
 ];
 
 export default function Hero() {

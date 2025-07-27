@@ -32,7 +32,7 @@ export default function WhyChooseUs() {
           </div>
           <div>
             <Image
-              src="https://placehold.co/800x600.png"
+              src="/images/whyus.jpg"
               alt="Team collaborating"
               width={800}
               height={600}

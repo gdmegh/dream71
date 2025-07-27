@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Facebook, Linkedin, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const socialLinks = [
@@ -53,11 +53,11 @@ export default function Footer() {
   return (
     <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center md:text-left">
-          <div className="md:col-span-4 lg:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center md:text-left">
+          <div className="md:col-span-2 lg:col-span-1">
             <Link href="/" className="mb-4 inline-block">
                <Image
-                  src="/images/Logo.png"
+                  src="/images/Dream71_logo 1.png"
                   alt="Dream71 Logo"
                   width={150}
                   height={40}
@@ -65,15 +65,26 @@ export default function Footer() {
                   className="h-10 w-auto"
                 />
             </Link>
-            <p className="text-muted-foreground max-w-sm mb-6 font-body mx-auto md:mx-0">
-              Dream71 is a leading software development company in Bangladesh, building innovative solutions for a global clientele.
+            <p className="text-muted-foreground text-sm font-body mb-4 mx-auto md:mx-0">
+                A leading Software Company Focusing on E-Governance, Web Applications, Mobile Applications, Artificial intelligence and BlockChain.
             </p>
-            <div className="flex space-x-4 justify-center md:justify-start">
-              {socialLinks.map((social, index) => (
-                <Link key={index} href={social.href} className="text-muted-foreground hover:text-primary transition-colors">
-                  <social.icon className="h-6 w-6" />
-                </Link>
-              ))}
+             <div className="space-y-3 text-sm text-muted-foreground font-body text-center md:text-left">
+                <div className="flex items-start justify-center md:justify-start gap-3">
+                    <MapPin className="h-4 w-4 mt-1 text-primary flex-shrink-0" />
+                    <span>House No 16 ( Level 5 and 9) Block - A, Basundhara R/A, Main Road, Dhaka-1229,Bangladesh</span>
+                </div>
+                 <div className="flex items-center justify-center md:justify-start gap-3">
+                    <Mail className="h-4 w-4 text-primary" />
+                    <a href="mailto:info@dream71.com" className="hover:text-primary">info@dream71.com</a>
+                </div>
+                 <div className="flex items-start justify-center md:justify-start gap-3">
+                    <Phone className="h-4 w-4 mt-1 text-primary flex-shrink-0" />
+                    <div>
+                        <p>Sales: <a href="tel:+8801312233212" className="hover:text-primary">+88 01312 233 212</a></p>
+                        <p>Admin: <a href="tel:+8801718596724" className="hover:text-primary">+88 01718 596 724</a></p>
+                        <p>Mobile: <a href="tel:+8801715091734" className="hover:text-primary">+880 1715 091 734</a></p>
+                    </div>
+                </div>
             </div>
           </div>
           {footerLinks.map((section) => (
@@ -90,22 +101,16 @@ export default function Footer() {
               </ul>
             </div>
           ))}
-          <div>
-              <h3 className="font-headline font-semibold text-foreground mb-4">Contact</h3>
-              <ul className="space-y-2 font-body text-muted-foreground">
-                  <li>House #123, Road #45</li>
-                  <li>Dhaka 1212, Bangladesh</li>
-                  <li className="pt-2">
-                    <a href="mailto:contact@dream71.com" className="hover:text-primary transition-colors">contact@dream71.com</a>
-                  </li>
-                  <li>
-                    <a href="tel:+880123456789" className="hover:text-primary transition-colors">+880 123 456 789</a>
-                  </li>
-              </ul>
-          </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-border text-center text-muted-foreground font-body">
-          <p>&copy; {new Date().getFullYear()} Dream71. All rights reserved.</p>
+         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center text-center">
+            <p className="text-muted-foreground font-body text-sm mb-4 md:mb-0">&copy; {new Date().getFullYear()} Dream71. All rights reserved.</p>
+            <div className="flex space-x-4 justify-center md:justify-start">
+              {socialLinks.map((social, index) => (
+                <Link key={index} href={social.href} className="text-muted-foreground hover:text-primary transition-colors">
+                  <social.icon className="h-5 w-5" />
+                </Link>
+              ))}
+            </div>
         </div>
       </div>
     </footer>
