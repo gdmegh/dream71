@@ -165,8 +165,8 @@ const EGovernancePage = ({ service }: { service: any }) => {
              <section className="py-16 bg-background">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-12 gap-12">
-                        <div className="lg:col-span-12">
-                             <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-12">
+                        <div className="lg:col-span-8 space-y-12">
+                            <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl">
                                 <Image
                                     src={service.image || service.imageUrl}
                                     alt={service.title}
@@ -175,9 +175,6 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                     data-ai-hint={service.imageHint}
                                 />
                             </div>
-                        </div>
-
-                        <div className="lg:col-span-8 space-y-12">
                             <Card>
                                 <CardHeader>
                                     <CardTitle className='font-headline text-3xl'>Service Details</CardTitle>
@@ -289,8 +286,8 @@ const DefaultServicePage = ({ service }: { service: any }) => {
             <section className="py-16 bg-background">
                  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                      <div className="grid lg:grid-cols-12 gap-12">
-                        <div className="lg:col-span-12">
-                            <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-12">
+                        <div className="lg:col-span-8 space-y-12">
+                            <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl">
                                 <Image
                                     src={service.image || service.imageUrl}
                                     alt={service.title}
@@ -299,9 +296,6 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                                     data-ai-hint={service.imageHint || 'service image'}
                                 />
                             </div>
-                        </div>
-                        
-                        <div className="lg:col-span-8 space-y-12">
                              <Card>
                                 <CardHeader>
                                     <div className="flex items-center gap-4">
@@ -396,7 +390,7 @@ const DefaultServicePage = ({ service }: { service: any }) => {
 
 export default function ServiceDetailPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = typeof params.slug === 'string' ? params.slug : '';
   const [service, setService] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -427,11 +421,18 @@ export default function ServiceDetailPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
             <Skeleton className="h-6 w-1/2 mx-auto mb-8" />
-            <Skeleton className="h-[500px] w-full rounded-lg mb-8" />
-            <div className="space-y-4">
-            <Skeleton className="h-6 w-full" />
-            <Skeleton className="h-6 w-full" />
-            <Skeleton className="h-6 w-5/6" />
+            <div className="grid lg:grid-cols-12 gap-12">
+                <div className="lg:col-span-8 space-y-8">
+                    <Skeleton className="h-[500px] w-full rounded-lg mb-8" />
+                    <div className="space-y-4">
+                    <Skeleton className="h-6 w-full" />
+                    <Skeleton className="h-6 w-full" />
+                    <Skeleton className="h-6 w-5/6" />
+                    </div>
+                </div>
+                <div className="lg:col-span-4 space-y-8">
+                    <Skeleton className="h-64 w-full rounded-lg" />
+                </div>
             </div>
         </div>
     );
