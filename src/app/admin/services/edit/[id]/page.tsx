@@ -45,6 +45,7 @@ const faqSchema = z.object({
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
   slug: z.string().min(2, "Slug must be at least 2 characters.").refine(s => !s.includes(' '), "Slug cannot contain spaces."),
+  displayOrder: z.coerce.number().optional(),
   description: z.string().min(10, "Overview must be at least 10 characters.").max(200, "Overview must be less than 200 characters."),
   content: z.string().min(20, "Content must be at least 20 characters."),
   imageUrl: z.string().optional(),
@@ -200,19 +201,35 @@ export default function EditService() {
             <CardDescription>Update the details for this service.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-            <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                    <Input placeholder="e.g., Cloud Solutions" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-                )}
-            />
+                <div className="grid md:grid-cols-2 gap-8">
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Title</FormLabel>
+                            <FormControl>
+                            <Input placeholder="e.g., Cloud Solutions" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="displayOrder"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Display Order</FormLabel>
+                            <FormControl>
+                            <Input type="number" placeholder="e.g., 1" {...field} />
+                            </FormControl>
+                            <FormDescription>Order on the homepage (lower numbers appear first).</FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                </div>
             <FormField
                 control={form.control}
                 name="slug"

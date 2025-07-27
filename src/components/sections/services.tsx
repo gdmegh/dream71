@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, where, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '../ui/skeleton';
 
@@ -138,7 +138,12 @@ export default function Services() {
     useEffect(() => {
         const fetchServices = async () => {
             setLoading(true);
-            const q = query(collection(db, "Service"), orderBy("createdAt", "desc"));
+            const q = query(
+                collection(db, "Service"),
+                where("displayOrder", ">", 0),
+                orderBy("displayOrder", "asc"),
+                limit(4)
+            );
             const querySnapshot = await getDocs(q);
             const servicesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setServices(servicesData);
