@@ -39,7 +39,6 @@ const formSchema = z.object({
   repositoryUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
-  imageUrls: z.array(z.string()).optional(),
   techStackIds: z.array(z.string()).optional(),
   serviceId: z.string().optional(),
 });
@@ -77,7 +76,6 @@ export default function NewPortfolioProject() {
       repositoryUrl: "",
       demoUrl: "",
       isPublic: true,
-      imageUrls: [],
       techStackIds: [],
       serviceId: "",
     },
@@ -131,8 +129,6 @@ export default function NewPortfolioProject() {
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         };
-        // @ts-ignore
-        delete dataToSave.imageUrl; // remove deprecated field if it exists
 
         await addDoc(collection(db, "Project"), dataToSave);
         toast({
@@ -426,3 +422,4 @@ export default function NewPortfolioProject() {
         </Form>
   );
 }
+
