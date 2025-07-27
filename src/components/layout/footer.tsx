@@ -3,14 +3,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Linkedin, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const socialLinks = [
   { icon: Facebook, href: '#' },
   { icon: Linkedin, href: '#' },
-  { icon: Twitter, href: '#' },
-  { icon: Youtube, href: '#' },
 ];
 
 const footerLinks = [
@@ -92,7 +90,7 @@ export default function Footer() {
           ))}
         </div>
          <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center text-center">
-            <p className="text-muted-foreground font-body text-sm mb-4 md:mb-0">&copy; {new Date().getFullYear()} Dream71. All rights reserved.</p>
+            <p className="text-muted-foreground font-body text-sm mb-4 md:mb-0">&copy; 2025 Dream71 Bangladesh Ltd. All rights reserved.</p>
             <div className="flex space-x-4 justify-center md:justify-start">
               {socialLinks.map((social, index) => (
                 <Link key={index} href={social.href} className="text-muted-foreground hover:text-primary transition-colors">
