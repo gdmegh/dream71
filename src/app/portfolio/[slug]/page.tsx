@@ -234,5 +234,3 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
     </>
   );
 }
-
-    
