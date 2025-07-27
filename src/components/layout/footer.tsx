@@ -53,7 +53,7 @@ export default function Footer() {
                 />
             </Link>
             <p className="text-muted-foreground text-base font-body mb-4 mx-auto md:mx-0 max-w-md">
-                A leading Software Company Focusing on E-Governance, Web Applications, Mobile Applications, Artificial intelligence and BlockChain.
+                A leading Software Company Focusing on E-Governance, <br />Web Applications, Mobile Applications, <br />Artificial intelligence and BlockChain.
             </p>
              <div className="space-y-3 text-base text-muted-foreground font-body text-center md:text-left">
                 <div className="flex items-start justify-center md:justify-start gap-3">
