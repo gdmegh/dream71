@@ -32,8 +32,7 @@ const LoadingScreen = () => (
 );
 
 
-export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default function PortfolioDetailPage({ params: { slug } }: { params: { slug: string } }) {
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -89,8 +88,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                     src={project.imageUrl || 'https://placehold.co/1200x600.png'}
                     alt={project.title}
                     layout="fill"
-                    objectFit="cover"
-                    className="object-cover"
+                    objectFit="contain"
                     data-ai-hint={'project image'}
                 />
             </div>
