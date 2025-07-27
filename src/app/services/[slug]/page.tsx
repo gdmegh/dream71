@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
-import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight, AppWindow } from 'lucide-react';
+import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight, AppWindow, HelpCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Separator } from '@/components/ui/separator';
@@ -12,6 +12,12 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const InfoSection = ({ title, description, items, image, imageHint, reverse = false }: { title: string, description?: string, items: {title: string, description: string}[], image: string, imageHint: string, reverse?: boolean }) => (
     <div className="grid md:grid-cols-2 gap-12 items-center py-8">
@@ -51,6 +57,35 @@ const methodologySteps = [
     { icon: Rocket, title: "Deployment", description: "Launching the solution and making it available to your users." },
     { icon: LifeBuoy, title: "Support", description: "Providing ongoing maintenance and support to ensure success." },
 ];
+
+const FaqSection = ({ faqs }: { faqs: { question: string, answer: string }[] }) => {
+    if (!faqs || faqs.length === 0) {
+        return null;
+    }
+
+    return (
+        <section className="space-y-12 py-16">
+            <div className="space-y-2 text-center">
+                <HelpCircle className="h-10 w-10 text-primary mx-auto" />
+                <h2 className="font-headline text-3xl font-bold">Frequently Asked Questions</h2>
+                <p className="font-body text-muted-foreground max-w-3xl mx-auto">
+                    Find answers to common questions about this service.
+                </p>
+            </div>
+            <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
+                {faqs.map((faq, index) => (
+                    <AccordionItem key={index} value={`item-${index}`}>
+                        <AccordionTrigger className="text-lg font-semibold text-left">{faq.question}</AccordionTrigger>
+                        <AccordionContent className="text-base text-muted-foreground">
+                            {faq.answer}
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        </section>
+    );
+};
+
 
 const MethodologySection = () => (
     <section className="space-y-12 text-center py-16">
@@ -163,6 +198,8 @@ const EGovernancePage = ({ service }: { service: any }) => {
                             />}
 
                             <MethodologySection />
+                            
+                            <FaqSection faqs={service.faqs} />
                         </div>
 
                         <div className="lg:col-span-4">
@@ -298,6 +335,8 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                            }
                            
                             <MethodologySection />
+                            
+                            <FaqSection faqs={service.faqs} />
                         </div>
                         
                         <div className="lg:col-span-4">
