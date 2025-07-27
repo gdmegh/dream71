@@ -100,7 +100,11 @@ export default function PortfolioCMS() {
             {projects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell>
-                  {project.imageUrl && <Image src={project.imageUrl} alt={project.title} width={40} height={40} className="rounded-md object-cover" />}
+                  {project.imageUrls && project.imageUrls.length > 0 ? (
+                    <Image src={project.imageUrls[0]} alt={project.title} width={40} height={40} className="rounded-md object-cover" />
+                  ) : project.imageUrl ? (
+                     <Image src={project.imageUrl} alt={project.title} width={40} height={40} className="rounded-md object-cover" />
+                  ) : null}
                 </TableCell>
                 <TableCell className="font-medium">{project.title}</TableCell>
                 <TableCell>{getTechStackNames(project.techStackIds)}</TableCell>
@@ -154,3 +158,5 @@ export default function PortfolioCMS() {
     </Card>
   );
 }
+
+    

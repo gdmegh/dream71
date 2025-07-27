@@ -2,7 +2,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +27,7 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Trash } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -41,7 +42,7 @@ const formSchema = z.object({
   repositoryUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
-  imageUrl: z.string().optional(),
+  imageUrls: z.array(z.string()).optional(),
   techStackIds: z.array(z.string()).optional(),
   serviceId: z.string().optional(),
 });
@@ -62,10 +63,9 @@ export default function EditPortfolioProject() {
   const params = useParams();
   const { id } = params;
 
-  const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
+  const [newImageFiles, setNewImageFiles] = useState<FileList | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
   const [techStack, setTechStack] = useState<TechStack[]>([]);
   const [services, setServices] = useState<Service[]>([]);
 
@@ -75,7 +75,13 @@ export default function EditPortfolioProject() {
       isPublic: false,
       techStackIds: [],
       serviceId: "",
+      imageUrls: [],
     },
+  });
+
+  const { fields: imageUrlsFields, remove: removeImageUrl } = useFieldArray({
+    control: form.control,
+    name: "imageUrls"
   });
 
    useEffect(() => {
@@ -104,8 +110,8 @@ export default function EditPortfolioProject() {
           ...data,
           techStackIds: data.techStackIds || [],
           serviceId: data.serviceId || "",
+          imageUrls: data.imageUrls || (data.imageUrl ? [data.imageUrl] : []),
         });
-        setCurrentImageUrl(data.imageUrl);
       } else {
         toast({ title: "Error", description: "Project not found.", variant: "destructive" });
         router.push("/admin/portfolio");
@@ -118,29 +124,24 @@ export default function EditPortfolioProject() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!id) return;
     setIsUploading(true);
-    let imageUrl = values.imageUrl;
+    let uploadedImageUrls: string[] = values.imageUrls || [];
 
-    if (featuredImageFile) {
-      const formData = new FormData();
-      formData.append('file', featuredImageFile);
-
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error('Image upload failed');
+    if (newImageFiles && newImageFiles.length > 0) {
+      for (const file of Array.from(newImageFiles)) {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+          if (!response.ok) throw new Error('Image upload failed for ' + file.name);
+          const { path } = await response.json();
+          uploadedImageUrls.push(path);
+        } catch (error) {
+          console.error("Image upload error: ", error);
+          toast({ title: "Error", description: `Could not upload image: ${file.name}`, variant: "destructive" });
         }
-
-        const { path } = await response.json();
-        imageUrl = path;
-      } catch (error) {
-        console.error("Image upload error: ", error);
-        toast({ title: "Error", description: "Could not upload image.", variant: "destructive" });
-        setIsUploading(false);
-        return;
       }
     }
 
@@ -148,9 +149,8 @@ export default function EditPortfolioProject() {
       const docRef = doc(db, "Project", id as string);
       await updateDoc(docRef, {
         ...values,
-        imageUrl,
-        serviceId: values.serviceId || null,
-        techStackIds: values.techStackIds || [],
+        imageUrls: uploadedImageUrls,
+        imageUrl: null, // Deprecate old field
         updatedAt: serverTimestamp(),
       });
       toast({
@@ -312,26 +312,36 @@ export default function EditPortfolioProject() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Project Assets</CardTitle>
-                    <CardDescription>Provide images and links for your project.</CardDescription>
+                    <CardTitle>Project Images</CardTitle>
+                    <CardDescription>Upload multiple images for the project slider.</CardDescription>
                 </CardHeader>
                  <CardContent className="space-y-6">
                     <FormItem>
-                      <FormLabel>Featured Image</FormLabel>
-                      {currentImageUrl && (
-                        <div className="my-4">
-                          <Image src={currentImageUrl} alt="Current featured image" width={200} height={100} className="rounded-md object-cover" />
-                        </div>
-                      )}
+                      <FormLabel>Current Images</FormLabel>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {imageUrlsFields.map((field, index) => (
+                           <div key={field.id} className="relative group">
+                             <Image src={field.value} alt={`Current image ${index + 1}`} width={200} height={100} className="rounded-md object-cover w-full h-32" />
+                             <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6" onClick={() => removeImageUrl(index)}>
+                                <Trash className="h-4 w-4" />
+                             </Button>
+                           </div>
+                        ))}
+                      </div>
+                      {imageUrlsFields.length === 0 && <p className="text-sm text-muted-foreground">No current images.</p>}
+                    </FormItem>
+
+                    <FormItem>
+                      <FormLabel>Add New Images</FormLabel>
                       <FormControl>
                         <Input 
                           type="file" 
-                          onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
+                          multiple
+                          onChange={(e) => setNewImageFiles(e.target.files)}
                           accept="image/*"
                         />
                       </FormControl>
-                      <FormDescription>Upload a new image to replace the current one.</FormDescription>
-                      <FormMessage />
+                      <FormDescription>Upload one or more new images to add to the slider.</FormDescription>
                     </FormItem>
                      <div className="grid md:grid-cols-2 gap-8">
                         <FormField

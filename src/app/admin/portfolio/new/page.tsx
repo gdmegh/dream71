@@ -39,7 +39,7 @@ const formSchema = z.object({
   repositoryUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   demoUrl: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
   isPublic: z.boolean().default(true),
-  imageUrl: z.string().optional(),
+  imageUrls: z.array(z.string()).optional(),
   techStackIds: z.array(z.string()).optional(),
   serviceId: z.string().optional(),
 });
@@ -57,7 +57,7 @@ type Service = {
 export default function NewPortfolioProject() {
   const { toast } = useToast();
   const router = useRouter();
-  const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [techStack, setTechStack] = useState<TechStack[]>([]);
   const [services, setServices] = useState<Service[]>([]);
@@ -77,7 +77,7 @@ export default function NewPortfolioProject() {
       repositoryUrl: "",
       demoUrl: "",
       isPublic: true,
-      imageUrl: "",
+      imageUrls: [],
       techStackIds: [],
       serviceId: "",
     },
@@ -98,42 +98,41 @@ export default function NewPortfolioProject() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsUploading(true);
-    let imageUrl = values.imageUrl;
+    let uploadedImageUrls: string[] = [];
 
-    if (featuredImageFile) {
+    if (imageFiles && imageFiles.length > 0) {
+      for (const file of Array.from(imageFiles)) {
         const formData = new FormData();
-        formData.append('file', featuredImageFile);
-
+        formData.append('file', file);
         try {
             const response = await fetch('/api/upload', {
                 method: 'POST',
                 body: formData,
             });
-
             if (!response.ok) {
-                throw new Error('Image upload failed');
+                throw new Error('Image upload failed for ' + file.name);
             }
-
             const { path } = await response.json();
-            imageUrl = path;
+            uploadedImageUrls.push(path);
         } catch (error) {
             console.error("Image upload error: ", error);
-            toast({ title: "Error", description: "Could not upload image.", variant: "destructive" });
-            setIsUploading(false);
-            return;
+            toast({ title: "Error", description: `Could not upload image: ${file.name}.`, variant: "destructive" });
         }
+      }
     }
 
 
     try {
         const dataToSave = {
             ...values,
-            imageUrl,
+            imageUrls: uploadedImageUrls,
             serviceId: values.serviceId || null,
             techStackIds: values.techStackIds || [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         };
+        // @ts-ignore
+        delete dataToSave.imageUrl; // remove deprecated field if it exists
 
         await addDoc(collection(db, "Project"), dataToSave);
         toast({
@@ -280,20 +279,21 @@ export default function NewPortfolioProject() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Project Assets</CardTitle>
-                    <CardDescription>Provide images and links for your project.</CardDescription>
+                    <CardTitle>Project Images</CardTitle>
+                    <CardDescription>Provide images for the project slider.</CardDescription>
                 </CardHeader>
                  <CardContent className="space-y-6">
                     <FormItem>
-                      <FormLabel>Featured Image</FormLabel>
+                      <FormLabel>Project Slider Images</FormLabel>
                       <FormControl>
                         <Input 
                           type="file" 
-                          onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
+                          multiple
+                          onChange={(e) => setImageFiles(e.target.files)}
                           accept="image/*"
                         />
                       </FormControl>
-                      <FormDescription>Upload the main image for the project.</FormDescription>
+                      <FormDescription>Upload one or more images for the project.</FormDescription>
                       <FormMessage />
                     </FormItem>
                      <div className="grid md:grid-cols-2 gap-8">
@@ -426,7 +426,5 @@ export default function NewPortfolioProject() {
         </Form>
   );
 }
-
-    
 
     
