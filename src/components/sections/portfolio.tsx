@@ -23,11 +23,10 @@ import { Button } from '../ui/button';
 
 const ProjectCard = ({ project }: { project: any }) => (
     <Link href={`/portfolio/${project.slug}`} className="group block h-full">
-        <Card rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground">
-          <CardContent className="p-0 flex flex-col h-full">
-            <div className="relative h-56">
+        <Card rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground flex flex-col">
+          <div className="relative h-56">
               <Image
-                src={project.imageUrl || 'https://placehold.co/600x400.png'}
+                src={(project.imageUrls && project.imageUrls[0]) || project.imageUrl || 'https://placehold.co/600x400.png'}
                 alt={project.title}
                 fill
                 style={{ objectFit: 'cover' }}
@@ -35,14 +34,13 @@ const ProjectCard = ({ project }: { project: any }) => (
                 className="transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
-            </div>
-            <div className="p-6 flex flex-col flex-grow">
-              <h3 className="font-headline text-xl font-bold mb-2 text-foreground">{project.title}</h3>
-              <p className="text-muted-foreground mb-4 font-body text-sm flex-grow">{project.subtitle}</p>
-               <span className="inline-flex items-center font-semibold text-primary group-hover:underline font-body text-sm mt-auto">
+          </div>
+          <CardContent className="p-6 flex flex-col flex-grow">
+              <h3 className="font-headline text-xl font-bold mb-2 text-foreground line-clamp-2">{project.title}</h3>
+              <div className="flex-grow"></div>
+              <span className="inline-flex items-center font-semibold text-primary group-hover:underline font-body text-sm mt-4">
                 View Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
               </span>
-            </div>
           </CardContent>
         </Card>
     </Link>
