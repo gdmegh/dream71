@@ -27,7 +27,7 @@ export default function AboutSection() {
           </div>
            <div className='lg:order-last'>
                 <Image
-                    src="/images/Office.png"
+                    src="https://placehold.co/800x600.png"
                     alt="About Us Image"
                     width={800}
                     height={600}
