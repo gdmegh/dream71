@@ -21,7 +21,8 @@ import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { generateSlug } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -51,6 +52,15 @@ export default function NewBlogPost() {
       authorImage: "",
     },
   });
+
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (titleValue) {
+      const slug = generateSlug(titleValue);
+      form.setValue("slug", slug, { shouldValidate: true });
+    }
+  }, [titleValue, form]);
+
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsUploading(true);
@@ -137,7 +147,7 @@ export default function NewBlogPost() {
                   <FormControl>
                     <Input placeholder="e.g., future-of-web-development" {...field} />
                   </FormControl>
-                  <FormDescription>A unique, URL-friendly identifier. No spaces.</FormDescription>
+                  <FormDescription>A unique, URL-friendly identifier. Auto-generated from title.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

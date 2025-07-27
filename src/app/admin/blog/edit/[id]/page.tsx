@@ -24,6 +24,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { generateSlug } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -50,6 +51,14 @@ export default function EditBlogPost() {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
+  
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (titleValue) {
+      const slug = generateSlug(titleValue);
+      form.setValue("slug", slug, { shouldValidate: true });
+    }
+  }, [titleValue, form]);
 
   useEffect(() => {
     if (!id) return;
@@ -171,7 +180,7 @@ export default function EditBlogPost() {
                   <FormControl>
                     <Input placeholder="e.g., future-of-web-development" {...field} />
                   </FormControl>
-                  <FormDescription>A unique, URL-friendly identifier. No spaces.</FormDescription>
+                  <FormDescription>A unique, URL-friendly identifier. Auto-generated from title.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

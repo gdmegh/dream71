@@ -28,6 +28,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash } from "lucide-react";
+import { generateSlug } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -82,6 +83,14 @@ export default function EditPortfolioProject() {
     control: form.control,
     name: "imageUrls"
   });
+
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (titleValue) {
+      const slug = generateSlug(titleValue);
+      form.setValue("slug", slug, { shouldValidate: true });
+    }
+  }, [titleValue, form]);
 
    useEffect(() => {
     const fetchTechStack = async () => {
@@ -232,7 +241,7 @@ export default function EditPortfolioProject() {
                                 <Input placeholder="e.g., megh-gallery" {...field} />
                             </FormControl>
                             <FormDescription>
-                                A unique, URL-friendly identifier. No spaces allowed.
+                                A unique, URL-friendly identifier. Auto-generated from title.
                             </FormDescription>
                             <FormMessage />
                             </FormItem>

@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash } from "lucide-react";
+import { generateSlug } from "@/lib/utils";
 
 const pointSchema = z.object({
   title: z.string().min(1, "Title cannot be empty."),
@@ -85,6 +86,14 @@ export default function NewService() {
   
   const { fields: pointFields, append: appendPoint, remove: removePoint } = useFieldArray({ control: form.control, name: "points" });
   const { fields: statFields, append: appendStat, remove: removeStat } = useFieldArray({ control: form.control, name: "stats" });
+
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (titleValue) {
+      const slug = generateSlug(titleValue);
+      form.setValue("slug", slug, { shouldValidate: true });
+    }
+  }, [titleValue, form]);
 
 
   useEffect(() => {
@@ -186,7 +195,7 @@ export default function NewService() {
                   <FormControl>
                     <Input placeholder="e.g., cloud-solutions" {...field} />
                   </FormControl>
-                  <FormDescription>A unique, URL-friendly identifier. No spaces.</FormDescription>
+                  <FormDescription>A unique, URL-friendly identifier. Auto-generated from title.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
