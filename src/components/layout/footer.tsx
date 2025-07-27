@@ -18,6 +18,9 @@ const footerLinks = [
     title: 'Services',
     links: [
       { label: 'Our Services', href: '/services' },
+      { label: 'About Us', href: '/about' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Contact', href: '/contact' },
     ],
   },
   {
@@ -28,15 +31,6 @@ const footerLinks = [
       { label: 'Events', href: '/events' },
     ],
   },
-   {
-    title: 'Resources',
-    links: [
-       { label: 'About Us', href: '/about' },
-      { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Contact', href: '/contact' },
-      { label: 'Admin', href: '/admin/portfolio' },
-    ],
-  }
 ];
 
 export default function Footer() {
@@ -48,7 +42,7 @@ export default function Footer() {
   return (
     <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-center md:text-left">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 text-center md:text-left">
           <div className="lg:col-span-2">
             <Link href="/" className="mb-4 inline-block">
                <Image
@@ -82,22 +76,20 @@ export default function Footer() {
                 </div>
             </div>
           </div>
-          <div className="lg:col-span-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-8">
-            {footerLinks.slice(0, 2).map((section) => (
-                <div key={section.title}>
-                <h3 className="font-headline font-semibold text-foreground mb-4">{section.title}</h3>
-                <ul className="space-y-2">
-                    {section.links.map((link) => (
-                    <li key={link.label}>
-                        <Link href={link.href} className="text-muted-foreground hover:text-primary transition-colors font-body text-base">
-                        {link.label}
-                        </Link>
-                    </li>
-                    ))}
-                </ul>
-                </div>
-            ))}
-          </div>
+          {footerLinks.map((section) => (
+              <div key={section.title}>
+              <h3 className="font-headline font-semibold text-foreground mb-4">{section.title}</h3>
+              <ul className="space-y-2">
+                  {section.links.map((link) => (
+                  <li key={link.label}>
+                      <Link href={link.href} className="text-muted-foreground hover:text-primary transition-colors font-body text-base">
+                      {link.label}
+                      </Link>
+                  </li>
+                  ))}
+              </ul>
+              </div>
+          ))}
         </div>
          <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center text-center">
             <p className="text-muted-foreground font-body text-sm mb-4 md:mb-0">&copy; {new Date().getFullYear()} Dream71. All rights reserved.</p>

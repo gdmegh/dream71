@@ -105,7 +105,7 @@ export default function Header() {
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                         <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                             <Link href="/services">Services</Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -147,6 +147,23 @@ export default function Header() {
                         <NavigationMenuContent>
                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[300px] ">
                                 {companyLinks.map((component) => (
+                                    <ListItem
+                                        key={component.label}
+                                        title={component.label}
+                                        href={component.href}
+                                        icon={component.icon}
+                                    >
+                                        {component.description}
+                                    </ListItem>
+                                ))}
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <NavigationMenuTrigger>Insights</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[300px] ">
+                                {insightsLinks.map((component) => (
                                     <ListItem
                                         key={component.label}
                                         title={component.label}
