@@ -19,10 +19,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { addDoc, collection, getDocs, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash } from "lucide-react";
 import { generateSlug } from "@/lib/utils";
 
@@ -36,16 +35,20 @@ const statSchema = z.object({
   value: z.string().min(1, "Value cannot be empty."),
 });
 
+const faqSchema = z.object({
+  question: z.string().min(1, "Question cannot be empty."),
+  answer: z.string().min(1, "Answer cannot be empty."),
+});
+
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
   slug: z.string().min(2, "Slug must be at least 2 characters.").refine(s => !s.includes(' '), "Slug cannot contain spaces."),
-  description: z.string().min(10, "Description must be at least 10 characters.").max(200, "Description must be less than 200 characters."),
+  description: z.string().min(10, "Overview must be at least 10 characters.").max(200, "Overview must be less than 200 characters."),
   content: z.string().min(20, "Content must be at least 20 characters."),
   imageUrl: z.string().optional(),
-  template: z.string().min(2, "Please select a template."),
-  chartId: z.string().optional(),
   points: z.array(pointSchema).optional(),
   stats: z.array(statSchema).optional(),
+  faqs: z.array(faqSchema).optional(),
   chartData: z.string().optional().refine(val => {
     if (!val) return true;
     try {
@@ -57,17 +60,12 @@ const formSchema = z.object({
   }, { message: "Invalid JSON format for Chart Data." }),
 });
 
-type ChartData = {
-  id: string;
-  name: string;
-};
 
 export default function NewService() {
   const { toast } = useToast();
   const router = useRouter();
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [charts, setCharts] = useState<ChartData[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,15 +75,20 @@ export default function NewService() {
       description: "",
       content: "",
       imageUrl: "",
-      template: "default",
       points: [],
-      stats: [],
-      chartData: "[]"
+      stats: [
+        { name: "Projects Delivered", value: "150+" },
+        { name: "Happy Clients", value: "95%" },
+        { name: "Years of Experience", value: "10+" },
+      ],
+      faqs: [],
+      chartData: '[\n  {\n    "year": "2020",\n    "Projects": 10,\n    "Adoption Rate": 20\n  },\n  {\n    "year": "2021",\n    "Projects": 25,\n    "Adoption Rate": 45\n  }\n]'
     },
   });
   
   const { fields: pointFields, append: appendPoint, remove: removePoint } = useFieldArray({ control: form.control, name: "points" });
   const { fields: statFields, append: appendStat, remove: removeStat } = useFieldArray({ control: form.control, name: "stats" });
+  const { fields: faqFields, append: appendFaq, remove: removeFaq } = useFieldArray({ control: form.control, name: "faqs" });
 
   const titleValue = form.watch("title");
   useEffect(() => {
@@ -94,15 +97,6 @@ export default function NewService() {
       form.setValue("slug", slug, { shouldValidate: true });
     }
   }, [titleValue, form]);
-
-
-  useEffect(() => {
-    const fetchCharts = async () => {
-        const querySnapshot = await getDocs(collection(db, 'ChartData'));
-        setCharts(querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name })));
-    };
-    fetchCharts();
-  }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsUploading(true);
@@ -136,14 +130,11 @@ export default function NewService() {
         const dataToSave: any = {
             ...values,
             imageUrl,
+            template: "default",
             chartData: values.chartData ? JSON.parse(values.chartData) : [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         };
-
-        if (!dataToSave.chartId) {
-            dataToSave.chartId = null;
-        }
         
         await addDoc(collection(db, "Service"), dataToSave);
         toast({
@@ -200,31 +191,6 @@ export default function NewService() {
                 </FormItem>
               )}
             />
-            
-            <FormField
-              control={form.control}
-              name="template"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Template</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a template for the detail page" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="default">Default</SelectItem>
-                      <SelectItem value="egovernance">E-Governance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    Choose the layout for the service detail page.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormItem>
               <FormLabel>Featured Image</FormLabel>
@@ -244,9 +210,9 @@ export default function NewService() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Short Description</FormLabel>
+                  <FormLabel>Service Overview</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="A short description of the service..." rows={3} {...field} />
+                    <Textarea placeholder="A short overview of the service..." rows={3} {...field} />
                   </FormControl>
                   <FormDescription>This appears on the service listing page. Max 200 characters.</FormDescription>
                   <FormMessage />
@@ -310,6 +276,48 @@ export default function NewService() {
                 </Button>
             </CardContent>
         </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle>Frequently Asked Questions</CardTitle>
+                <CardDescription>Add FAQs for this service.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {faqFields.map((field, index) => (
+                    <div key={field.id} className="space-y-4 border p-4 rounded-md relative">
+                        <Button type="button" variant="destructive" size="icon" className="absolute top-4 right-4 h-7 w-7" onClick={() => removeFaq(index)}>
+                           <Trash className="h-4 w-4" />
+                        </Button>
+                        <FormField
+                            control={form.control}
+                            name={`faqs.${index}.question`}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Question</FormLabel>
+                                    <FormControl><Input {...field} placeholder="e.g., What is the main benefit?" /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name={`faqs.${index}.answer`}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Answer</FormLabel>
+                                    <FormControl><Textarea {...field} placeholder="Provide a clear and concise answer." /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => appendFaq({ question: "", answer: "" })}>
+                    Add FAQ
+                </Button>
+            </CardContent>
+        </Card>
+
 
         <Card>
             <CardHeader>
@@ -355,7 +363,7 @@ export default function NewService() {
         <Card>
             <CardHeader>
                 <CardTitle>Chart Data</CardTitle>
-                 <CardDescription>Provide data as a JSON array of objects.</CardDescription>
+                 <CardDescription>Provide data as a JSON array of objects. You can edit the sample below.</CardDescription>
             </CardHeader>
              <CardContent>
                  <FormField
@@ -378,7 +386,7 @@ export default function NewService() {
             </CardContent>
         </Card>
 
-        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading} width="auto">
+        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading} className="w-auto">
           {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Publishing..." : "Publish Service"}
         </Button>
       </form>
