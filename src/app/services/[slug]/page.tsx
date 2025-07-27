@@ -108,7 +108,7 @@ const KeyFeatures = ({ features }: { features: { title: string, description: str
 
 const EGovernancePage = ({ service }: { service: any }) => {
     
-    const chartData = service.chartData.map((d: any) => ({...d, year: d.year.toString()}));
+    const chartData = service.chartData?.map((d: any) => ({...d, year: d.year.toString()}));
     
     const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
 
@@ -151,15 +151,15 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                 </CardContent>
                             </Card>
 
-                            <KeyFeatures features={service.points} />
+                            {service.points && <KeyFeatures features={service.points} />}
                             
-                            <InfoSection 
+                            {service.differentiators && <InfoSection 
                                 title="What Makes Us Different"
                                 items={service.differentiators}
                                 image="https://placehold.co/800x600.png"
                                 imageHint="team collaboration"
                                 reverse={true}
-                            />
+                            />}
 
                             <MethodologySection />
                         </div>
@@ -172,15 +172,15 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                         <CardDescription>Our track record in e-governance.</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-6">
-                                        <div className='grid grid-cols-3 gap-4 text-center'>
+                                        {service.stats && <div className='grid grid-cols-3 gap-4 text-center'>
                                             {service.stats.map((stat:any) => (
                                                 <div key={stat.name} className='p-2 bg-primary/5 rounded-lg'>
                                                     <p className='text-3xl font-bold text-primary'>{stat.value}</p>
                                                     <p className='text-sm text-muted-foreground'>{stat.name}</p>
                                                 </div>
                                             ))}
-                                        </div>
-                                         <div className="h-72 mt-4">
+                                        </div>}
+                                         {chartData && <div className="h-72 mt-4">
                                             <ResponsiveContainer width="100%" height="100%">
                                                 <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                                     <defs>
@@ -207,7 +207,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
                                                     <Area type="monotone" dataKey="Adoption Rate" stroke="hsl(var(--accent))" fillOpacity={1} fill="url(#colorAdoption)" />
                                                 </AreaChart>
                                             </ResponsiveContainer>
-                                        </div>
+                                        </div>}
                                     </CardContent>
                                 </Card>
                                  <Card rounded="20px" className="bg-primary/5">
@@ -275,7 +275,7 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
-                                        dangerouslySetInnerHTML={{ __html: service.content || service.longDescription }}
+                                        dangerouslySetInnerHTML={{ __html: service.content || service.longDescription || '' }}
                                     />
                                 </CardContent>
                             </Card>
