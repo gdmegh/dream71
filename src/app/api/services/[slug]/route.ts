@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { collection, query, where, getDocs, limit, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { services as hardcodedServices } from '@/lib/services';
 
 export async function GET(
   request: NextRequest,
@@ -15,13 +14,6 @@ export async function GET(
   }
 
   try {
-    // First, check hardcoded services
-    const hardcodedService = hardcodedServices.find(s => s.slug === slug);
-    if (hardcodedService) {
-      return NextResponse.json(hardcodedService);
-    }
-    
-    // If not found in hardcoded, check Firestore
     const q = query(
       collection(db, 'Service'),
       where('slug', '==', slug),
@@ -36,11 +28,12 @@ export async function GET(
     const serviceDoc = querySnapshot.docs[0];
     const serviceData = { id: serviceDoc.id, ...serviceDoc.data() };
 
-    // If there's a chartId, fetch the chart data
+    // If there's a chartId, fetch the chart data from ChartData collection
+    // This logic is being deprecated in favor of storing chartData directly on the service
     if (serviceData.chartId) {
       const chartDocRef = doc(db, 'ChartData', serviceData.chartId);
       const chartDocSnap = await getDoc(chartDocRef);
-      if (chartDocSnap.exists()) {
+      if (chartDocSnap.exists() && !serviceData.chartData) {
         (serviceData as any).chartData = chartDocSnap.data().dataPoints;
       }
     }
@@ -51,4 +44,3 @@ export async function GET(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
-

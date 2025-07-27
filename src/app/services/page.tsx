@@ -9,10 +9,9 @@ import { db } from '@/lib/firebase';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, AppWindow } from 'lucide-react';
-import { services as featuredServices } from '@/lib/services';
+import { ArrowRight } from 'lucide-react';
 
-const ServiceCard = ({ service, isFeatured = false }: { service: any, isFeatured?: boolean }) => (
+const ServiceCard = ({ service }: { service: any }) => (
     <Card className="overflow-hidden group flex flex-col" rounded="20px">
         <Link href={`/services/${service.slug}`} className="block">
             <div className="relative h-56">
@@ -21,7 +20,7 @@ const ServiceCard = ({ service, isFeatured = false }: { service: any, isFeatured
                     alt={service.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    data-ai-hint={isFeatured ? service.imageHint : "service image"}
+                    data-ai-hint="service image"
                 />
             </div>
         </Link>
@@ -65,8 +64,6 @@ export default function ServicesPage() {
     fetchServices();
   }, []);
 
-  const allServices = [...featuredServices, ...services];
-
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {[...Array(6)].map((_, i) => (
@@ -98,10 +95,10 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <LoadingSkeleton />
-          ) : allServices.length > 0 ? (
+          ) : services.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {allServices.map((service, index) => (
-                <ServiceCard key={service.slug || service.id} service={service} isFeatured={index < featuredServices.length} />
+              {services.map((service) => (
+                <ServiceCard key={service.id} service={service} />
               ))}
             </div>
           ) : (

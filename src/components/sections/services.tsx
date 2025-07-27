@@ -1,15 +1,25 @@
 
-
 'use client';
 import Link from 'next/link';
-import { ArrowRight, MonitorCheck, FileDigit, Award, Building, Workflow, Bot, FileCode, BrainCircuit, Search, Scaling, Puzzle, LifeBuoy, SwatchBook, Image as ImageIcon, Gamepad2, Users } from 'lucide-react';
+import { ArrowRight, MonitorCheck, FileDigit, Award, Building, Workflow, Bot, FileCode, BrainCircuit, Search, Scaling, Puzzle, LifeBuoy, SwatchBook, ImageIcon as ImageIconLucide, Gamepad2, Users } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
-import { services } from '@/lib/services';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useEffect, useState } from 'react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { Skeleton } from '../ui/skeleton';
 
 
 const ServiceChart = ({ data }: { data: any[] }) => {
+    if (!data || data.length === 0) {
+        return (
+            <div className="w-full bg-card rounded-[20px] h-80 p-4 flex items-center justify-center">
+                <p className="text-muted-foreground">No chart data available.</p>
+            </div>
+        );
+    }
+
     const chartData = data.map((d: any) => ({...d, year: d.year.toString()}));
     const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
     
@@ -59,21 +69,21 @@ const featureIcons: { [key: string]: React.ElementType } = {
     'Third-Party Integrations': Puzzle,
     'Ongoing Support': LifeBuoy,
     'Game Design': SwatchBook,
-    '2D & 3D Art': ImageIcon,
+    '2D & 3D Art': ImageIconLucide,
     'Unity & Unreal Engine': Gamepad2,
     'Multiplayer Integration': Users,
 };
 
-const ServiceFeature = ({ title, description, link, chartData, features, reverse = false }: { title: string, description: string, link: string, chartData: any[], features?: any[], reverse?: boolean }) => {
+const ServiceFeature = ({ service, reverse = false }: { service: any, reverse?: boolean }) => {
     
     return (
         <div className={cn('grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12')}>
             <div className={cn("flex flex-col md:w-full items-start text-left", reverse ? "md:order-last" : "md:order-first")}>
-                <h3 className="text-3xl font-bold">{title}</h3>
-                <p className="text-muted-foreground mt-4">{description}</p>
-                 {features && (
+                <h3 className="text-3xl font-bold">{service.title}</h3>
+                <p className="text-muted-foreground mt-4">{service.description}</p>
+                 {service.points && service.points.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mt-6">
-                        {features.map((feature, index) => {
+                        {service.points.map((feature: any, index: number) => {
                             const Icon = featureIcons[feature.title] || MonitorCheck;
                             return (
                                 <div key={index} className="flex items-start gap-3">
@@ -90,42 +100,53 @@ const ServiceFeature = ({ title, description, link, chartData, features, reverse
                     </div>
                 )}
                  <Button asChild className="mt-8" variant="outline">
-                    <Link href={link}>
+                    <Link href={`/services/${service.slug}`}>
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </div>
             
             <div className={cn("flex flex-col items-center w-full", reverse ? 'md:order-first' : 'md:order-last')}>
-                <ServiceChart data={chartData} />
+                <ServiceChart data={service.chartData} />
             </div>
         </div>
     );
 };
 
+const LoadingSkeleton = () => (
+    <div className="mx-auto grid max-w-5xl items-start gap-12 divide-y divide-border sm:grid-cols-1 md:gap-16 lg:max-w-none">
+        {[...Array(2)].map((_, index) => (
+            <div key={index} className={cn('grid md:grid-cols-2 items-center justify-center gap-8 lg:gap-16 py-12 pt-16')}>
+                <div className={cn("space-y-4", index % 2 !== 0 ? "md:order-last" : "md:order-first")}>
+                    <Skeleton className="h-8 w-3/4" />
+                    <Skeleton className="h-6 w-full" />
+                    <Skeleton className="h-6 w-5/6" />
+                    <Skeleton className="h-10 w-32 mt-4" />
+                </div>
+                 <div className={cn("flex flex-col items-center w-full", index % 2 !== 0 ? 'md:order-first' : 'md:order-last')}>
+                    <Skeleton className="w-full bg-card rounded-[20px] h-80 p-4" />
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
 export default function Services() {
-  const serviceList = [
-    {
-      slug: "e-governance",
-      title: "Pioneering Digital Transformation in Public Services Through Advanced e-Governance Solutions",
-      description: "We develop and implement cutting-edge digital platforms designed to streamline government operations, enhance the delivery of public services, and foster greater transparency and citizen engagement across all sectors.",
-    },
-    {
-      slug: "business-automation",
-      title: "Driving Business Growth and Unprecedented Efficiency with Intelligent Automation and AI",
-      description: "We empower your business to thrive in a competitive landscape by leveraging the transformative power of Artificial Intelligence to automate complex processes, uncover actionable insights from your data, and foster a culture of continuous innovation and sustained success.",
-    },
-    {
-      slug: "custom-software",
-      title: "Architecting and Engineering Bespoke Software Solutions to Propel Your Business into the Future",
-      description: "We specialize in the design, development, and deployment of high-quality, scalable, and secure custom software applications. Each solution is meticulously crafted to align with your unique operational workflows, strategic business objectives, and long-term goals, ensuring a perfect technological fit for your organization.",
-    },
-    {
-      slug: "game-development",
-      title: "Creating Immersive and Captivating Gaming Experiences for a Global Audience",
-      description: "Our passion lies in the creation of high-quality, interactive games for mobile, web, and desktop platforms. We focus on delivering engaging gameplay, breathtaking visuals, and memorable narratives that captivate and entertain players of all ages, all around the world.",
-    }
-  ];
+    const [services, setServices] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            setLoading(true);
+            const q = query(collection(db, "Service"), orderBy("createdAt", "desc"));
+            const querySnapshot = await getDocs(q);
+            const servicesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setServices(servicesData);
+            setLoading(false);
+        };
+
+        fetchServices();
+    }, []);
 
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-background">
@@ -141,25 +162,17 @@ export default function Services() {
             </p>
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl items-start gap-12 divide-y divide-border sm:grid-cols-1 md:gap-16 lg:max-w-none">
-          {serviceList.map((service, index) => {
-            const serviceData = services.find(s => s.slug === service.slug);
-            if (!serviceData || !serviceData.chartData) return null;
-
-            return (
-                <div key={index} className="pt-16 first:pt-0">
-                    <ServiceFeature
-                        title={service.title}
-                        description={service.description}
-                        link={`/services/${service.slug}`}
-                        chartData={serviceData.chartData}
-                        features={service.slug === 'e-governance' || service.slug === 'business-automation' || service.slug === 'custom-software' || service.slug === 'game-development' ? serviceData.points : undefined}
-                        reverse={index % 2 !== 0}
-                    />
+        
+        {loading ? <LoadingSkeleton /> : (
+            <div className="mx-auto grid max-w-5xl items-start gap-12 divide-y divide-border sm:grid-cols-1 md:gap-16 lg:max-w-none">
+            {services.map((service, index) => (
+                <div key={service.id} className="pt-16 first:pt-0">
+                    <ServiceFeature service={service} reverse={index % 2 !== 0} />
                 </div>
-            )
-          })}
-        </div>
+            ))}
+            </div>
+        )}
+
       </div>
     </section>
   );

@@ -2,7 +2,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,12 +19,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { doc, getDoc, updateDoc, serverTimestamp, collection, getDocs } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Trash } from "lucide-react";
+
+const pointSchema = z.object({
+  title: z.string().min(1, "Title cannot be empty."),
+  description: z.string().min(1, "Description cannot be empty."),
+});
+
+const statSchema = z.object({
+  name: z.string().min(1, "Name cannot be empty."),
+  value: z.string().min(1, "Value cannot be empty."),
+});
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
@@ -33,13 +44,18 @@ const formSchema = z.object({
   content: z.string().min(20, "Content must be at least 20 characters."),
   imageUrl: z.string().optional(),
   template: z.string().min(2, "Please select a template."),
-  chartId: z.string().optional(),
+  points: z.array(pointSchema).optional(),
+  stats: z.array(statSchema).optional(),
+  chartData: z.string().optional().refine(val => {
+    if (!val) return true;
+    try {
+        JSON.parse(val);
+        return true;
+    } catch (e) {
+        return false;
+    }
+  }, { message: "Invalid JSON format for Chart Data." }),
 });
-
-type ChartData = {
-  id: string;
-  name: string;
-};
 
 export default function EditService() {
   const { toast } = useToast();
@@ -51,31 +67,33 @@ export default function EditService() {
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
-  const [charts, setCharts] = useState<ChartData[]>([]);
-
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      points: [],
+      stats: [],
+      chartData: "[]"
+    },
   });
-  
-  useEffect(() => {
-    const fetchCharts = async () => {
-        const querySnapshot = await getDocs(collection(db, 'ChartData'));
-        setCharts(querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name })));
-    };
-    fetchCharts();
-  }, []);
+
+  const { fields: pointFields, append: appendPoint, remove: removePoint } = useFieldArray({ control: form.control, name: "points" });
+  const { fields: statFields, append: appendStat, remove: removeStat } = useFieldArray({ control: form.control, name: "stats" });
+
 
   useEffect(() => {
     if (!id) return;
-    const fetchArticle = async () => {
+    const fetchService = async () => {
       setLoading(true);
       const docRef = doc(db, "Service", id as string);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
-        form.reset(data);
+        form.reset({
+          ...data,
+          chartData: data.chartData ? JSON.stringify(data.chartData, null, 2) : "[]",
+        });
         setCurrentImageUrl(data.imageUrl);
       } else {
         toast({ title: "Error", description: "Service not found.", variant: "destructive" });
@@ -83,7 +101,7 @@ export default function EditService() {
       }
       setLoading(false);
     };
-    fetchArticle();
+    fetchService();
   }, [id, form, router, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -120,6 +138,7 @@ export default function EditService() {
       await updateDoc(docRef, {
         ...values,
         imageUrl,
+        chartData: values.chartData ? JSON.parse(values.chartData) : [],
         updatedAt: serverTimestamp(),
       });
       toast({
@@ -156,143 +175,207 @@ export default function EditService() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Edit Service</CardTitle>
-        <CardDescription>Update the details for this service.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+    <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Card>
+            <CardHeader>
+            <CardTitle>Edit Service</CardTitle>
+            <CardDescription>Update the details for this service.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
             <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Cloud Solutions" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL Slug</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., cloud-solutions" {...field} />
-                  </FormControl>
-                  <FormDescription>A unique, URL-friendly identifier. No spaces.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="template"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Template</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a template for the detail page" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="default">Default</SelectItem>
-                      <SelectItem value="egovernance">E-Governance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    Choose the layout for the service detail page.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-             <FormField
                 control={form.control}
-                name="chartId"
+                name="title"
                 render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Related Chart</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a chart dataset" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        {charts.map(chart => (
-                            <SelectItem key={chart.id} value={chart.id}>{chart.name}</SelectItem>
-                        ))}
-                        </SelectContent>
-                    </Select>
-                    <FormDescription>Link this service to a chart dataset (optional).</FormDescription>
+                <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                    <Input placeholder="e.g., Cloud Solutions" {...field} />
+                    </FormControl>
                     <FormMessage />
-                    </FormItem>
+                </FormItem>
                 )}
             />
-
+            <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>URL Slug</FormLabel>
+                    <FormControl>
+                    <Input placeholder="e.g., cloud-solutions" {...field} />
+                    </FormControl>
+                    <FormDescription>A unique, URL-friendly identifier. No spaces.</FormDescription>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name="template"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Template</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                        <SelectTrigger>
+                        <SelectValue placeholder="Select a template for the detail page" />
+                        </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                        <SelectItem value="default">Default</SelectItem>
+                        <SelectItem value="egovernance">E-Governance</SelectItem>
+                    </SelectContent>
+                    </Select>
+                    <FormDescription>Choose the layout for the service detail page.</FormDescription>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
             <FormItem>
-              <FormLabel>Featured Image</FormLabel>
-              {currentImageUrl && (
+                <FormLabel>Featured Image</FormLabel>
+                {currentImageUrl && (
                 <div className="my-4">
-                  <Image src={currentImageUrl} alt="Current featured image" width={200} height={100} className="rounded-md object-cover" />
+                    <Image src={currentImageUrl} alt="Current featured image" width={200} height={100} className="rounded-md object-cover" />
                 </div>
-              )}
-              <FormControl>
+                )}
+                <FormControl>
                 <Input 
-                  type="file" 
-                  onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
-                  accept="image/*"
+                    type="file" 
+                    onChange={(e) => setFeaturedImageFile(e.target.files?.[0] || null)}
+                    accept="image/*"
                 />
-              </FormControl>
-              <FormDescription>Upload a new image to replace the current one.</FormDescription>
-              <FormMessage />
+                </FormControl>
+                <FormDescription>Upload a new image to replace the current one.</FormDescription>
+                <FormMessage />
             </FormItem>
-
             <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
+                control={form.control}
+                name="description"
+                render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
+                    <FormLabel>Short Description</FormLabel>
+                    <FormControl>
                     <Textarea placeholder="A short description of the service..." rows={3} {...field} />
-                  </FormControl>
-                  <FormDescription>This appears on the service listing page. Max 200 characters.</FormDescription>
-                  <FormMessage />
+                    </FormControl>
+                    <FormDescription>This appears on the service listing page. Max 200 characters.</FormDescription>
+                    <FormMessage />
                 </FormItem>
-              )}
+                )}
             />
             <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
+                control={form.control}
+                name="content"
+                render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content</FormLabel>
-                  <FormControl>
+                    <FormLabel>Main Content</FormLabel>
+                    <FormControl>
                     <Textarea placeholder="The full content for the service. HTML is supported." rows={10} {...field} />
-                  </FormControl>
-                  <FormDescription>You can use HTML tags for formatting.</FormDescription>
-                  <FormMessage />
+                    </FormControl>
+                    <FormDescription>You can use HTML tags for formatting.</FormDescription>
+                    <FormMessage />
                 </FormItem>
-              )}
+                )}
             />
-            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
-              {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Updating..." : "Update Service"}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle>Key Features / Points</CardTitle>
+                <CardDescription>Manage the key features or bullet points for this service.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {pointFields.map((field, index) => (
+                    <div key={field.id} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center border p-4 rounded-md">
+                        <FormField
+                            control={form.control}
+                            name={`points.${index}.title`}
+                            render={({ field }) => (
+                                <FormItem><FormLabel>Point Title</FormLabel><FormControl><Input {...field} placeholder="Feature Title" /></FormControl><FormMessage /></FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name={`points.${index}.description`}
+                            render={({ field }) => (
+                                <FormItem><FormLabel>Point Description</FormLabel><FormControl><Input {...field} placeholder="Feature Description" /></FormControl><FormMessage /></FormItem>
+                            )}
+                        />
+                        <Button type="button" variant="destructive" onClick={() => removePoint(index)} className="mt-6">
+                           <Trash className="mr-2 h-4 w-4" /> Remove
+                        </Button>
+                    </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => appendPoint({ title: "", description: "" })}>
+                    Add Feature Point
+                </Button>
+            </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle>Statistics</CardTitle>
+                <CardDescription>Manage key statistics for this service.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {statFields.map((field, index) => (
+                    <div key={field.id} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center border p-4 rounded-md">
+                        <FormField
+                            control={form.control}
+                            name={`stats.${index}.name`}
+                            render={({ field }) => (
+                                <FormItem><FormLabel>Stat Name</FormLabel><FormControl><Input {...field} placeholder="e.g. Projects Delivered" /></FormControl><FormMessage /></FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name={`stats.${index}.value`}
+                            render={({ field }) => (
+                                <FormItem><FormLabel>Stat Value</FormLabel><FormControl><Input {...field} placeholder="e.g. 150+" /></FormControl><FormMessage /></FormItem>
+                            )}
+                        />
+                        <Button type="button" variant="destructive" onClick={() => removeStat(index)} className="mt-6">
+                            <Trash className="mr-2 h-4 w-4" /> Remove
+                        </Button>
+                    </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => appendStat({ name: "", value: "" })}>
+                    Add Statistic
+                </Button>
+            </CardContent>
+        </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle>Chart Data</CardTitle>
+                <CardDescription>Provide data as a JSON array of objects.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <FormField
+                  control={form.control}
+                  name="chartData"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data Points (JSON)</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder='[{"year": "2020", "Projects": 10}]'
+                          rows={10}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+            </CardContent>
+        </Card>
+        
+        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+            {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Updating..." : "Update Service"}
+        </Button>
+        </form>
+    </Form>
   );
 }
