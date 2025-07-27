@@ -4,7 +4,6 @@
 import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
-import Portfolio from '@/components/sections/portfolio';
 import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight, AppWindow } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -230,8 +229,6 @@ const EGovernancePage = ({ service }: { service: any }) => {
                     </div>
                 </div>
             </section>
-            
-            <Portfolio serviceId={service.id} />
         </>
     );
 }
@@ -354,8 +351,6 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                     </div>
                 </div>
             </section>
-            
-            <Portfolio serviceId={service.id}/>
         </>
     )
 }
