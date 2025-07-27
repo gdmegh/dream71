@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -10,8 +10,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, User } from 'lucide-react';
 
-export default function BlogDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default function BlogDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -116,3 +117,5 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     </>
   );
 }
+
+    

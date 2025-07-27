@@ -2,7 +2,7 @@
 'use client'
 
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import CtaSection from '@/components/sections/cta-section';
 import Portfolio from '@/components/sections/portfolio';
 import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight, AppWindow } from 'lucide-react';
@@ -356,8 +356,9 @@ const DefaultServicePage = ({ service }: { service: any }) => {
     )
 }
 
-export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default function ServiceDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const [service, setService] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -408,3 +409,5 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
   
   return <DefaultServicePage service={service} />;
 }
+
+    

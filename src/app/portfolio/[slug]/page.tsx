@@ -1,7 +1,7 @@
 
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Puzzle, Target, BarChart2, Briefcase, Clock, ArrowRight } from 'lucide-react';
@@ -34,8 +34,9 @@ const LoadingScreen = () => (
 );
 
 
-export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default function PortfolioDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -233,3 +234,5 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
     </>
   );
 }
+
+    
