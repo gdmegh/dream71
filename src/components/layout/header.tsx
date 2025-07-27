@@ -162,30 +162,11 @@ export default function Header() {
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger>Services</NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                             <div className="p-4 w-[600px] lg:w-[800px]">
-                                <ul className="grid grid-cols-3 gap-3">
-                                {servicesComponents.map((component) => (
-                                    <ListItem
-                                        key={component.title}
-                                        title={component.title}
-                                        href={component.href}
-                                        icon={component.icon}
-                                    >
-                                        {component.description}
-                                    </ListItem>
-                                ))}
-                                </ul>
-                                <div className="mt-4 text-center">
-                                    <Button asChild variant="ghost" className="w-full">
-                                        <Link href="/services">
-                                            View All Services <ArrowRight className="ml-2 h-4 w-4" />
-                                        </Link>
-                                    </Button>
-                                </div>
-                            </div>
-                        </NavigationMenuContent>
+                       <Link href="/services" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                Services
+                            </NavigationMenuLink>
+                        </Link>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuTrigger>Portfolio</NavigationMenuTrigger>
@@ -273,16 +254,7 @@ export default function Header() {
         <div className="md:hidden bg-background shadow-lg">
           <nav className="flex flex-col space-y-2 p-4">
              <Accordion type="multiple" className="w-full">
-                <AccordionItem value="services">
-                    <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Services</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                        <div className="flex flex-col space-y-2">
-                           {servicesComponents.map((link) => (
-                              <Link key={link.href} href={link.href} className="font-headline py-1 text-muted-foreground hover:text-primary" onClick={() => setIsOpen(false)}>{link.title}</Link>
-                           ))}
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
+                 <MobileNavLink href="/services" label="Services" onClick={() => setIsOpen(false)} />
                  <AccordionItem value="portfolio">
                     <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Portfolio</AccordionTrigger>
                     <AccordionContent className="pl-4">
@@ -353,7 +325,3 @@ const ListItem = React.forwardRef<
   );
 });
 ListItem.displayName = "ListItem";
-
-    
-
-    

@@ -25,11 +25,7 @@ const footerLinks = [
   {
     title: 'Services',
     links: [
-      { label: 'Featured Services', href: '/services' },
-      { label: 'Web Development', href: '/services/web-development' },
-      { label: 'Mobile Apps', href: '/services/mobile-app-development' },
-      { label: 'UI/UX Design', href: '/services/ui-ux-design' },
-      { label: 'QA & Testing', href: '/services/qa-testing' },
+      { label: 'Our Services', href: '/services' },
     ],
   },
   {
