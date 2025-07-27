@@ -52,7 +52,7 @@ export default function Footer() {
                   className="h-10 w-auto"
                 />
             </Link>
-            <p className="text-muted-foreground text-base font-body mb-4 mx-auto md:mx-0">
+            <p className="text-muted-foreground text-base font-body mb-4 mx-auto md:mx-0 max-w-md">
                 A leading Software Company Focusing on E-Governance, Web Applications, Mobile Applications, Artificial intelligence and BlockChain.
             </p>
              <div className="space-y-3 text-base text-muted-foreground font-body text-center md:text-left">
