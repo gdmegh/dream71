@@ -25,63 +25,6 @@ import {
 } from "@/components/ui/accordion"
 
 
-const servicesComponents: { title: string; href: string; description: string, icon: React.ElementType }[] = [
-  {
-    title: "Web Development",
-    href: "/services/web-development",
-    description: "Modern, responsive, and scalable web applications.",
-    icon: AppWindow
-  },
-  {
-    title: "Mobile Apps",
-    href: "/services/mobile-app-development",
-    description: "Native and cross-platform apps for iOS and Android.",
-    icon: Sparkles
-  },
-   {
-    title: "UI/UX Design",
-    href: "/services/ui-ux-design",
-    description: "Intuitive and beautiful user interfaces that delight users.",
-    icon: PencilRuler
-  },
-  {
-    title: "e-Governance",
-    href: "/services/e-governance",
-    description: "Digital solutions to streamline public services.",
-    icon: Building2
-  },
-   {
-    title: "Custom Software",
-    href: "/services/custom-software",
-    description: "Bespoke solutions tailored to your unique business needs.",
-    icon: Code
-  },
-  {
-    title: "QA & Testing",
-    href: "/services/qa-testing",
-    description: "Ensuring your software is reliable and bug-free.",
-    icon: ShieldCheck
-  },
-  {
-    title: "Game Development",
-    href: "/services/game-development",
-    description: "Creating immersive and engaging gaming experiences.",
-    icon: Gamepad2
-  },
-  {
-    title: "AI & ML Solutions",
-    href: "/services/ai-ml-solutions",
-    description: "Integrating artificial intelligence to build intelligent applications.",
-    icon: BrainCircuit
-  },
-  {
-    title: "DevOps",
-    href: "/services/devops",
-    description: "Streamlining development and operations for faster delivery.",
-    icon: Rocket
-  },
-];
-
 const portfolioComponents: { title: string; href: string; description: string, icon: React.ElementType }[] = [
   {
     title: "View All Projects",
@@ -162,7 +105,7 @@ export default function Header() {
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                       <Link href="/services" legacyBehavior passHref>
+                       <Link href="/services">
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 Services
                             </NavigationMenuLink>
