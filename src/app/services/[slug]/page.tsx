@@ -130,17 +130,19 @@ const EGovernancePage = ({ service }: { service: any }) => {
 
              <section className="py-16 bg-background">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-16">
-                        <Image
-                            src={service.image || service.imageUrl}
-                            alt={service.title}
-                            fill
-                            className="object-cover"
-                            data-ai-hint={service.imageHint}
-                        />
-                    </div>
-
                     <div className="grid lg:grid-cols-12 gap-12">
+                        <div className="lg:col-span-12">
+                             <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-12">
+                                <Image
+                                    src={service.image || service.imageUrl}
+                                    alt={service.title}
+                                    fill
+                                    className="object-cover"
+                                    data-ai-hint={service.imageHint}
+                                />
+                            </div>
+                        </div>
+
                         <div className="lg:col-span-8 space-y-12">
                             <Card>
                                 <CardHeader>
@@ -229,7 +231,7 @@ const EGovernancePage = ({ service }: { service: any }) => {
                 </div>
             </section>
             
-            <Portfolio />
+            <Portfolio serviceId={service.id} />
         </>
     );
 }
@@ -252,17 +254,19 @@ const DefaultServicePage = ({ service }: { service: any }) => {
             
             <section className="py-16 bg-background">
                  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                     <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-16">
-                        <Image
-                            src={service.image || service.imageUrl}
-                            alt={service.title}
-                            fill
-                            className="object-cover"
-                            data-ai-hint={service.imageHint || 'service image'}
-                        />
-                    </div>
-                    
-                    <div className="grid lg:grid-cols-12 gap-12">
+                     <div className="grid lg:grid-cols-12 gap-12">
+                        <div className="lg:col-span-12">
+                            <div className="relative h-[300px] md:h-[500px] w-full overflow-hidden rounded-[20px] shadow-2xl mb-12">
+                                <Image
+                                    src={service.image || service.imageUrl}
+                                    alt={service.title}
+                                    fill
+                                    className="object-cover"
+                                    data-ai-hint={service.imageHint || 'service image'}
+                                />
+                            </div>
+                        </div>
+                        
                         <div className="lg:col-span-8 space-y-12">
                              <Card>
                                 <CardHeader>
@@ -351,7 +355,7 @@ const DefaultServicePage = ({ service }: { service: any }) => {
                 </div>
             </section>
             
-            <Portfolio />
+            <Portfolio serviceId={service.id}/>
         </>
     )
 }
@@ -409,5 +413,3 @@ export default function ServiceDetailPage() {
   
   return <DefaultServicePage service={service} />;
 }
-
-    

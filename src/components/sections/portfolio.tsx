@@ -64,7 +64,7 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export default function Portfolio() {
+export default function Portfolio({ serviceId }: { serviceId?: string }) {
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
    const plugin = useRef(
@@ -74,27 +74,77 @@ export default function Portfolio() {
   useEffect(() => {
     const fetchProjects = async () => {
       setLoading(true);
-      const q = query(
-        collection(db, "Project"), 
-        where("isPublic", "==", true),
-        orderBy("createdAt", "desc"),
-        limit(9)
-      );
-      const querySnapshot = await getDocs(q);
+      let projectsQuery;
+      if (serviceId) {
+          projectsQuery = query(
+              collection(db, "Project"),
+              where("isPublic", "==", true),
+              where("serviceId", "==", serviceId),
+              orderBy("createdAt", "desc"),
+              limit(9)
+          );
+      } else {
+          projectsQuery = query(
+              collection(db, "Project"), 
+              where("isPublic", "==", true),
+              orderBy("createdAt", "desc"),
+              limit(9)
+          );
+      }
+      
+      const querySnapshot = await getDocs(projectsQuery);
       const projectsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setProjects(projectsData);
       setLoading(false);
     };
 
     fetchProjects();
-  }, []);
+  }, [serviceId]);
+
+  if (loading) {
+    return (
+      <section id="portfolio" className="py-20 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+                <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">
+                    {serviceId ? 'Related Projects' : 'Our Portfolio'}
+                </h2>
+                 <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
+                    Take a closer look at the innovative solutions and successful partnerships that define our legacy. Here’s a brief insight into some of our most impactful projects.
+                </p>
+            </div>
+            <LoadingSkeleton />
+        </div>
+      </section>
+    )
+  }
+
+  if (projects.length === 0) {
+      if(serviceId){
+          return null; // Don't render the section if there are no related projects
+      }
+      return(
+          <section id="portfolio" className="py-20 bg-background">
+             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div className="text-center">
+                    <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Our Portfolio</h2>
+                    <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
+                        No projects found.
+                    </p>
+                </div>
+            </div>
+          </section>
+      );
+  }
 
 
   return (
     <section id="portfolio" className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">Our Portfolio</h2>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground">
+             {serviceId ? 'Related Projects' : 'Our Portfolio'}
+          </h2>
           <p className="font-body text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
             Take a closer look at the innovative solutions and successful partnerships that define our legacy. Here’s a brief insight into some of our most impactful projects.
           </p>
@@ -105,7 +155,7 @@ export default function Portfolio() {
                 plugins={[plugin.current]}
                 opts={{
                     align: "start",
-                    loop: true,
+                    loop: projects.length > 3,
                 }}
                  onMouseEnter={plugin.current.stop}
                 onMouseLeave={plugin.current.reset}
