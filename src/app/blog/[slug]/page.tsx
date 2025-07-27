@@ -14,28 +14,40 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const { slug } = params;
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
-      if (!slug) return;
-      setLoading(true);
-      const q = query(
-        collection(db, 'Blog'),
-        where('slug', '==', slug),
-        limit(1)
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        setPost(null);
-      } else {
-        const postData = {
-          id: querySnapshot.docs[0].id,
-          ...querySnapshot.docs[0].data(),
-        };
-        setPost(postData);
+      if (!slug) {
+        setLoading(false);
+        setError(true);
+        return;
       }
-      setLoading(false);
+      setLoading(true);
+      setError(false);
+      try {
+        const q = query(
+          collection(db, 'Blog'),
+          where('slug', '==', slug),
+          limit(1)
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          setPost(null);
+        } else {
+          const postData = {
+            id: querySnapshot.docs[0].id,
+            ...querySnapshot.docs[0].data(),
+          };
+          setPost(postData);
+        }
+      } catch (e) {
+        console.error("Error fetching post:", e);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPost();
@@ -56,7 +68,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     );
   }
 
-  if (!post) {
+  if (error || !post) {
     return notFound();
   }
 

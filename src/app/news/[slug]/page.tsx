@@ -13,28 +13,40 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
   const { slug } = params;
   const [article, setArticle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchArticle = async () => {
-      if (!slug) return;
-      setLoading(true);
-      const q = query(
-        collection(db, 'News'),
-        where('slug', '==', slug),
-        limit(1)
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        setArticle(null);
-      } else {
-        const articleData = {
-          id: querySnapshot.docs[0].id,
-          ...querySnapshot.docs[0].data(),
-        };
-        setArticle(articleData);
+      if (!slug) {
+        setLoading(false);
+        setError(true);
+        return;
       }
-      setLoading(false);
+      setLoading(true);
+      setError(false);
+      try {
+        const q = query(
+          collection(db, 'News'),
+          where('slug', '==', slug),
+          limit(1)
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          setArticle(null);
+        } else {
+          const articleData = {
+            id: querySnapshot.docs[0].id,
+            ...querySnapshot.docs[0].data(),
+          };
+          setArticle(articleData);
+        }
+      } catch (e) {
+        console.error("Error fetching article:", e);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchArticle();
@@ -55,7 +67,7 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
     );
   }
 
-  if (!article) {
+  if (error || !article) {
     return notFound();
   }
 

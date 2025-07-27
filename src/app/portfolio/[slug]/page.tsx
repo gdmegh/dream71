@@ -38,6 +38,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
   const { slug } = params;
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const plugin = React.useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
 
 
@@ -45,23 +46,31 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
     const fetchProject = async () => {
       if (!slug) {
         setLoading(false);
+        setError(true);
         return;
       };
       setLoading(true);
-      const q = query(collection(db, "Project"), where("slug", "==", slug), where("isPublic", "==", true), limit(1));
-      const querySnapshot = await getDocs(q);
-      
-      if (querySnapshot.empty) {
-        setProject(null);
-      } else {
-        let projectData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
-        // Backward compatibility for old single imageUrl
-        if (projectData.imageUrl && (!projectData.imageUrls || projectData.imageUrls.length === 0)) {
-            projectData.imageUrls = [projectData.imageUrl];
+      setError(false);
+      try {
+        const q = query(collection(db, "Project"), where("slug", "==", slug), where("isPublic", "==", true), limit(1));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          setProject(null);
+        } else {
+          let projectData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+          // Backward compatibility for old single imageUrl
+          if (projectData.imageUrl && (!projectData.imageUrls || projectData.imageUrls.length === 0)) {
+              projectData.imageUrls = [projectData.imageUrl];
+          }
+          setProject(projectData);
         }
-        setProject(projectData);
+      } catch (e) {
+          console.error("Error fetching project:", e);
+          setError(true);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchProject();
@@ -72,10 +81,7 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
     return <LoadingScreen />;
   }
 
-  if (!project) {
-    if (!slug) {
-        return <div className="container mx-auto py-20 text-center">Error: No project slug provided.</div>;
-    }
+  if (error || !project) {
     return notFound();
   }
   
