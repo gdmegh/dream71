@@ -88,7 +88,8 @@ export default function PortfolioDetailPage({ params }: { params: { slug: string
                 <Image
                     src={project.imageUrl || 'https://placehold.co/1200x600.png'}
                     alt={project.title}
-                    fill
+                    layout="fill"
+                    objectFit="cover"
                     className="object-cover"
                     data-ai-hint={'project image'}
                 />
