@@ -27,6 +27,7 @@ const footerLinks = [
       { label: 'Blog', href: '/blog' },
       { label: 'News', href: '/news' },
       { label: 'Events', href: '/events' },
+      { label: 'Admin Panel', href: '/admin/portfolio' },
     ],
   },
 ];
@@ -53,12 +54,12 @@ export default function Footer() {
                 />
             </Link>
             <p className="text-muted-foreground text-base font-body mb-4 mx-auto md:mx-0 max-w-md">
-                A leading Software Company Focusing on E-Governance, <br />Web Applications, Mobile Applications, <br />Artificial intelligence and BlockChain.
+                A leading Software Company Focusing on <br/> E-Governance, Web Applications, Mobile Applications, <br/> Artificial intelligence and BlockChain.
             </p>
              <div className="space-y-3 text-base text-muted-foreground font-body text-center md:text-left">
                 <div className="flex items-start justify-center md:justify-start gap-3">
                     <MapPin className="h-5 w-5 mt-1 text-primary flex-shrink-0" />
-                    <span>House No 16 ( Level 5 and 9) Block - A, Basundhara R/A, Main Road, Dhaka-1229,Bangladesh</span>
+                    <span>House No 16 ( Level 5 and 9) Block - A, Basundhara R/A, <br/> Main Road, Dhaka-1229,Bangladesh</span>
                 </div>
                  <div className="flex items-center justify-center md:justify-start gap-3">
                     <Mail className="h-5 w-5 text-primary" />
