@@ -51,6 +51,15 @@ const formSchema = z.object({
   solution: z.string().optional(),
   impact: z.string().optional(),
   features: z.array(featureSchema).optional(),
+  chartData: z.string().optional().refine(val => {
+    if (!val) return true;
+    try {
+        JSON.parse(val);
+        return true;
+    } catch (e) {
+        return false;
+    }
+  }, { message: "Invalid JSON format for Chart Data." }),
 });
 
 
@@ -85,6 +94,7 @@ export default function EditPortfolioProject() {
       solution: "",
       impact: "",
       features: [],
+      chartData: "[]",
     },
   });
   
@@ -121,6 +131,7 @@ export default function EditPortfolioProject() {
         form.reset({
           ...form.getValues(),
           ...data,
+          chartData: data.chartData ? JSON.stringify(data.chartData, null, 2) : "[]",
         });
         setCurrentImageUrl(data.imageUrl);
       } else {
@@ -166,6 +177,7 @@ export default function EditPortfolioProject() {
       await updateDoc(docRef, {
         ...values,
         imageUrl,
+        chartData: values.chartData ? JSON.parse(values.chartData) : [],
         updatedAt: serverTimestamp(),
       });
       toast({
@@ -368,6 +380,32 @@ export default function EditPortfolioProject() {
             </CardContent>
         </Card>
         
+        <Card>
+            <CardHeader>
+                <CardTitle>Chart Data</CardTitle>
+                <CardDescription>Provide data as a JSON array of objects. You can edit the sample below.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <FormField
+                  control={form.control}
+                  name="chartData"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data Points (JSON)</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder='[{"year": "2020", "Users": 1000}]'
+                          rows={10}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+            </CardContent>
+        </Card>
+
         <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
           {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Updating..." : "Update Project"}
         </Button>
@@ -375,5 +413,3 @@ export default function EditPortfolioProject() {
     </Form>
   );
 }
-
-    

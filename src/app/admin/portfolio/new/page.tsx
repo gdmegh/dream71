@@ -49,6 +49,15 @@ const formSchema = z.object({
   solution: z.string().optional(),
   impact: z.string().optional(),
   features: z.array(featureSchema).optional(),
+  chartData: z.string().optional().refine(val => {
+    if (!val) return true;
+    try {
+        JSON.parse(val);
+        return true;
+    } catch (e) {
+        return false;
+    }
+  }, { message: "Invalid JSON format for Chart Data." }),
 });
 
 
@@ -78,6 +87,7 @@ export default function NewPortfolioProject() {
       solution: "",
       impact: "",
       features: [],
+      chartData: '[\n  {\n    "month": "Jan",\n    "Users": 1000\n  },\n  {\n    "month": "Feb",\n    "Users": 1200\n  }\n]',
     },
   });
 
@@ -134,6 +144,7 @@ export default function NewPortfolioProject() {
         await addDoc(collection(db, "Project"), {
             ...values,
             imageUrl,
+            chartData: values.chartData ? JSON.parse(values.chartData) : [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         });
@@ -314,6 +325,32 @@ export default function NewPortfolioProject() {
                     Add Feature
                 </Button>
                  <FormDescription>Use icon names from <a href="https://lucide.dev/icons/" target="_blank" rel="noopener noreferrer" className="underline">lucide.dev</a> (e.g., 'Users', 'BarChart').</FormDescription>
+            </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle>Chart Data</CardTitle>
+                <CardDescription>Provide data as a JSON array of objects. You can edit the sample below.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <FormField
+                  control={form.control}
+                  name="chartData"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data Points (JSON)</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder='[{"year": "2020", "Users": 1000}]'
+                          rows={10}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
             </CardContent>
         </Card>
 

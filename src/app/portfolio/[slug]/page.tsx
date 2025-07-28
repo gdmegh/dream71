@@ -8,10 +8,11 @@ import Link from 'next/link';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, CheckCircle } from 'lucide-react';
 import * as Icons from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const CoreFeaturesSection = ({ features }: { features: { icon: string, title: string, description: string }[] }) => {
     if (!features || features.length === 0) return null;
@@ -19,7 +20,7 @@ const CoreFeaturesSection = ({ features }: { features: { icon: string, title: st
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="font-headline text-3xl">Core Modules &amp; Features</CardTitle>
+                <CardTitle className="font-headline text-2xl">Core Modules &amp; Features</CardTitle>
             </CardHeader>
             <CardContent className="grid md:grid-cols-2 gap-8">
                  {features.map((feature, index) => {
@@ -30,7 +31,7 @@ const CoreFeaturesSection = ({ features }: { features: { icon: string, title: st
                                 <Icon className="h-6 w-6" />
                             </div>
                             <div>
-                                <h3 className="font-headline text-xl font-semibold text-foreground">{feature.title}</h3>
+                                <h3 className="font-headline text-lg font-semibold text-foreground">{feature.title}</h3>
                                 <p className="text-muted-foreground">{feature.description}</p>
                             </div>
                         </div>
@@ -126,6 +127,11 @@ export default function PortfolioDetailPage() {
   if (error || !project) {
     return notFound();
   }
+  
+  const chartData = project.chartData || [];
+  const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
+  const dataKey = Object.keys(chartData[0] || {}).find(key => key.toLowerCase() !== 'month' && key.toLowerCase() !== 'year' && key.toLowerCase() !== 'name');
+
 
   return (
     <>
@@ -153,10 +159,10 @@ export default function PortfolioDetailPage() {
                     </div>
                      <Card>
                         <CardHeader>
-                            <CardTitle className="font-headline text-3xl">Project Overview</CardTitle>
+                            <CardTitle className="font-headline text-2xl">Project Overview</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                            <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
                                 dangerouslySetInnerHTML={{ __html: project.content }}
                             />
                         </CardContent>
@@ -169,12 +175,44 @@ export default function PortfolioDetailPage() {
 
                     <CoreFeaturesSection features={project.features} />
                     
+                    {chartData.length > 0 && dataKey && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="font-headline text-2xl">Project Growth</CardTitle>
+                                <CardDescription>Key metrics demonstrating the project's success over time.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="h-80">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                        <defs>
+                                            <linearGradient id="colorMetric" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                                        <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                                        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={valueFormatter} />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'hsl(var(--card))',
+                                                borderColor: 'hsl(var(--border))',
+                                                color: 'hsl(var(--card-foreground))'
+                                            }}
+                                        />
+                                        <Area type="monotone" dataKey={dataKey} stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorMetric)" />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </CardContent>
+                        </Card>
+                    )}
+                    
                     <Card>
                         <CardHeader>
-                            <CardTitle className="font-headline text-3xl">Impact</CardTitle>
+                            <CardTitle className="font-headline text-2xl">Impact</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                            <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
                                 dangerouslySetInnerHTML={{ __html: project.impact }}
                             />
                         </CardContent>
