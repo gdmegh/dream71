@@ -45,7 +45,7 @@ const formSchema = z.object({
   clientWebsite: z.string().url().optional().or(z.literal('')),
   timeline: z.string().optional(),
   demoUrl: z.string().url().optional().or(z.literal('')),
-  problemStatement: z.string().optional(),
+  challenges: z.string().optional(),
   solution: z.string().optional(),
   impact: z.string().optional(),
   features: z.array(featureSchema).optional(),
@@ -74,7 +74,7 @@ export default function NewPortfolioProject() {
       clientWebsite: "",
       timeline: "",
       demoUrl: "",
-      problemStatement: "",
+      challenges: "",
       solution: "",
       impact: "",
       features: [],
@@ -283,14 +283,14 @@ export default function NewPortfolioProject() {
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-8">
-                    <FormField control={form.control} name="clientName" render={({ field }) => (<FormItem><FormLabel>Client Name</FormLabel><FormControl><Input placeholder="e.g., Ministry of Health" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="timeline" render={({ field }) => (<FormItem><FormLabel>Timeline</FormLabel><FormControl><Input placeholder="e.g., 6 Months" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="clientWebsite" render={({ field }) => (<FormItem><FormLabel>Client Website</FormLabel><FormControl><Input placeholder="https://example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="demoUrl" render={({ field }) => (<FormItem><FormLabel>Demo URL</FormLabel><FormControl><Input placeholder="https://demo.example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="clientName" render={({ field }) => (<FormItem><FormLabel>Client Name</FormLabel><FormControl><Input placeholder="e.g., Ministry of Health" {...field} value={field.value || ''} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="timeline" render={({ field }) => (<FormItem><FormLabel>Timeline</FormLabel><FormControl><Input placeholder="e.g., 6 Months" {...field} value={field.value || ''} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="clientWebsite" render={({ field }) => (<FormItem><FormLabel>Client Website</FormLabel><FormControl><Input placeholder="https://example.com" {...field} value={field.value || ''} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="demoUrl" render={({ field }) => (<FormItem><FormLabel>Demo URL</FormLabel><FormControl><Input placeholder="https://demo.example.com" {...field} value={field.value || ''} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
-                 <FormField control={form.control} name="problemStatement" render={({ field }) => (<FormItem><FormLabel>Problem Statement</FormLabel><FormControl><Textarea placeholder="Describe the problem this project solved." rows={4} {...field} /></FormControl><FormMessage /></FormItem>)} />
-                 <FormField control={form.control} name="solution" render={({ field }) => (<FormItem><FormLabel>Solution</FormLabel><FormControl><Textarea placeholder="Describe the solution provided." rows={4} {...field} /></FormControl><FormMessage /></FormItem>)} />
-                 <FormField control={form.control} name="impact" render={({ field }) => (<FormItem><FormLabel>Impact</FormLabel><FormControl><Textarea placeholder="Describe the impact of the solution." rows={4} {...field} /></FormControl><FormMessage /></FormItem>)} />
+                 <FormField control={form.control} name="challenges" render={({ field }) => (<FormItem><FormLabel>Challenges</FormLabel><FormControl><Textarea placeholder="Describe the challenges this project solved." rows={4} {...field} value={field.value || ''} /></FormControl><FormMessage /></FormItem>)} />
+                 <FormField control={form.control} name="solution" render={({ field }) => (<FormItem><FormLabel>Solution</FormLabel><FormControl><Textarea placeholder="Describe the solution provided." rows={4} {...field} value={field.value || ''} /></FormControl><FormMessage /></FormItem>)} />
+                 <FormField control={form.control} name="impact" render={({ field }) => (<FormItem><FormLabel>Impact</FormLabel><FormControl><Textarea placeholder="Describe the impact of the solution." rows={4} {...field} value={field.value || ''} /></FormControl><FormMessage /></FormItem>)} />
             </CardContent>
         </Card>
 
@@ -324,3 +324,5 @@ export default function NewPortfolioProject() {
     </Form>
   );
 }
+
+    

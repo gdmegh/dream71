@@ -1,16 +1,16 @@
 
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, CheckCircle } from 'lucide-react';
 import * as Icons from 'lucide-react';
 
 const CoreFeatures = ({ features }: { features: { icon: string, title: string, description: string }[] }) => {
@@ -21,7 +21,7 @@ const CoreFeatures = ({ features }: { features: { icon: string, title: string, d
             <h2 className="font-headline text-3xl font-bold text-foreground">Core Modules & Features</h2>
             <div className="grid md:grid-cols-2 gap-8">
                 {features.map((feature, index) => {
-                    const Icon = (Icons as any)[feature.icon] || Icons.CheckCircle;
+                    const Icon = (Icons as any)[feature.icon] || CheckCircle;
                     return (
                         <div key={index} className="flex items-start gap-4">
                             <div className="bg-primary/10 text-primary p-3 rounded-full mt-1">
@@ -50,6 +50,33 @@ const DetailSection = ({ title, content }: { title: string, content: string | un
         </section>
     );
 };
+
+const ChallengesAndSolutions = ({ challenges, solution }: { challenges?: string, solution?: string }) => {
+    if (!challenges && !solution) return null;
+
+    return (
+        <section className="py-12">
+            <div className="grid md:grid-cols-2 gap-12">
+                {challenges && (
+                    <div>
+                        <h2 className="font-headline text-3xl font-bold text-foreground mb-4">Challenges</h2>
+                        <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                            dangerouslySetInnerHTML={{ __html: challenges }}
+                        />
+                    </div>
+                )}
+                {solution && (
+                     <div>
+                        <h2 className="font-headline text-3xl font-bold text-foreground mb-4">Our Solution</h2>
+                        <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                            dangerouslySetInnerHTML={{ __html: solution }}
+                        />
+                    </div>
+                )}
+            </div>
+        </section>
+    );
+}
 
 export default function PortfolioDetailPage() {
   const params = useParams();
@@ -98,14 +125,19 @@ export default function PortfolioDetailPage() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
-        <Skeleton className="h-6 w-1/4 mx-auto mb-8" />
-        <Skeleton className="h-[500px] w-full rounded-lg mb-8" />
-        <div className="space-y-4">
-          <Skeleton className="h-6 w-full" />
-          <Skeleton className="h-6 w-full" />
-          <Skeleton className="h-6 w-5/6" />
-        </div>
+        <Skeleton className="h-10 w-2/3 mx-auto mb-4" />
+        <Skeleton className="h-[500px] w-full rounded-lg my-8" />
+         <div className="grid lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-8 space-y-4">
+                <Skeleton className="h-8 w-1/3" />
+                <Skeleton className="h-6 w-full" />
+                <Skeleton className="h-6 w-full" />
+                <Skeleton className="h-6 w-5/6" />
+            </div>
+             <div className="lg:col-span-4 space-y-4">
+                <Skeleton className="h-32 w-full" />
+             </div>
+         </div>
       </div>
     );
   }
@@ -116,9 +148,9 @@ export default function PortfolioDetailPage() {
 
   return (
     <>
-      <section className="bg-primary/5 py-20">
+      <section className="bg-primary/5 py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold text-foreground">
+          <h1 className="font-headline text-3xl md:text-4xl font-bold text-foreground">
             {project.title}
           </h1>
         </div>
@@ -126,25 +158,23 @@ export default function PortfolioDetailPage() {
       
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative h-[300px] md:h-[500px] w-full mb-12">
+              <Image
+                src={project.imageUrl || 'https://placehold.co/1200x600.png'}
+                alt={project.title}
+                fill
+                className="object-cover rounded-[20px]"
+                data-ai-hint="project image"
+              />
+            </div>
+
             <div className="grid lg:grid-cols-12 gap-12 items-start">
                 {/* Left Main Content */}
                 <div className="lg:col-span-8 space-y-12">
-                     <div className="relative h-[300px] md:h-[500px] w-full mb-8">
-                      <Image
-                        src={project.imageUrl || 'https://placehold.co/1200x600.png'}
-                        alt={project.title}
-                        fill
-                        className="object-cover rounded-[20px]"
-                        data-ai-hint="project image"
-                      />
-                    </div>
-                    
                     <DetailSection title="Project Overview" content={project.content} />
+                    <ChallengesAndSolutions challenges={project.challenges} solution={project.solution} />
                     <CoreFeatures features={project.features} />
-                    <DetailSection title="Problem Statement" content={project.problemStatement} />
-                    <DetailSection title="Our Solution" content={project.solution} />
                     <DetailSection title="Impact" content={project.impact} />
-
                 </div>
 
                 {/* Right Sticky Sidebar */}
@@ -153,10 +183,10 @@ export default function PortfolioDetailPage() {
                         <CardHeader>
                             <CardTitle>Client Details</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-2">
+                        <CardContent className="space-y-2 text-sm">
                            <p><strong>Name:</strong> {project.clientName || 'N/A'}</p>
                            {project.clientWebsite && (
-                                <p><strong>Website:</strong> <a href={project.clientWebsite} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{project.clientWebsite}</a></p>
+                                <p><strong>Website:</strong> <a href={project.clientWebsite} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">{project.clientWebsite}</a></p>
                            )}
                         </CardContent>
                     </Card>
@@ -182,3 +212,5 @@ export default function PortfolioDetailPage() {
     </>
   );
 }
+
+    
