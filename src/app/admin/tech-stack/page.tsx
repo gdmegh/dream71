@@ -164,7 +164,7 @@ export default function TechStackCMS() {
                             </TableRow>
                             </TableHeader>
                             <TableBody>
-                            {techs.map((tech: any) => (
+                            {(techs as any[]).map((tech: any) => (
                                 <TableRow key={tech.id}>
                                 <TableCell className="font-medium">{tech.name}</TableCell>
                                 <TableCell className="hidden md:table-cell">{tech.createdAt?.toDate().toLocaleDateString()}</TableCell>

@@ -60,7 +60,7 @@ export default function EditPortfolioProject() {
   const { toast } = useToast();
   const router = useRouter();
   const params = useParams();
-  const { id } = params;
+  const id = params.id;
 
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -383,5 +383,3 @@ export default function EditPortfolioProject() {
     </Form>
   );
 }
-
-    
