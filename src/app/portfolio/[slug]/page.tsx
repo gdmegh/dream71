@@ -19,7 +19,7 @@ const CoreFeaturesSection = ({ features }: { features: { icon: string, title: st
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="font-headline text-3xl">Core Modules & Features</CardTitle>
+                <CardTitle className="font-headline text-3xl">Core Modules &amp; Features</CardTitle>
             </CardHeader>
             <CardContent className="grid md:grid-cols-2 gap-8">
                  {features.map((feature, index) => {
@@ -56,33 +56,6 @@ const DetailSection = ({ title, content }: { title: string, content?: string }) 
         </Card>
     );
 };
-
-const ChallengesAndSolutionsSection = ({ challenges, solution }: { challenges?: string, solution?: string }) => {
-    if (!challenges && !solution) return null;
-
-    return (
-        <Card>
-            <CardContent className="grid md:grid-cols-2 gap-12 p-6">
-                {challenges && (
-                    <div>
-                        <h2 className="font-headline text-2xl font-bold text-foreground mb-4">Challenges</h2>
-                        <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
-                            dangerouslySetInnerHTML={{ __html: challenges }}
-                        />
-                    </div>
-                )}
-                {solution && (
-                     <div>
-                        <h2 className="font-headline text-2xl font-bold text-foreground mb-4">Our Solution</h2>
-                        <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
-                            dangerouslySetInnerHTML={{ __html: solution }}
-                        />
-                    </div>
-                )}
-            </CardContent>
-        </Card>
-    );
-}
 
 export default function PortfolioDetailPage() {
   const params = useParams();
@@ -132,16 +105,15 @@ export default function PortfolioDetailPage() {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Skeleton className="h-10 w-2/3 mx-auto mb-4" />
-        <Skeleton className="h-[500px] w-full rounded-lg my-8" />
-         <div className="grid lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-8 space-y-4">
-                <Skeleton className="h-8 w-1/3" />
-                <Skeleton className="h-6 w-full" />
-                <Skeleton className="h-6 w-full" />
-                <Skeleton className="h-6 w-5/6" />
+        <div className="grid lg:grid-cols-12 gap-12 mt-12">
+            <div className="lg:col-span-8 space-y-8">
+                <Skeleton className="h-[500px] w-full rounded-lg" />
+                <Skeleton className="h-40 w-full" />
+                <Skeleton className="h-40 w-full" />
             </div>
              <div className="lg:col-span-4 space-y-4">
                 <Skeleton className="h-32 w-full" />
+                <Skeleton className="h-24 w-full" />
              </div>
          </div>
       </div>
@@ -164,21 +136,21 @@ export default function PortfolioDetailPage() {
       
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="relative h-[300px] md:h-[500px] w-full mb-12">
-              <Image
-                src={project.imageUrl || 'https://placehold.co/1200x600.png'}
-                alt={project.title}
-                fill
-                className="object-cover rounded-[20px]"
-                data-ai-hint="project image"
-              />
-            </div>
-
             <div className="grid lg:grid-cols-12 gap-12 items-start">
                 {/* Left Main Content */}
                 <div className="lg:col-span-8 space-y-8">
+                    <div className="relative h-[300px] md:h-[500px] w-full">
+                        <Image
+                            src={project.imageUrl || 'https://placehold.co/1200x600.png'}
+                            alt={project.title}
+                            fill
+                            className="object-cover rounded-[20px]"
+                            data-ai-hint="project image"
+                        />
+                    </div>
                     <DetailSection title="Project Overview" content={project.content} />
-                    <ChallengesAndSolutionsSection challenges={project.challenges} solution={project.solution} />
+                    <DetailSection title="Challenges" content={project.challenges} />
+                    <DetailSection title="Our Solution" content={project.solution} />
                     <CoreFeaturesSection features={project.features} />
                     <DetailSection title="Impact" content={project.impact} />
                 </div>
@@ -218,5 +190,3 @@ export default function PortfolioDetailPage() {
     </>
   );
 }
-
-    
