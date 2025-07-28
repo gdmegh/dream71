@@ -142,7 +142,7 @@ export default function Services() {
                 collection(db, "Service"),
                 where("displayOrder", ">", 0),
                 orderBy("displayOrder", "asc"),
-                limit(4)
+                limit(7)
             );
             const querySnapshot = await getDocs(q);
             const servicesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
