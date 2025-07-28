@@ -8,19 +8,21 @@ import Link from 'next/link';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, CheckCircle } from 'lucide-react';
 import * as Icons from 'lucide-react';
 
-const CoreFeatures = ({ features }: { features: { icon: string, title: string, description: string }[] }) => {
+const CoreFeaturesSection = ({ features }: { features: { icon: string, title: string, description: string }[] }) => {
     if (!features || features.length === 0) return null;
 
     return (
-        <section className="space-y-8">
-            <h2 className="font-headline text-3xl font-bold text-foreground">Core Modules & Features</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-                {features.map((feature, index) => {
+        <Card>
+            <CardHeader>
+                <CardTitle className="font-headline text-3xl">Core Modules & Features</CardTitle>
+            </CardHeader>
+            <CardContent className="grid md:grid-cols-2 gap-8">
+                 {features.map((feature, index) => {
                     const Icon = (Icons as any)[feature.icon] || CheckCircle;
                     return (
                         <div key={index} className="flex items-start gap-4">
@@ -34,32 +36,36 @@ const CoreFeatures = ({ features }: { features: { icon: string, title: string, d
                         </div>
                     );
                 })}
-            </div>
-        </section>
+            </CardContent>
+        </Card>
     );
 };
 
-const DetailSection = ({ title, content }: { title: string, content: string | undefined }) => {
+const DetailSection = ({ title, content }: { title: string, content?: string }) => {
     if (!content) return null;
     return (
-        <section className="space-y-4">
-            <h2 className="font-headline text-3xl font-bold text-foreground">{title}</h2>
-            <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
-                dangerouslySetInnerHTML={{ __html: content }}
-            />
-        </section>
+        <Card>
+            <CardHeader>
+                <CardTitle className="font-headline text-3xl">{title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                    dangerouslySetInnerHTML={{ __html: content }}
+                />
+            </CardContent>
+        </Card>
     );
 };
 
-const ChallengesAndSolutions = ({ challenges, solution }: { challenges?: string, solution?: string }) => {
+const ChallengesAndSolutionsSection = ({ challenges, solution }: { challenges?: string, solution?: string }) => {
     if (!challenges && !solution) return null;
 
     return (
-        <section className="py-12">
-            <div className="grid md:grid-cols-2 gap-12">
+        <Card>
+            <CardContent className="grid md:grid-cols-2 gap-12 p-6">
                 {challenges && (
                     <div>
-                        <h2 className="font-headline text-3xl font-bold text-foreground mb-4">Challenges</h2>
+                        <h2 className="font-headline text-2xl font-bold text-foreground mb-4">Challenges</h2>
                         <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
                             dangerouslySetInnerHTML={{ __html: challenges }}
                         />
@@ -67,14 +73,14 @@ const ChallengesAndSolutions = ({ challenges, solution }: { challenges?: string,
                 )}
                 {solution && (
                      <div>
-                        <h2 className="font-headline text-3xl font-bold text-foreground mb-4">Our Solution</h2>
+                        <h2 className="font-headline text-2xl font-bold text-foreground mb-4">Our Solution</h2>
                         <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
                             dangerouslySetInnerHTML={{ __html: solution }}
                         />
                     </div>
                 )}
-            </div>
-        </section>
+            </CardContent>
+        </Card>
     );
 }
 
@@ -170,10 +176,10 @@ export default function PortfolioDetailPage() {
 
             <div className="grid lg:grid-cols-12 gap-12 items-start">
                 {/* Left Main Content */}
-                <div className="lg:col-span-8 space-y-12">
+                <div className="lg:col-span-8 space-y-8">
                     <DetailSection title="Project Overview" content={project.content} />
-                    <ChallengesAndSolutions challenges={project.challenges} solution={project.solution} />
-                    <CoreFeatures features={project.features} />
+                    <ChallengesAndSolutionsSection challenges={project.challenges} solution={project.solution} />
+                    <CoreFeaturesSection features={project.features} />
                     <DetailSection title="Impact" content={project.impact} />
                 </div>
 
