@@ -13,9 +13,10 @@ const socialLinks = [
 
 const footerLinks = [
   {
-    title: 'Services',
+    title: 'Explore',
     links: [
-      { label: 'Our Services', href: '/services' },
+      { label: 'Services', href: '/services' },
+      { label: 'Portfolio', href: '/portfolio' },
       { label: 'About Us', href: '/about' },
       { label: 'Contact', href: '/contact' },
     ],

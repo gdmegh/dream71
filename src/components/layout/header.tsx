@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, BookOpen, Rss, Newspaper, GalleryHorizontal, Info, MessageSquare, Phone } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Rss, Newspaper, GalleryHorizontal, Info, MessageSquare, Phone, Briefcase } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
@@ -34,6 +34,10 @@ const companyLinks = [
     { href: '/about', label: 'About Us', description: 'Learn about our mission and team.', icon: Info },
     { href: '/testimonials', label: 'Testimonials', description: 'See what our clients are saying.', icon: MessageSquare },
     { href: '/contact', label: 'Contact Us', description: 'Get in touch with our team.', icon: Phone },
+]
+
+const portfolioLinks = [
+    { href: '/portfolio', label: 'All Projects', description: 'Browse our complete portfolio.', icon: Briefcase },
 ]
 
 export default function Header() {
@@ -92,6 +96,23 @@ export default function Header() {
                             <Link href="/services">Services</Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <NavigationMenuTrigger>Portfolio</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[300px] ">
+                                {portfolioLinks.map((component) => (
+                                    <ListItem
+                                        key={component.label}
+                                        title={component.label}
+                                        href={component.href}
+                                        icon={component.icon}
+                                    >
+                                        {component.description}
+                                    </ListItem>
+                                ))}
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuTrigger>Company</NavigationMenuTrigger>
                         <NavigationMenuContent>
@@ -146,6 +167,16 @@ export default function Header() {
           <nav className="flex flex-col space-y-2 p-4">
              <Accordion type="multiple" className="w-full">
                  <MobileNavLink href="/services" label="Services" onClick={() => setIsOpen(false)} />
+                <AccordionItem value="portfolio">
+                    <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Portfolio</AccordionTrigger>
+                    <AccordionContent className="pl-4">
+                        <div className="flex flex-col space-y-2">
+                         {portfolioLinks.map((link) => (
+                            <Link key={link.href} href={link.href} className="font-headline py-1 text-muted-foreground hover:text-primary" onClick={() => setIsOpen(false)}>{link.label}</Link>
+                         ))}
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
                 <AccordionItem value="company">
                     <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Company</AccordionTrigger>
                     <AccordionContent className="pl-4">

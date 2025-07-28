@@ -19,7 +19,7 @@ export function MultiSelect({
 }: {
   options: Option[];
   selected: string[];
-  onChange: React.Dispatch<React.SetStateAction<string[]>>;
+  onChange: React.Dispatch<React.SetStateAction<string[]>> | ((value: string[]) => void);
   className?: string;
   [key: string]: any;
 }) {
@@ -108,7 +108,7 @@ export function MultiSelect({
                     }}
                     onSelect={() => {
                       setInputValue('');
-                      onChange((prev) => [...prev, option.value]);
+                      onChange([...selected, option.value]);
                     }}
                     className={'cursor-pointer'}
                   >

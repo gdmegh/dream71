@@ -7,6 +7,7 @@ import CtaSection from '@/components/sections/cta-section';
 import AboutSection from '@/components/sections/about-section';
 import HomeNews from '@/components/sections/home-news';
 import HomeBlog from '@/components/sections/home-blog';
+import Portfolio from '@/components/sections/portfolio';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <AboutSection />
       <Services />
+      <Portfolio />
       <WhyChooseUs />
       <HomeNews />
       <HomeBlog />
