@@ -34,6 +34,7 @@ const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
   subtitle: z.string().optional(),
   slug: z.string().min(2, "Slug must be at least 2 characters.").refine(s => !s.includes(' '), "Slug cannot contain spaces."),
+  displayOrder: z.coerce.number().optional(),
   overview: z.string().min(20, "Overview must be at least 20 characters."),
   problemStatement: z.string().min(20, "Problem statement is required."),
   solutionMethodology: z.string().min(20, "Solution methodology is required."),
@@ -244,6 +245,20 @@ export default function EditPortfolioProject() {
                                 A unique, URL-friendly identifier. Auto-generated from title.
                             </FormDescription>
                             <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                     <FormField
+                        control={form.control}
+                        name="displayOrder"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Display Order</FormLabel>
+                                <FormControl>
+                                <Input type="number" placeholder="e.g., 1" {...field} />
+                                </FormControl>
+                                <FormDescription>Order on the homepage (lower numbers appear first). Set to 0 to hide.</FormDescription>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />

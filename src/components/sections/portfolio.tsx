@@ -87,7 +87,8 @@ export default function Portfolio({ serviceId }: { serviceId?: string }) {
           projectsQuery = query(
               collection(db, "Project"), 
               where("isPublic", "==", true),
-              orderBy("createdAt", "desc"),
+              where("displayOrder", ">", 0),
+              orderBy("displayOrder", "asc"),
               limit(9)
           );
       }
