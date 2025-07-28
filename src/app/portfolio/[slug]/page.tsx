@@ -1,18 +1,62 @@
 
-'use client';
-
-import { useEffect, useState } from 'react';
-import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { notFound } from 'next/navigation';
+import { collection, query, where, getDocs, limit, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, CheckCircle } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import type { Metadata } from 'next';
+
+type PageProps = {
+  params: {
+    slug: string;
+  };
+};
+
+async function getProject(slug: string) {
+    if (!slug) return null;
+    try {
+        const q = query(
+            collection(db, 'Project'),
+            where('slug', '==', slug),
+            limit(1)
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+            return null;
+        }
+
+        const projectData = {
+            id: querySnapshot.docs[0].id,
+            ...querySnapshot.docs[0].data(),
+        };
+        return JSON.parse(JSON.stringify(projectData));
+    } catch (e) {
+        console.error("Error fetching project:", e);
+        return null;
+    }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const project = await getProject(params.slug);
+
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+    };
+  }
+
+  return {
+    title: `${project.title} | Dream71 Portfolio`,
+    description: project.summary,
+  };
+}
+
 
 const CoreFeaturesSection = ({ features }: { features: { icon: string, title: string, description: string }[] }) => {
     if (!features || features.length === 0) return null;
@@ -58,74 +102,12 @@ const DetailSection = ({ title, content }: { title: string, content?: string }) 
     );
 };
 
-export default function PortfolioDetailPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const [project, setProject] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+export default async function PortfolioDetailPage({ params }: PageProps) {
+  const { slug } = params;
+  const project = await getProject(slug);
 
-  useEffect(() => {
-    const fetchProject = async () => {
-      if (!slug) {
-        setLoading(false);
-        setError(true);
-        return;
-      }
-      setLoading(true);
-      setError(false);
-      try {
-        const q = query(
-          collection(db, 'Project'),
-          where('slug', '==', slug),
-          limit(1)
-        );
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-          setProject(null);
-        } else {
-          const projectData = {
-            id: querySnapshot.docs[0].id,
-            ...querySnapshot.docs[0].data(),
-          };
-          setProject(projectData);
-        }
-      } catch (e) {
-        console.error("Error fetching project:", e);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProject();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Skeleton className="h-10 w-2/3 mx-auto mb-4" />
-        <div className="grid lg:grid-cols-12 gap-12 mt-12">
-            <div className="lg:col-span-8 space-y-8">
-                <Skeleton className="h-[500px] w-full rounded-lg" />
-                <Skeleton className="h-40 w-full" />
-                <div className="grid md:grid-cols-2 gap-8">
-                    <Skeleton className="h-40 w-full" />
-                    <Skeleton className="h-40 w-full" />
-                </div>
-            </div>
-             <div className="lg:col-span-4 space-y-4">
-                <Skeleton className="h-32 w-full" />
-                <Skeleton className="h-24 w-full" />
-             </div>
-         </div>
-      </div>
-    );
-  }
-
-  if (error || !project) {
-    return notFound();
+  if (!project) {
+    notFound();
   }
   
   const chartData = project.chartData || [];
@@ -253,3 +235,4 @@ export default function PortfolioDetailPage() {
     </>
   );
 }
+
