@@ -77,6 +77,12 @@ export default function EditService() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: "",
+      slug: "",
+      displayOrder: 0,
+      description: "",
+      content: "",
+      imageUrl: "",
       points: [],
       stats: [],
       faqs: [],
@@ -107,6 +113,7 @@ export default function EditService() {
       if (docSnap.exists()) {
         const data = docSnap.data();
         form.reset({
+          ...form.getValues(),
           ...data,
           chartData: data.chartData ? JSON.stringify(data.chartData, null, 2) : "[]",
           faqs: data.faqs || [],

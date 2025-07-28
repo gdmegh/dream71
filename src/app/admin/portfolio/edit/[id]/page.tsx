@@ -69,7 +69,21 @@ export default function EditPortfolioProject() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: "",
+      slug: "",
+      summary: "",
+      content: "",
+      imageUrl: "",
+      serviceId: "",
+      displayOrder: 0,
       isPublished: true,
+      clientName: "",
+      clientWebsite: "",
+      timeline: "",
+      demoUrl: "",
+      problemStatement: "",
+      solution: "",
+      impact: "",
       features: [],
     },
   });
@@ -104,7 +118,10 @@ export default function EditPortfolioProject() {
 
       if (docSnap.exists()) {
         const data = docSnap.data();
-        form.reset(data);
+        form.reset({
+          ...form.getValues(),
+          ...data,
+        });
         setCurrentImageUrl(data.imageUrl);
       } else {
         toast({ title: "Error", description: "Project not found.", variant: "destructive" });
