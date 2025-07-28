@@ -8,8 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { ExternalLink, CheckCircle } from 'lucide-react';
 import * as Icons from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import type { Metadata } from 'next';
+import PortfolioChart from '@/components/charts/portfolio-chart';
 
 type PageProps = {
   params: {
@@ -111,9 +111,6 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
   }
   
   const chartData = project.chartData || [];
-  const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
-  const dataKey = Object.keys(chartData[0] || {}).find(key => key.toLowerCase() !== 'month' && key.toLowerCase() !== 'year' && key.toLowerCase() !== 'name');
-
 
   return (
     <>
@@ -128,7 +125,7 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-12 gap-12 items-start">
-                {/* Left Main Content */}
+                
                 <div className="lg:col-span-8 space-y-8">
                     <div className="relative h-[300px] md:h-[500px] w-full">
                         <Image
@@ -169,39 +166,9 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
                     </Card>
                 </div>
 
-                {/* Right Sticky Sidebar */}
+                
                 <aside className="lg:col-span-4 sticky top-24 space-y-8">
-                    {chartData.length > 0 && dataKey && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="font-headline text-2xl">Project Growth</CardTitle>
-                                <CardDescription>Key metrics demonstrating the project's success over time.</CardDescription>
-                            </CardHeader>
-                            <CardContent className="h-80">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                                        <defs>
-                                            <linearGradient id="colorMetric" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                                        <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                                        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={valueFormatter} />
-                                        <Tooltip
-                                            contentStyle={{
-                                                backgroundColor: 'hsl(var(--card))',
-                                                borderColor: 'hsl(var(--border))',
-                                                color: 'hsl(var(--card-foreground))'
-                                            }}
-                                        />
-                                        <Area type="monotone" dataKey={dataKey} stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorMetric)" />
-                                    </AreaChart>
-                                </ResponsiveContainer>
-                            </CardContent>
-                        </Card>
-                    )}
+                    <PortfolioChart chartData={chartData} />
                     <Card>
                         <CardHeader>
                             <CardTitle>Client Details</CardTitle>
@@ -235,4 +202,3 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
     </>
   );
 }
-
