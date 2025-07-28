@@ -5,7 +5,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { LayoutDashboard, AppWindow, Rss, Newspaper, GalleryHorizontal, MessageSquareQuote, LayoutGrid, BarChartHorizontal, Briefcase } from 'lucide-react';
+import { LayoutDashboard, AppWindow, Rss, Newspaper, GalleryHorizontal, MessageSquareQuote, LayoutGrid, Briefcase } from 'lucide-react';
 
 const menuItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -16,7 +16,6 @@ const menuItems = [
   { href: '/admin/events', label: 'Events', icon: GalleryHorizontal },
   { href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
   { href: '/admin/tech-stack', label: 'Tech Stack', icon: LayoutGrid },
-  { href: '/admin/charts', label: 'Charts', icon: BarChartHorizontal },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
