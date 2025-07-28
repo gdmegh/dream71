@@ -1,15 +1,16 @@
 
+import { notFound } from 'next/navigation';
+import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { collection, query, where, getDocs, limit, doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ExternalLink, CheckCircle } from 'lucide-react';
 import * as Icons from 'lucide-react';
-import type { Metadata } from 'next';
+import { ExternalLink, CheckCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import PortfolioChart from '@/components/charts/portfolio-chart';
+
 
 type PageProps = {
   params: {
@@ -57,6 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+// Client Component to handle rendering
 function PortfolioClientContent({ project }: { project: any }) {
   'use client';
   
@@ -88,22 +90,6 @@ function PortfolioClientContent({ project }: { project: any }) {
             </CardContent>
         </Card>
     );
-  };
-
-  const DetailSection = ({ title, content }: { title: string, content?: string }) => {
-      if (!content) return null;
-      return (
-          <Card className='h-full'>
-              <CardHeader>
-                  <CardTitle className="font-headline text-2xl">{title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                  <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
-                      dangerouslySetInnerHTML={{ __html: content }}
-                  />
-              </CardContent>
-          </Card>
-      );
   };
 
   return (
@@ -142,22 +128,46 @@ function PortfolioClientContent({ project }: { project: any }) {
                     </Card>
 
                     <div className="grid md:grid-cols-2 gap-8">
-                        <DetailSection title="Challenges" content={project.challenges} />
-                        <DetailSection title="Our Solution" content={project.solution} />
+                         {project.challenges && (
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="font-headline text-2xl">Challenges</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
+                                        dangerouslySetInnerHTML={{ __html: project.challenges }}
+                                    />
+                                </CardContent>
+                            </Card>
+                        )}
+                        {project.solution && (
+                             <Card>
+                                <CardHeader>
+                                    <CardTitle className="font-headline text-2xl">Our Solution</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
+                                        dangerouslySetInnerHTML={{ __html: project.solution }}
+                                    />
+                                </CardContent>
+                            </Card>
+                        )}
                     </div>
 
                     <CoreFeaturesSection features={project.features} />
                                         
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="font-headline text-2xl">Impact</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
-                                dangerouslySetInnerHTML={{ __html: project.impact }}
-                            />
-                        </CardContent>
-                    </Card>
+                    {project.impact && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="font-headline text-2xl">Impact</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
+                                    dangerouslySetInnerHTML={{ __html: project.impact }}
+                                />
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
 
                 
@@ -197,7 +207,7 @@ function PortfolioClientContent({ project }: { project: any }) {
   );
 }
 
-
+// Main Server Component
 export default async function PortfolioDetailPage({ params }: PageProps) {
   const { slug } = params;
   const project = await getProject(slug);
