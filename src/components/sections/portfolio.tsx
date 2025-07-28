@@ -64,7 +64,7 @@ const LoadingSkeleton = () => (
     <Carousel className="w-full">
         <CarouselContent className="-ml-8">
             {[...Array(4)].map((_, i) => (
-                <CarouselItem key={i} className="pl-8 md:basis-1/2">
+                <CarouselItem key={i} className="pl-8 md:basis-1/2 lg:basis-1/3">
                     <Card rounded="20px" className="overflow-hidden group w-full h-full bg-card text-card-foreground">
                         <CardContent className="p-0 flex flex-col h-full">
                             <Skeleton className="h-56 w-full" />
@@ -130,7 +130,7 @@ export default function Portfolio() {
             >
                 <CarouselContent className="-ml-8">
                     {projects.map((project) => (
-                      <CarouselItem key={project.id} className="pl-8 md:basis-1/2">
+                      <CarouselItem key={project.id} className="pl-8 md:basis-1/2 lg:basis-1/3">
                           <div className="h-full">
                            <PortfolioCard project={project} />
                           </div>
