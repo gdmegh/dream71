@@ -6,7 +6,6 @@ import { db } from '@/lib/firebase';
 import CtaSection from '@/components/sections/cta-section';
 import { CheckCircle, Landmark, Workflow, Search, DraftingCompass, Code, TestTubeDiagonal, Rocket, LifeBuoy, MonitorCheck, FileDigit, Award, Building, ArrowRight, AppWindow, HelpCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -16,6 +15,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { Metadata } from 'next';
+import ServiceChart from '@/components/charts/service-chart';
 
 // --- SERVER-SIDE DATA FETCHING & METADATA ---
 
@@ -188,11 +188,6 @@ const ClientComponents = ({ service }: { service: any }) => {
 
 
     const EGovernancePage = ({ service }: { service: any }) => {
-        
-        const chartData = service.chartData?.map((d: any) => ({...d, year: d.year.toString()}));
-        
-        const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
-
         return (
             <>
                 <section className="bg-primary/5 pt-20 pb-12">
@@ -262,34 +257,7 @@ const ClientComponents = ({ service }: { service: any }) => {
                                                     </div>
                                                 ))}
                                             </div>}
-                                             {chartData && <div className="h-72 mt-4">
-                                                <ResponsiveContainer width="100%" height="100%">
-                                                    <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                                                        <defs>
-                                                            <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
-                                                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                                                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                                                            </linearGradient>
-                                                            <linearGradient id="colorAdoption" x1="0" y1="0" x2="0" y2="1">
-                                                                <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
-                                                                <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
-                                                            </linearGradient>
-                                                        </defs>
-                                                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                                                        <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                                                        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={valueFormatter} />
-                                                        <Tooltip
-                                                            contentStyle={{
-                                                                backgroundColor: 'hsl(var(--card))',
-                                                                borderColor: 'hsl(var(--border))',
-                                                                color: 'hsl(var(--card-foreground))'
-                                                            }}
-                                                        />
-                                                        <Area type="monotone" dataKey="Projects" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorProjects)" />
-                                                        <Area type="monotone" dataKey="Adoption Rate" stroke="hsl(var(--accent))" fillOpacity={1} fill="url(#colorAdoption)" />
-                                                    </AreaChart>
-                                                </ResponsiveContainer>
-                                            </div>}
+                                            <ServiceChart chartData={service.chartData} />
                                         </CardContent>
                                     </Card>
                                      <Card rounded="20px" className="bg-primary/5">
@@ -315,10 +283,6 @@ const ClientComponents = ({ service }: { service: any }) => {
     }
 
     const DefaultServicePage = ({ service }: { service: any }) => {
-        
-        const chartData = service.chartData?.map((d: any) => ({...d, year: d.year.toString()}));
-        const valueFormatter = (number: number) => `${new Intl.NumberFormat("us").format(number).toString()}`;
-
         return (
              <>
                 <section className="bg-primary/5 py-20 md:py-32">
@@ -382,37 +346,15 @@ const ClientComponents = ({ service }: { service: any }) => {
                             
                             <div className="lg:col-span-4">
                                 <div className="sticky top-24 space-y-8">
-                                   {chartData && <Card rounded="20px">
+                                   <Card rounded="20px">
                                         <CardHeader>
                                             <CardTitle className="font-headline text-2xl">Success Statistics</CardTitle>
                                             <CardDescription>Project growth over the years.</CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                             <div className="h-72 mt-4">
-                                                <ResponsiveContainer width="100%" height="100%">
-                                                    <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                                                        <defs>
-                                                            <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
-                                                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                                                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                                                            </linearGradient>
-                                                        </defs>
-                                                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                                                        <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                                                        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={valueFormatter} />
-                                                        <Tooltip
-                                                            contentStyle={{
-                                                                backgroundColor: 'hsl(var(--card))',
-                                                                borderColor: 'hsl(var(--border))',
-                                                                color: 'hsl(var(--card-foreground))'
-                                                            }}
-                                                        />
-                                                        <Area type="monotone" dataKey="Projects" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorProjects)" />
-                                                    </AreaChart>
-                                                </ResponsiveContainer>
-                                            </div>
+                                             <ServiceChart chartData={service.chartData} />
                                         </CardContent>
-                                    </Card>}
+                                    </Card>
                                      <Card rounded="20px" className="bg-primary/5">
                                          <CardContent className="p-6 text-center">
                                             <h3 className="font-headline text-xl font-bold mb-2">Have a Project in Mind?</h3>
