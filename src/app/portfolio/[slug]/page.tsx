@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, CheckCircle } from 'lucide-react';
 import * as Icons from 'lucide-react';
@@ -44,12 +44,12 @@ const CoreFeaturesSection = ({ features }: { features: { icon: string, title: st
 const DetailSection = ({ title, content }: { title: string, content?: string }) => {
     if (!content) return null;
     return (
-        <Card>
+        <Card className='h-full'>
             <CardHeader>
-                <CardTitle className="font-headline text-3xl">{title}</CardTitle>
+                <CardTitle className="font-headline text-2xl">{title}</CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
                     dangerouslySetInnerHTML={{ __html: content }}
                 />
             </CardContent>
@@ -109,7 +109,10 @@ export default function PortfolioDetailPage() {
             <div className="lg:col-span-8 space-y-8">
                 <Skeleton className="h-[500px] w-full rounded-lg" />
                 <Skeleton className="h-40 w-full" />
-                <Skeleton className="h-40 w-full" />
+                <div className="grid md:grid-cols-2 gap-8">
+                    <Skeleton className="h-40 w-full" />
+                    <Skeleton className="h-40 w-full" />
+                </div>
             </div>
              <div className="lg:col-span-4 space-y-4">
                 <Skeleton className="h-32 w-full" />
@@ -148,11 +151,34 @@ export default function PortfolioDetailPage() {
                             data-ai-hint="project image"
                         />
                     </div>
-                    <DetailSection title="Project Overview" content={project.content} />
-                    <DetailSection title="Challenges" content={project.challenges} />
-                    <DetailSection title="Our Solution" content={project.solution} />
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline text-3xl">Project Overview</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                                dangerouslySetInnerHTML={{ __html: project.content }}
+                            />
+                        </CardContent>
+                    </Card>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <DetailSection title="Challenges" content={project.challenges} />
+                        <DetailSection title="Our Solution" content={project.solution} />
+                    </div>
+
                     <CoreFeaturesSection features={project.features} />
-                    <DetailSection title="Impact" content={project.impact} />
+                    
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline text-3xl">Impact</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="prose dark:prose-invert max-w-none font-body text-lg text-muted-foreground"
+                                dangerouslySetInnerHTML={{ __html: project.impact }}
+                            />
+                        </CardContent>
+                    </Card>
                 </div>
 
                 {/* Right Sticky Sidebar */}
