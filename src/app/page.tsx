@@ -1,6 +1,5 @@
 import Hero from '@/components/sections/hero';
 import Services from '@/components/sections/services';
-import Portfolio from '@/components/sections/portfolio';
 import Testimonials from '@/components/sections/testimonials';
 import WhyChooseUs from '@/components/sections/why-choose-us';
 import FeaturedClients from '@/components/sections/featured-clients';
@@ -16,7 +15,6 @@ export default function Home() {
       <AboutSection />
       <Services />
       <WhyChooseUs />
-      <Portfolio />
       <HomeNews />
       <HomeBlog />
       <Testimonials />

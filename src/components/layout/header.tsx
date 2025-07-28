@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, Briefcase, BookOpen, BarChart2, Sparkles, Building2, PencilRuler, AppWindow, Rss, Newspaper, GalleryHorizontal, Code, ShieldCheck, Gamepad2, Info, MessageSquare, Phone, BrainCircuit, Rocket, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Rss, Newspaper, GalleryHorizontal, Info, MessageSquare, Phone } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
@@ -23,23 +23,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
-
-const portfolioComponents: { title: string; href: string; description: string, icon: React.ElementType }[] = [
-  {
-    title: "View All Projects",
-    href: "/portfolio",
-    description: "Browse our full collection of innovative projects.",
-    icon: Briefcase
-  },
-  {
-    title: "Case Studies",
-    href: "/portfolio",
-    description: "In-depth looks at how we solve client challenges.",
-    icon: BookOpen
-  },
-];
-
 
 const insightsLinks = [
     { href: '/blog', label: 'Blog', description: 'Our latest thoughts and articles.', icon: Rss },
@@ -110,39 +93,6 @@ export default function Header() {
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuTrigger>Portfolio</NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
-                                <li className="row-span-3">
-                                    <NavigationMenuLink asChild>
-                                        <a
-                                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                                        href="/portfolio"
-                                        >
-                                            <div className="mb-2 mt-4 text-lg font-medium">
-                                                Our Work
-                                            </div>
-                                            <p className="text-sm leading-tight text-muted-foreground">
-                                               Explore our portfolio of successful projects and client collaborations.
-                                            </p>
-                                        </a>
-                                    </NavigationMenuLink>
-                                </li>
-                                {portfolioComponents.map((component) => (
-                                     <ListItem
-                                        key={component.title}
-                                        title={component.title}
-                                        href={component.href}
-                                        icon={component.icon}
-                                    >
-                                        {component.description}
-                                    </ListItem>
-                                ))}
-                            </ul>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
-                    
-                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Company</NavigationMenuTrigger>
                         <NavigationMenuContent>
                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[300px] ">
@@ -196,16 +146,6 @@ export default function Header() {
           <nav className="flex flex-col space-y-2 p-4">
              <Accordion type="multiple" className="w-full">
                  <MobileNavLink href="/services" label="Services" onClick={() => setIsOpen(false)} />
-                 <AccordionItem value="portfolio">
-                    <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Portfolio</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                        <div className="flex flex-col space-y-2">
-                           {portfolioComponents.map((link) => (
-                              <Link key={link.href} href={link.href} className="font-headline py-1 text-muted-foreground hover:text-primary" onClick={() => setIsOpen(false)}>{link.title}</Link>
-                           ))}
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
                 <AccordionItem value="company">
                     <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Company</AccordionTrigger>
                     <AccordionContent className="pl-4">
