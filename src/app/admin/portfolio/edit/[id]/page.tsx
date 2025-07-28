@@ -2,7 +2,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,18 +27,34 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { generateSlug } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { Trash } from "lucide-react";
+
+const featureSchema = z.object({
+  icon: z.string().min(1, "Icon name is required."),
+  title: z.string().min(2, "Feature title is required."),
+  description: z.string().min(10, "Feature description is required."),
+});
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters."),
   slug: z.string().min(2, "Slug must be at least 2 characters.").refine(s => !s.includes(' '), "Slug cannot contain spaces."),
   summary: z.string().min(10, "Summary must be at least 10 characters.").max(200, "Summary must be less than 200 characters."),
-  content: z.string().min(20, "Content must be at least 20 characters."),
+  content: z.string().min(20, "Content (Project Overview) must be at least 20 characters."),
   imageUrl: z.string().optional(),
   serviceId: z.string().optional(),
   displayOrder: z.coerce.number().optional(),
   isPublished: z.boolean().default(true),
   techStack: z.array(z.string()).optional(),
+  clientName: z.string().optional(),
+  clientWebsite: z.string().url().optional().or(z.literal('')),
+  timeline: z.string().optional(),
+  demoUrl: z.string().url().optional().or(z.literal('')),
+  problemStatement: z.string().optional(),
+  solution: z.string().optional(),
+  impact: z.string().optional(),
+  features: z.array(featureSchema).optional(),
 });
+
 
 export default function EditPortfolioProject() {
   const { toast } = useToast();
@@ -59,7 +75,13 @@ export default function EditPortfolioProject() {
     defaultValues: {
       isPublished: true,
       techStack: [],
+      features: [],
     },
+  });
+  
+  const { fields: featureFields, append: appendFeature, remove: removeFeature } = useFieldArray({
+    control: form.control,
+    name: "features"
   });
 
   const titleValue = form.watch("title");
@@ -171,14 +193,14 @@ export default function EditPortfolioProject() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Edit Portfolio Project</CardTitle>
-        <CardDescription>Update the details for this project.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Edit Portfolio Project</CardTitle>
+            <CardDescription>Update the details for this project.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
               name="title"
@@ -301,7 +323,7 @@ export default function EditPortfolioProject() {
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content</FormLabel>
+                  <FormLabel>Project Overview</FormLabel>
                   <FormControl>
                     <Textarea placeholder="The full content for the project. HTML is supported." rows={10} {...field} />
                   </FormControl>
@@ -310,12 +332,56 @@ export default function EditPortfolioProject() {
                 </FormItem>
               )}
             />
-            <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
-              {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Updating..." : "Update Project"}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+        
+        <Card>
+            <CardHeader>
+                <CardTitle>Case Study Details</CardTitle>
+                <CardDescription>Fill out the details for the portfolio detail page.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-8">
+                    <FormField control={form.control} name="clientName" render={({ field }) => (<FormItem><FormLabel>Client Name</FormLabel><FormControl><Input placeholder="e.g., Ministry of Health" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="timeline" render={({ field }) => (<FormItem><FormLabel>Timeline</FormLabel><FormControl><Input placeholder="e.g., 6 Months" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="clientWebsite" render={({ field }) => (<FormItem><FormLabel>Client Website</FormLabel><FormControl><Input placeholder="https://example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="demoUrl" render={({ field }) => (<FormItem><FormLabel>Demo URL</FormLabel><FormControl><Input placeholder="https://demo.example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                </div>
+                 <FormField control={form.control} name="problemStatement" render={({ field }) => (<FormItem><FormLabel>Problem Statement</FormLabel><FormControl><Textarea placeholder="Describe the problem this project solved." rows={4} {...field} /></FormControl><FormMessage /></FormItem>)} />
+                 <FormField control={form.control} name="solution" render={({ field }) => (<FormItem><FormLabel>Solution</FormLabel><FormControl><Textarea placeholder="Describe the solution provided." rows={4} {...field} /></FormControl><FormMessage /></FormItem>)} />
+                 <FormField control={form.control} name="impact" render={({ field }) => (<FormItem><FormLabel>Impact</FormLabel><FormControl><Textarea placeholder="Describe the impact of the solution." rows={4} {...field} /></FormControl><FormMessage /></FormItem>)} />
+            </CardContent>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle>Core Features</CardTitle>
+                <CardDescription>Manage the core features or modules for this project.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {featureFields.map((field, index) => (
+                    <div key={field.id} className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end border p-4 rounded-md">
+                        <FormField control={form.control} name={`features.${index}.icon`} render={({ field }) => (<FormItem><FormLabel>Icon Name</FormLabel><FormControl><Input {...field} placeholder="e.g., 'Users'" /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name={`features.${index}.title`} render={({ field }) => (<FormItem><FormLabel>Feature Title</FormLabel><FormControl><Input {...field} placeholder="Feature Title" /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name={`features.${index}.description`} render={({ field }) => (<FormItem><FormLabel>Description</FormLabel><FormControl><Input {...field} placeholder="Feature Description" /></FormControl><FormMessage /></FormItem>)} />
+                        <Button type="button" variant="destructive" onClick={() => removeFeature(index)}>
+                           <Trash className="mr-2 h-4 w-4" /> Remove
+                        </Button>
+                    </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => appendFeature({ icon: "", title: "", description: "" })}>
+                    Add Feature
+                </Button>
+                 <FormDescription>Use icon names from <a href="https://lucide.dev/icons/" target="_blank" rel="noopener noreferrer" className="underline">lucide.dev</a> (e.g., 'Users', 'BarChart').</FormDescription>
+            </CardContent>
+        </Card>
+        
+        <Button type="submit" size="lg" disabled={form.formState.isSubmitting || isUploading}>
+          {isUploading ? "Uploading..." : form.formState.isSubmitting ? "Updating..." : "Update Project"}
+        </Button>
+      </form>
+    </Form>
   );
 }
+
+    
