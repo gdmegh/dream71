@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink } from 'lucide-react';
@@ -169,20 +168,6 @@ export default function PortfolioDetailPage() {
                            <p>{project.timeline || 'N/A'}</p>
                         </CardContent>
                     </Card>
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>Technology Stack</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                             {project.techStack && project.techStack.length > 0 && (
-                              <div className="flex flex-wrap gap-2">
-                                {project.techStack.map((tech: string) => (
-                                  <Badge key={tech} variant="secondary">{tech}</Badge>
-                                ))}
-                              </div>
-                            )}
-                        </CardContent>
-                    </Card>
                     {project.demoUrl && (
                          <Button asChild className="w-full" size="lg">
                             <Link href={project.demoUrl} target="_blank" rel="noopener noreferrer">
@@ -197,5 +182,3 @@ export default function PortfolioDetailPage() {
     </>
   );
 }
-
-    

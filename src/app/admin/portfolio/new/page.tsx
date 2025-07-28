@@ -24,7 +24,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { generateSlug } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MultiSelect } from "@/components/ui/multi-select";
 import { Trash } from "lucide-react";
 
 const featureSchema = z.object({
@@ -42,7 +41,6 @@ const formSchema = z.object({
   serviceId: z.string().optional(),
   displayOrder: z.coerce.number().optional(),
   isPublished: z.boolean().default(true),
-  techStack: z.array(z.string()).optional(),
   clientName: z.string().optional(),
   clientWebsite: z.string().url().optional().or(z.literal('')),
   timeline: z.string().optional(),
@@ -60,7 +58,6 @@ export default function NewPortfolioProject() {
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [services, setServices] = useState<any[]>([]);
-  const [techStackOptions, setTechStackOptions] = useState<any[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,7 +69,6 @@ export default function NewPortfolioProject() {
       imageUrl: "",
       displayOrder: 0,
       isPublished: true,
-      techStack: [],
       features: [],
     },
   });
@@ -91,14 +87,11 @@ export default function NewPortfolioProject() {
   }, [titleValue, form]);
 
   useEffect(() => {
-    const fetchServicesAndTech = async () => {
+    const fetchServices = async () => {
         const serviceSnapshot = await getDocs(collection(db, "Service"));
         setServices(serviceSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-
-        const techSnapshot = await getDocs(collection(db, "TechStack"));
-        setTechStackOptions(techSnapshot.docs.map(doc => ({ value: doc.data().name, label: doc.data().name })));
     };
-    fetchServicesAndTech();
+    fetchServices();
   }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -243,24 +236,6 @@ export default function NewPortfolioProject() {
                   )}
                 />
             </div>
-            
-            <FormField
-                control={form.control}
-                name="techStack"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Tech Stack</FormLabel>
-                    <MultiSelect
-                        options={techStackOptions}
-                        selected={field.value || []}
-                        onChange={field.onChange}
-                        className="w-full"
-                    />
-                    <FormDescription>Select technologies used in this project.</FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
 
             <FormField
               control={form.control}

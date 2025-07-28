@@ -88,13 +88,6 @@ export default function PortfolioPage() {
                             {project.summary}
                         </p>
                        </Link>
-                       {project.techStack && project.techStack.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {project.techStack.slice(0, 3).map((tech: string) => (
-                              <Badge key={tech} variant="secondary">{tech}</Badge>
-                            ))}
-                          </div>
-                        )}
                         <div className="mt-auto pt-4 border-t border-border">
                              <Button variant="link" asChild className="p-0 h-auto">
                                 <Link href={`/portfolio/${project.slug}`} className="text-primary">

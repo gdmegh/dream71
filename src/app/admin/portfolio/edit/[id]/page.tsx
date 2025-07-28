@@ -26,7 +26,6 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { generateSlug } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MultiSelect } from "@/components/ui/multi-select";
 import { Trash } from "lucide-react";
 
 const featureSchema = z.object({
@@ -44,7 +43,6 @@ const formSchema = z.object({
   serviceId: z.string().optional(),
   displayOrder: z.coerce.number().optional(),
   isPublished: z.boolean().default(true),
-  techStack: z.array(z.string()).optional(),
   clientName: z.string().optional(),
   clientWebsite: z.string().url().optional().or(z.literal('')),
   timeline: z.string().optional(),
@@ -67,14 +65,11 @@ export default function EditPortfolioProject() {
   const [loading, setLoading] = useState(true);
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
   const [services, setServices] = useState<any[]>([]);
-  const [techStackOptions, setTechStackOptions] = useState<any[]>([]);
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       isPublished: true,
-      techStack: [],
       features: [],
     },
   });
@@ -93,14 +88,11 @@ export default function EditPortfolioProject() {
   }, [titleValue, form]);
 
   useEffect(() => {
-    const fetchServicesAndTech = async () => {
+    const fetchServices = async () => {
         const serviceSnapshot = await getDocs(collection(db, "Service"));
         setServices(serviceSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-        
-        const techSnapshot = await getDocs(collection(db, "TechStack"));
-        setTechStackOptions(techSnapshot.docs.map(doc => ({ value: doc.data().name, label: doc.data().name })));
     };
-    fetchServicesAndTech();
+    fetchServices();
   }, []);
 
   useEffect(() => {
@@ -286,23 +278,6 @@ export default function EditPortfolioProject() {
                   )}
                 />
             </div>
-             <FormField
-                control={form.control}
-                name="techStack"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Tech Stack</FormLabel>
-                    <MultiSelect
-                        options={techStackOptions}
-                        selected={field.value || []}
-                        onChange={field.onChange}
-                        className="w-full"
-                    />
-                    <FormDescription>Select technologies used in this project.</FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
 
             <FormField
               control={form.control}
