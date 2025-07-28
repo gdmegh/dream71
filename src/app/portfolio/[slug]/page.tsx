@@ -174,7 +174,21 @@ export default function PortfolioDetailPage() {
                     </div>
 
                     <CoreFeaturesSection features={project.features} />
-                    
+                                        
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline text-2xl">Impact</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
+                                dangerouslySetInnerHTML={{ __html: project.impact }}
+                            />
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Right Sticky Sidebar */}
+                <aside className="lg:col-span-4 sticky top-24 space-y-8">
                     {chartData.length > 0 && dataKey && (
                         <Card>
                             <CardHeader>
@@ -206,21 +220,6 @@ export default function PortfolioDetailPage() {
                             </CardContent>
                         </Card>
                     )}
-                    
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="font-headline text-2xl">Impact</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
-                                dangerouslySetInnerHTML={{ __html: project.impact }}
-                            />
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Right Sticky Sidebar */}
-                <aside className="lg:col-span-4 sticky top-24 space-y-8">
                     <Card>
                         <CardHeader>
                             <CardTitle>Client Details</CardTitle>
