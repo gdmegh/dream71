@@ -57,8 +57,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+function PortfolioClientContent({ project }: { project: any }) {
+  'use client';
+  
+  const chartData = project.chartData || [];
 
-const CoreFeaturesSection = ({ features }: { features: { icon: string, title: string, description: string }[] }) => {
+  const CoreFeaturesSection = ({ features }: { features: { icon: string, title: string, description: string }[] }) => {
     if (!features || features.length === 0) return null;
 
     return (
@@ -84,33 +88,23 @@ const CoreFeaturesSection = ({ features }: { features: { icon: string, title: st
             </CardContent>
         </Card>
     );
-};
+  };
 
-const DetailSection = ({ title, content }: { title: string, content?: string }) => {
-    if (!content) return null;
-    return (
-        <Card className='h-full'>
-            <CardHeader>
-                <CardTitle className="font-headline text-2xl">{title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
-                    dangerouslySetInnerHTML={{ __html: content }}
-                />
-            </CardContent>
-        </Card>
-    );
-};
-
-export default async function PortfolioDetailPage({ params }: PageProps) {
-  const { slug } = params;
-  const project = await getProject(slug);
-
-  if (!project) {
-    notFound();
-  }
-  
-  const chartData = project.chartData || [];
+  const DetailSection = ({ title, content }: { title: string, content?: string }) => {
+      if (!content) return null;
+      return (
+          <Card className='h-full'>
+              <CardHeader>
+                  <CardTitle className="font-headline text-2xl">{title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  <div className="prose dark:prose-invert max-w-none font-body text-muted-foreground"
+                      dangerouslySetInnerHTML={{ __html: content }}
+                  />
+              </CardContent>
+          </Card>
+      );
+  };
 
   return (
     <>
@@ -201,4 +195,16 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
       </section>
     </>
   );
+}
+
+
+export default async function PortfolioDetailPage({ params }: PageProps) {
+  const { slug } = params;
+  const project = await getProject(slug);
+
+  if (!project) {
+    notFound();
+  }
+  
+  return <PortfolioClientContent project={project} />;
 }
