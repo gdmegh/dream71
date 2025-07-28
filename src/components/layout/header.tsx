@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, BookOpen, Rss, Newspaper, GalleryHorizontal, Info, MessageSquare, Phone, Briefcase } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Rss, Newspaper, GalleryHorizontal, Info, MessageSquare, Phone, Briefcase, AppWindow } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
@@ -23,6 +23,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 const insightsLinks = [
     { href: '/blog', label: 'Blog', description: 'Our latest thoughts and articles.', icon: Rss },
@@ -40,10 +42,32 @@ const portfolioLinks = [
     { href: '/portfolio', label: 'All Projects', description: 'Browse our complete portfolio.', icon: Briefcase },
 ]
 
+type Service = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+};
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [services, setServices] = useState<Service[]>([]);
   const pathname = usePathname();
+  
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const q = query(collection(db, "Service"), orderBy("displayOrder", "asc"));
+        const querySnapshot = await getDocs(q);
+        const servicesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Service[];
+        setServices(servicesData);
+      } catch (error) {
+        console.error("Failed to fetch services:", error);
+      }
+    };
+    fetchServices();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,9 +116,38 @@ export default function Header() {
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                         <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                            <Link href="/services">Services</Link>
-                        </NavigationMenuLink>
+                         <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+                         <NavigationMenuContent>
+                            <div className="grid grid-cols-12 gap-4 p-4 w-[600px] lg:w-[700px]">
+                                <div className="col-span-4">
+                                     <div className="h-full flex flex-col justify-between p-4 rounded-md bg-primary/5">
+                                        <div>
+                                            <AppWindow className="h-8 w-8 text-primary mb-2" />
+                                            <h3 className="text-lg font-bold font-headline text-foreground">Our Services</h3>
+                                            <p className="text-sm text-muted-foreground mt-1">
+                                                Explore our suite of services designed to bring your digital vision to life.
+                                            </p>
+                                        </div>
+                                         <Button variant="link" asChild className="p-0 h-auto mt-4 justify-start">
+                                            <Link href="/services">
+                                                View All Services &rarr;
+                                            </Link>
+                                         </Button>
+                                     </div>
+                                </div>
+                                <ul className="col-span-8 grid grid-cols-2 gap-3">
+                                    {services.map((service) => (
+                                        <ListItem
+                                            key={service.id}
+                                            title={service.title}
+                                            href={`/services/${service.slug}`}
+                                        >
+                                            {service.description}
+                                        </ListItem>
+                                    ))}
+                                </ul>
+                            </div>
+                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Portfolio</NavigationMenuTrigger>
@@ -166,7 +219,16 @@ export default function Header() {
         <div className="md:hidden bg-background shadow-lg">
           <nav className="flex flex-col space-y-2 p-4">
              <Accordion type="multiple" className="w-full">
-                 <MobileNavLink href="/services" label="Services" onClick={() => setIsOpen(false)} />
+                <AccordionItem value="services">
+                    <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Services</AccordionTrigger>
+                    <AccordionContent className="pl-4">
+                        <div className="flex flex-col space-y-2">
+                         {services.map((link) => (
+                            <Link key={link.id} href={`/services/${link.slug}`} className="font-headline py-1 text-muted-foreground hover:text-primary" onClick={() => setIsOpen(false)}>{link.title}</Link>
+                         ))}
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
                 <AccordionItem value="portfolio">
                     <AccordionTrigger className="font-headline py-2 hover:no-underline hover:text-primary transition-colors data-[state=open]:text-primary">Portfolio</AccordionTrigger>
                     <AccordionContent className="pl-4">
