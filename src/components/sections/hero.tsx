@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
-import AnimatedIcons from '../ui/animated-icons';
 import Script from 'next/script';
 
 const heroImages = [
@@ -90,7 +89,6 @@ export default function Hero() {
             ref={vantaRef}
             className="relative flex flex-col items-center justify-center text-center overflow-hidden bg-background min-h-screen py-20"
         >
-            <AnimatedIcons />
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center flex-grow">
                 <div className="max-w-4xl mx-auto flex-grow flex flex-col justify-center items-center">
                     <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
